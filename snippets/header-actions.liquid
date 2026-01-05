@@ -77,6 +77,185 @@
     </dialog-component>
   {% endif %}
 
+  {%- comment -%} Subscription Sidebar {%- endcomment -%}
+  <script
+    src="{{ 'subscription-sidebar.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+  
+  <subscription-sidebar-component class="subscription-sidebar">
+    <button
+      class="button header-actions__action button-unstyled"
+      on:click="/open"
+      aria-haspopup="dialog"
+      aria-label="{{ 'content.manage_subscription' | t | default: 'Manage Subscription' }}"
+      data-testid="subscription-sidebar-trigger"
+    >
+      <span class="svg-wrapper" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg>
+      </span>
+    </button>
+
+    <dialog
+      ref="dialog"
+      class="subscription-sidebar__dialog dialog-modal dialog-drawer color-{{ settings.drawer_color_scheme | default: 'scheme-1' }}"
+      aria-labelledby="subscription-sidebar-heading"
+      scroll-lock
+    >
+      <div class="subscription-sidebar__inner">
+        <div class="subscription-sidebar__header">
+          <h2 
+            class="subscription-sidebar__heading h4"
+            id="subscription-sidebar-heading"
+          >
+            {{ 'content.your_subscription' | t | default: 'Your Subscription' }}
+          </h2>
+
+          <button
+            ref="closeButton"
+            on:click="subscription-sidebar-component/close"
+            class="button close-button subscription-sidebar__close-button button-unstyled"
+            aria-label="{{ 'actions.close_dialog' | t | default: 'Close' }}"
+          >
+            <span class="svg-wrapper" aria-hidden="true">
+              {{- 'icon-close.svg' | inline_asset_content -}}
+            </span>
+          </button>
+        </div>
+
+        <div class="subscription-sidebar__content">
+          {% if customer %}
+            {%- comment -%} Logged in customer view {%- endcomment -%}
+            <div class="subscription-sidebar__section">
+              <h3 class="subscription-sidebar__section-title h5">
+                {{ 'content.subscription_status' | t | default: 'Subscription Status' }}
+              </h3>
+              
+              <div class="subscription-sidebar__status">
+                <div class="subscription-sidebar__status-indicator subscription-sidebar__status-indicator--active">
+                  <span class="subscription-sidebar__status-dot"></span>
+                  <span>{{ 'content.active' | t | default: 'Active' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="subscription-sidebar__section">
+              <h3 class="subscription-sidebar__section-title h5">
+                {{ 'content.next_delivery' | t | default: 'Next Delivery' }}
+              </h3>
+              <p class="subscription-sidebar__text">
+                {{ 'content.next_delivery_info' | t | default: 'Your next delivery is scheduled and on its way.' }}
+              </p>
+            </div>
+
+            <div class="subscription-sidebar__section">
+              <h3 class="subscription-sidebar__section-title h5">
+                {{ 'content.quick_actions' | t | default: 'Quick Actions' }}
+              </h3>
+              
+              <div class="subscription-sidebar__actions">
+                <a 
+                  href="{{ routes.account_url }}"
+                  class="subscription-sidebar__action-link"
+                >
+                  <span class="svg-wrapper" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </span>
+                  {{ 'content.manage_subscription' | t | default: 'Manage Subscription' }}
+                </a>
+                
+                <a 
+                  href="{{ routes.account_url }}"
+                  class="subscription-sidebar__action-link"
+                >
+                  <span class="svg-wrapper" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </span>
+                  {{ 'content.change_frequency' | t | default: 'Change Frequency' }}
+                </a>
+                
+                <a 
+                  href="{{ routes.account_url }}"
+                  class="subscription-sidebar__action-link"
+                >
+                  <span class="svg-wrapper" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
+                  </span>
+                  {{ 'content.pause_subscription' | t | default: 'Pause Subscription' }}
+                </a>
+              </div>
+            </div>
+
+            <div class="subscription-sidebar__section subscription-sidebar__section--help">
+              <h3 class="subscription-sidebar__section-title h5">
+                {{ 'content.need_help' | t | default: 'Need Help?' }}
+              </h3>
+              <p class="subscription-sidebar__text">
+                {{ 'content.contact_support' | t | default: 'Our team is here to help with any subscription questions.' }}
+              </p>
+              <a 
+                href="/pages/contact"
+                class="button button--secondary subscription-sidebar__help-button"
+              >
+                {{ 'content.contact_us' | t | default: 'Contact Us' }}
+              </a>
+            </div>
+
+          {% else %}
+            {%- comment -%} Guest view - encourage login or subscription {%- endcomment -%}
+            <div class="subscription-sidebar__section subscription-sidebar__section--welcome">
+              <div class="subscription-sidebar__icon-large">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg>
+              </div>
+              
+              <h3 class="subscription-sidebar__welcome-title h4">
+                {{ 'content.subscribe_save' | t | default: 'Subscribe & Save' }}
+              </h3>
+              
+              <p class="subscription-sidebar__text">
+                {{ 'content.subscription_benefits' | t | default: 'Never run out! Subscribe for automatic deliveries and exclusive savings on every order.' }}
+              </p>
+
+              <ul class="subscription-sidebar__benefits">
+                <li class="subscription-sidebar__benefit">
+                  <span class="subscription-sidebar__benefit-icon">✓</span>
+                  {{ 'content.benefit_save' | t | default: 'Save 10% on every order' }}
+                </li>
+                <li class="subscription-sidebar__benefit">
+                  <span class="subscription-sidebar__benefit-icon">✓</span>
+                  {{ 'content.benefit_shipping' | t | default: 'Free shipping on all deliveries' }}
+                </li>
+                <li class="subscription-sidebar__benefit">
+                  <span class="subscription-sidebar__benefit-icon">✓</span>
+                  {{ 'content.benefit_flexible' | t | default: 'Flexible delivery schedule' }}
+                </li>
+                <li class="subscription-sidebar__benefit">
+                  <span class="subscription-sidebar__benefit-icon">✓</span>
+                  {{ 'content.benefit_cancel' | t | default: 'Cancel or pause anytime' }}
+                </li>
+              </ul>
+
+              <a 
+                href="{{ routes.account_login_url }}"
+                class="button button--primary subscription-sidebar__cta-button"
+              >
+                {{ 'content.login_to_manage' | t | default: 'Log In to Manage' }}
+              </a>
+              
+              <p class="subscription-sidebar__text subscription-sidebar__text--small">
+                {{ 'content.new_customer' | t | default: "Don't have an account?" }}
+                <a href="{{ routes.account_register_url }}">
+                  {{ 'content.sign_up' | t | default: 'Sign up' }}
+                </a>
+              </p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </dialog>
+  </subscription-sidebar-component>
+
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     <script
       src="{{ 'cart-drawer.js' | asset_url }}"
@@ -353,15 +532,18 @@
   .cart-drawer__dialog {
     position: fixed;
     overflow: hidden;
-    border-radius: 0;
+    border-radius: var(--padding-lg);
     width: var(--sidebar-width);
-    max-width: 95vw;
-    height: 100%;
-    margin: 0 0 0 auto;
+    max-width: calc(95vw - var(--padding-xl) * 2);
+    height: calc(100% - var(--padding-xl) * 2);
+    margin: var(--padding-xl);
+    margin-left: auto;
     padding: 0;
-    border-left: var(--style-border-drawer);
-    box-shadow: var(--shadow-drawer);
+    border: none;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15), 0 2px 12px rgba(0, 0, 0, 0.1);
     background-color: var(--color-background);
+    inset-block-start: 0;
+    inset-inline-end: 0;
   }
 
   .cart-items-component {
@@ -373,7 +555,7 @@
 
   /* Needed to ensure the drawer is full height */
   .cart-drawer__dialog:modal {
-    max-height: 100dvh;
+    max-height: calc(100dvh - var(--padding-xl) * 2);
     overflow-y: hidden;
   }
 
@@ -665,5 +847,225 @@
       --cart-bubble-top: 4px;
       --cart-bubble-right: 4px;
     }
+  }
+
+  /* Subscription Sidebar Styles */
+  .subscription-sidebar__dialog {
+    position: fixed;
+    overflow: hidden;
+    border-radius: var(--padding-lg);
+    width: var(--sidebar-width);
+    max-width: calc(95vw - var(--padding-xl) * 2);
+    height: calc(100% - var(--padding-xl) * 2);
+    margin: var(--padding-xl);
+    margin-left: auto;
+    padding: 0;
+    border: none;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15), 0 2px 12px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-background);
+    inset-block-start: 0;
+    inset-inline-end: 0;
+  }
+
+  .subscription-sidebar__dialog:modal {
+    max-height: calc(100dvh - var(--padding-xl) * 2);
+    overflow-y: hidden;
+  }
+
+  .subscription-sidebar__inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .subscription-sidebar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--padding-lg) var(--padding-xl);
+    border-bottom: var(--style-border-width) solid var(--color-border);
+    background-color: var(--color-background);
+    flex-shrink: 0;
+
+    @media screen and (min-width: 750px) {
+      padding: var(--padding-xl) var(--padding-2xl);
+    }
+  }
+
+  .subscription-sidebar__heading {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+  }
+
+  .subscription-sidebar__close-button {
+    margin-right: calc(var(--padding-sm) * -1);
+  }
+
+  .subscription-sidebar__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--padding-lg) var(--padding-xl);
+
+    @media screen and (min-width: 750px) {
+      padding: var(--padding-xl) var(--padding-2xl);
+    }
+  }
+
+  .subscription-sidebar__section {
+    margin-bottom: var(--margin-2xl);
+  }
+
+  .subscription-sidebar__section:last-child {
+    margin-bottom: 0;
+  }
+
+  .subscription-sidebar__section-title {
+    margin: 0 0 var(--margin-md) 0;
+    font-size: var(--font-size--sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgb(var(--color-foreground-rgb) / 0.6);
+  }
+
+  .subscription-sidebar__status {
+    display: flex;
+    align-items: center;
+  }
+
+  .subscription-sidebar__status-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    padding: var(--padding-xs) var(--padding-md);
+    border-radius: var(--padding-xl);
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+    font-size: var(--font-size--sm);
+    font-weight: 500;
+  }
+
+  .subscription-sidebar__status-indicator--active .subscription-sidebar__status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #22c55e;
+  }
+
+  .subscription-sidebar__text {
+    margin: 0;
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+    line-height: 1.6;
+  }
+
+  .subscription-sidebar__text--small {
+    font-size: var(--font-size--sm);
+    margin-top: var(--margin-lg);
+    text-align: center;
+  }
+
+  .subscription-sidebar__text--small a {
+    color: var(--color-foreground);
+    text-decoration: underline;
+  }
+
+  .subscription-sidebar__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+  }
+
+  .subscription-sidebar__action-link {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+    padding: var(--padding-md);
+    border-radius: var(--padding-sm);
+    text-decoration: none;
+    color: var(--color-foreground);
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .subscription-sidebar__action-link:hover {
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+  }
+
+  .subscription-sidebar__action-link .svg-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgb(var(--color-foreground-rgb) / 0.08);
+    flex-shrink: 0;
+  }
+
+  .subscription-sidebar__section--help {
+    padding: var(--padding-lg);
+    background-color: rgb(var(--color-foreground-rgb) / 0.03);
+    border-radius: var(--padding-md);
+  }
+
+  .subscription-sidebar__help-button {
+    width: 100%;
+    margin-top: var(--margin-md);
+  }
+
+  /* Guest/Welcome View Styles */
+  .subscription-sidebar__section--welcome {
+    text-align: center;
+    padding: var(--padding-xl) 0;
+  }
+
+  .subscription-sidebar__icon-large {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--margin-xl);
+    border-radius: 50%;
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+    color: var(--color-foreground);
+  }
+
+  .subscription-sidebar__welcome-title {
+    margin: 0 0 var(--margin-md) 0;
+  }
+
+  .subscription-sidebar__benefits {
+    list-style: none;
+    padding: 0;
+    margin: var(--margin-xl) 0;
+    text-align: left;
+  }
+
+  .subscription-sidebar__benefit {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+    padding: var(--padding-sm) 0;
+    color: var(--color-foreground);
+  }
+
+  .subscription-sidebar__benefit-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgb(34, 197, 94, 0.15);
+    color: #22c55e;
+    font-size: var(--font-size--sm);
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .subscription-sidebar__cta-button {
+    width: 100%;
+    margin-top: var(--margin-lg);
   }
 {% endstylesheet %}
