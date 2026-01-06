@@ -1,0 +1,536 @@
+{% comment %}
+  APLÓS-INSPIRED HOMEPAGE
+  A fully custom homepage section with video background and elegant styling
+{% endcomment %}
+
+{{ 'aplos-style.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%} Import Google Fonts for Aplós aesthetic {%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<div class="aplos-page">
+  {%- comment -%} ========== HERO SECTION ========== {%- endcomment -%}
+  <section class="aplos-hero" id="aplos-hero">
+    <div class="aplos-hero__video-wrapper">
+      {% if section.settings.hero_video != blank %}
+        {{ section.settings.hero_video | video_tag: 
+          autoplay: true, 
+          loop: true, 
+          muted: true, 
+          playsinline: true,
+          class: 'aplos-hero__video',
+          poster: section.settings.hero_image
+        }}
+      {% elsif section.settings.hero_video_url != blank %}
+        <video class="aplos-hero__video" autoplay loop muted playsinline>
+          <source src="{{ section.settings.hero_video_url }}" type="video/mp4">
+        </video>
+      {% else %}
+        {%- comment -%} Fallback image if no video {%- endcomment -%}
+        {% if section.settings.hero_image != blank %}
+          {{ section.settings.hero_image | image_url: width: 2000 | image_tag: class: 'aplos-hero__video', loading: 'eager' }}
+        {% else %}
+          <div class="aplos-hero__video" style="background: linear-gradient(135deg, #2D3B2D 0%, #1A1A1A 100%);"></div>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="aplos-hero__overlay"></div>
+    <div class="aplos-hero__content">
+      {% if section.settings.hero_eyebrow != blank %}
+        <p class="aplos-hero__eyebrow">{{ section.settings.hero_eyebrow }}</p>
+      {% endif %}
+      <h1 class="aplos-hero__title">{{ section.settings.hero_title | default: 'Relief without compromise' }}</h1>
+      <p class="aplos-hero__subtitle">{{ section.settings.hero_subtitle | default: 'Functional botanicals crafted for clarity, calm, and connection.' }}</p>
+      <a href="{{ section.settings.hero_cta_link | default: '/collections/all' }}" class="aplos-hero__cta">
+        {{ section.settings.hero_cta_text | default: 'Shop Now' }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+    <div class="aplos-hero__scroll">Scroll</div>
+  </section>
+
+  {%- comment -%} ========== BENEFITS SECTION ========== {%- endcomment -%}
+  <section class="aplos-benefits" id="aplos-benefits">
+    <div class="aplos-benefits__inner">
+      <div class="aplos-benefits__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'benefit' -%}
+            <div class="aplos-benefit aplos-fade-in" {{ block.shopify_attributes }}>
+              <div class="aplos-benefit__icon">
+                {% case block.settings.icon %}
+                  {% when 'leaf' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                      <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                    </svg>
+                  {% when 'star' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                    </svg>
+                  {% when 'heart' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                    </svg>
+                  {% when 'droplet' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+                    </svg>
+                  {% when 'shield' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                    </svg>
+                  {% else %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                {% endcase %}
+              </div>
+              <h3 class="aplos-benefit__title">{{ block.settings.title }}</h3>
+              <p class="aplos-benefit__text">{{ block.settings.text }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ========== FEATURED PRODUCT SECTION ========== {%- endcomment -%}
+  {% if section.settings.featured_product != blank %}
+    {% assign product = section.settings.featured_product %}
+    <section class="aplos-featured-product" id="aplos-featured">
+      <div class="aplos-featured-product__inner">
+        <div class="aplos-featured-product__media aplos-fade-in">
+          {% if product.featured_image != blank %}
+            {{ product.featured_image | image_url: width: 1000 | image_tag: loading: 'lazy', class: 'aplos-featured-product__image' }}
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'aplos-featured-product__image' }}
+          {% endif %}
+        </div>
+        <div class="aplos-featured-product__content aplos-fade-in">
+          <p class="aplos-featured-product__eyebrow">{{ section.settings.featured_eyebrow | default: 'Featured' }}</p>
+          <h2 class="aplos-featured-product__title">{{ product.title }}</h2>
+          <div class="aplos-featured-product__description">{{ product.description | strip_html | truncate: 200 }}</div>
+          <p class="aplos-featured-product__price">{{ product.price | money }}</p>
+          <a href="{{ product.url }}" class="aplos-featured-product__btn">
+            Shop Now
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {%- comment -%} ========== PRESS QUOTE SECTION ========== {%- endcomment -%}
+  <section class="aplos-press" id="aplos-press">
+    <div class="aplos-press__inner aplos-fade-in">
+      <p class="aplos-press__quote">"{{ section.settings.press_quote | default: 'A new ritual for the modern age' }}"</p>
+      <p class="aplos-press__source">— {{ section.settings.press_source | default: 'Vogue' }}</p>
+    </div>
+  </section>
+
+  {%- comment -%} ========== STORY/PHILOSOPHY SECTION ========== {%- endcomment -%}
+  <section class="aplos-story" id="aplos-story">
+    <div class="aplos-story__inner">
+      <div class="aplos-story__media">
+        {% if section.settings.story_image != blank %}
+          {{ section.settings.story_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'aplos-story__image' }}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'aplos-story__image' }}
+        {% endif %}
+      </div>
+      <div class="aplos-story__content aplos-fade-in">
+        <p class="aplos-story__eyebrow">{{ section.settings.story_eyebrow | default: 'Our Philosophy' }}</p>
+        <h2 class="aplos-story__title">{{ section.settings.story_title | default: 'Nature meets science' }}</h2>
+        <p class="aplos-story__text">{{ section.settings.story_text | default: 'We believe in the power of plants. Our formulas combine ancient botanical wisdom with modern science to create products that truly work—without any of the downsides.' }}</p>
+        <a href="{{ section.settings.story_link | default: '/pages/about' }}" class="aplos-story__link">
+          {{ section.settings.story_link_text | default: 'Learn Our Story' }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ========== TESTIMONIALS SECTION ========== {%- endcomment -%}
+  <section class="aplos-testimonials" id="aplos-testimonials">
+    <div class="aplos-testimonials__inner">
+      <div class="aplos-testimonials__header aplos-fade-in">
+        <h2 class="aplos-testimonials__title">{{ section.settings.testimonials_title | default: 'What People Are Saying' }}</h2>
+      </div>
+      <div class="aplos-testimonials__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'testimonial' -%}
+            <div class="aplos-testimonial aplos-fade-in" {{ block.shopify_attributes }}>
+              <div class="aplos-testimonial__stars">★★★★★</div>
+              <p class="aplos-testimonial__text">"{{ block.settings.quote }}"</p>
+              <p class="aplos-testimonial__author">— {{ block.settings.author }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ========== PRODUCTS GRID SECTION ========== {%- endcomment -%}
+  {% if section.settings.products_collection != blank %}
+    {% assign collection = section.settings.products_collection %}
+    <section class="aplos-products" id="aplos-products">
+      <div class="aplos-products__inner">
+        <div class="aplos-products__header">
+          <h2 class="aplos-products__title">{{ section.settings.products_title | default: 'Our Collection' }}</h2>
+          <a href="{{ collection.url }}" class="aplos-products__view-all">View All</a>
+        </div>
+        <div class="aplos-products__grid">
+          {% for product in collection.products limit: 4 %}
+            <a href="{{ product.url }}" class="aplos-product-card aplos-fade-in">
+              <div class="aplos-product-card__media">
+                {% if product.featured_image != blank %}
+                  {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'aplos-product-card__image' }}
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'aplos-product-card__image' }}
+                {% endif %}
+              </div>
+              <h3 class="aplos-product-card__title">{{ product.title }}</h3>
+              <p class="aplos-product-card__price">{{ product.price | money }}</p>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {%- comment -%} ========== NEWSLETTER SECTION ========== {%- endcomment -%}
+  <section class="aplos-newsletter" id="aplos-newsletter">
+    <div class="aplos-newsletter__inner aplos-fade-in">
+      <h2 class="aplos-newsletter__title">{{ section.settings.newsletter_title | default: 'Stay in the loop' }}</h2>
+      <p class="aplos-newsletter__text">{{ section.settings.newsletter_text | default: 'Be the first to know about new products, exclusive offers, and wellness tips.' }}</p>
+      {% form 'customer', class: 'aplos-newsletter__form' %}
+        <input 
+          type="email" 
+          name="contact[email]" 
+          placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email' }}" 
+          class="aplos-newsletter__input"
+          required
+          aria-label="Email address"
+        >
+        <button type="submit" class="aplos-newsletter__btn">
+          {{ section.settings.newsletter_button | default: 'Subscribe' }}
+        </button>
+      {% endform %}
+    </div>
+  </section>
+</div>
+
+<script>
+  // Fade-in animation on scroll
+  document.addEventListener('DOMContentLoaded', function() {
+    const fadeElements = document.querySelectorAll('.aplos-fade-in');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    fadeElements.forEach(el => observer.observe(el));
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Aplós Homepage",
+  "tag": "div",
+  "class": "aplos-homepage-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "video",
+      "id": "hero_video",
+      "label": "Background Video"
+    },
+    {
+      "type": "url",
+      "id": "hero_video_url",
+      "label": "Video URL (MP4)",
+      "info": "Alternative: paste a direct MP4 URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Fallback Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Functional Botanicals"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Title",
+      "default": "Relief without compromise"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Subtitle",
+      "default": "Functional botanicals crafted for clarity, calm, and connection."
+    },
+    {
+      "type": "text",
+      "id": "hero_cta_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "hero_cta_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Featured Product"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "featured_eyebrow",
+      "label": "Eyebrow",
+      "default": "Featured"
+    },
+    {
+      "type": "header",
+      "content": "Press Quote"
+    },
+    {
+      "type": "text",
+      "id": "press_quote",
+      "label": "Quote",
+      "default": "A new ritual for the modern age"
+    },
+    {
+      "type": "text",
+      "id": "press_source",
+      "label": "Source",
+      "default": "Vogue"
+    },
+    {
+      "type": "header",
+      "content": "Story Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "story_eyebrow",
+      "label": "Eyebrow",
+      "default": "Our Philosophy"
+    },
+    {
+      "type": "text",
+      "id": "story_title",
+      "label": "Title",
+      "default": "Nature meets science"
+    },
+    {
+      "type": "textarea",
+      "id": "story_text",
+      "label": "Text",
+      "default": "We believe in the power of plants. Our formulas combine ancient botanical wisdom with modern science to create products that truly work—without any of the downsides."
+    },
+    {
+      "type": "url",
+      "id": "story_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "story_link_text",
+      "label": "Link Text",
+      "default": "Learn Our Story"
+    },
+    {
+      "type": "header",
+      "content": "Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "testimonials_title",
+      "label": "Title",
+      "default": "What People Are Saying"
+    },
+    {
+      "type": "header",
+      "content": "Products Section"
+    },
+    {
+      "type": "collection",
+      "id": "products_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "products_title",
+      "label": "Title",
+      "default": "Our Collection"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Title",
+      "default": "Stay in the loop"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Text",
+      "default": "Be the first to know about new products, exclusive offers, and wellness tips."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Input Placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Button Text",
+      "default": "Subscribe"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "droplet", "label": "Droplet" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "leaf"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Plant-Powered"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Crafted with adaptogenic herbs and functional botanicals for natural relief."
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Finally found something that actually works. I feel calmer, more focused, and ready for whatever the day brings."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Sarah M."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Aplós Homepage",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "title": "Plant-Powered",
+            "text": "Crafted with adaptogenic herbs and functional botanicals for natural relief."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "star",
+            "title": "Premium Quality",
+            "text": "Expertly formulated using only the finest organic ingredients sourced responsibly."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "title": "Wellness First",
+            "text": "Designed to support your mind and body with no compromises on purity."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Finally found something that actually works. I feel calmer, more focused, and ready for whatever the day brings.",
+            "author": "Sarah M."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The quality is unmatched. You can taste the difference. This is now a permanent part of my evening routine.",
+            "author": "Michael R."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I was skeptical at first, but after a week I was a believer. Game changer for my stress levels.",
+            "author": "Emily T."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
