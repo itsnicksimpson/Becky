@@ -258,29 +258,35 @@
 </div>
 
 <div class="cart__ctas">
-  <button
-    type="submit"
-    id="checkout"
-    class="cart__checkout-button button"
-    name="checkout"
-    {% if cart == empty %}
-      disabled
+  <div class="cart__checkout-row">
+    {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
+      <div
+        class="
+          additional-checkout-buttons additional-checkout-buttons--inline
+          {% if accelerated_checkout_buttons_layout == 'vertical' %}additional-checkout-buttons--vertical{% endif %}
+        "
+      >
+        {{ content_for_additional_checkout_buttons }}
+      </div>
     {% endif %}
-    form="cart-form"
-  >
-    {{ 'content.checkout' | t }}
-  </button>
 
-  {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
-    <div
-      class="
-        additional-checkout-buttons
-        {% if accelerated_checkout_buttons_layout == 'vertical' %}additional-checkout-buttons--vertical{% endif %}
-      "
+    <button
+      type="submit"
+      id="checkout"
+      class="cart__checkout-button button"
+      name="checkout"
+      {% if cart == empty %}
+        disabled
+      {% endif %}
+      form="cart-form"
     >
-      {{ content_for_additional_checkout_buttons }}
-    </div>
-  {% endif %}
+      {{ 'content.checkout' | t }} — {{ cart.total_price | money }}
+    </button>
+  </div>
+
+  <a href="{{ routes.all_products_collection_url }}" class="cart__continue-shopping">
+    {{ 'actions.continue_shopping' | t }}
+  </a>
 </div>
 
 {% stylesheet %}

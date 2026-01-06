@@ -217,7 +217,12 @@
                     </dl>
 
                     {% if item.selling_plan_allocation %}
-                      <p>{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                      <div class="cart-items__subscription-badge">
+                        <span class="subscription-badge">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg>
+                          {{ item.selling_plan_allocation.selling_plan.name }}
+                        </span>
+                      </div>
                     {% endif %}
                   {%- endif -%}
 
@@ -677,10 +682,40 @@
 
   .cart__ctas {
     width: 100%;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: var(--checkout-button-gap);
-    grid-auto-flow: row;
-    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  .cart__checkout-row {
+    display: flex;
+    gap: var(--gap-sm);
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .cart__checkout-row .additional-checkout-buttons--inline {
+    flex-shrink: 0;
+  }
+
+  .cart__checkout-row .additional-checkout-buttons--inline .shopify-payment-button {
+    min-height: clamp(25px, var(--height-buy-buttons), 55px);
+  }
+
+  .cart__checkout-row .cart__checkout-button {
+    flex: 1;
+  }
+
+  .cart__continue-shopping {
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .cart__continue-shopping:hover {
+    text-decoration: none;
   }
 
   .cart__additional-checkout-buttons {
@@ -798,5 +833,27 @@
   .cart-items__properties dt,
   .cart-items__properties dd {
     display: inline;
+  }
+
+  /* Subscription Badge */
+  .cart-items__subscription-badge {
+    margin-top: var(--margin-xs);
+  }
+
+  .subscription-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-2xs);
+    padding: var(--padding-2xs) var(--padding-sm);
+    background-color: rgb(var(--color-foreground-rgb) / 0.08);
+    border-radius: var(--padding-xl);
+    font-size: var(--font-size--xs);
+    font-weight: 500;
+    color: var(--color-foreground);
+    border: 1px dashed rgb(var(--color-foreground-rgb) / 0.3);
+  }
+
+  .subscription-badge svg {
+    flex-shrink: 0;
   }
 {% endstylesheet %}
