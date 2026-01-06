@@ -7,56 +7,66 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
-    "hero_jVaWmY": {
+    "hero_aplos": {
       "type": "hero",
       "blocks": {
-        "text_YLPk4p": {
+        "tagline": {
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "width": "fit-content",
+            "text": "<h1>Relief without compromise</h1>",
+            "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
+            "alignment": "center",
+            "type_preset": "h1",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
             "line_height": "normal",
-            "letter_spacing": "normal",
+            "letter_spacing": "-0.02em",
             "case": "none",
             "wrap": "pretty",
             "color": "var(--color-foreground-heading)",
             "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
             "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "padding-block-end": 16
+          }
         },
-        "button_H9gpTf": {
+        "subtitle": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Functional botanicals crafted for clarity, calm, and connection.</p>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1.125rem",
+            "line_height": "1.6",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          }
+        },
+        "shop_button": {
           "type": "button",
           "name": "t:names.button",
           "settings": {
-            "label": "Shop all",
+            "label": "Shop Now",
             "link": "shopify://collections/all",
             "open_in_new_tab": false,
-            "style_class": "button-secondary",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
+            "style_class": "button",
+            "width": "fit-content"
+          }
         }
       },
       "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
+        "tagline",
+        "subtitle",
+        "shop_button"
       ],
       "name": "t:names.hero",
       "settings": {
@@ -66,27 +76,648 @@
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
         "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
+        "vertical_alignment_flex_direction_column": "center",
         "gap": 24,
         "section_width": "page-width",
-        "section_height": "medium",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-6",
+        "section_height": "full-screen",
+        "color_scheme": "scheme-1",
         "toggle_overlay": true,
-        "overlay_color": "#12121266",
+        "overlay_color": "#00000040",
         "overlay_style": "solid",
-        "gradient_direction": "to bottom",
         "blurred_reflection": false,
-        "reflection_opacity": 75,
         "padding-block-start": 100,
-        "padding-block-end": 72
+        "padding-block-end": 100
       }
     },
-    "product_list_fa6P9H": {
+    "benefits_section": {
+      "type": "section",
+      "blocks": {
+        "benefit_1": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
+            "height": "fit",
+            "inherit_color_scheme": true
+          },
+          "blocks": {
+            "icon_1": {
+              "type": "icon",
+              "settings": {
+                "icon": "leaf",
+                "width": 40,
+                "link": ""
+              }
+            },
+            "heading_1": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Plant-Powered</h3>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h5"
+              }
+            },
+            "text_1": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Crafted with adaptogenic herbs and functional botanicals for natural relief.</p>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "rte"
+              }
+            }
+          },
+          "block_order": [
+            "icon_1",
+            "heading_1",
+            "text_1"
+          ]
+        },
+        "benefit_2": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
+            "height": "fit",
+            "inherit_color_scheme": true
+          },
+          "blocks": {
+            "icon_2": {
+              "type": "icon",
+              "settings": {
+                "icon": "star",
+                "width": 40,
+                "link": ""
+              }
+            },
+            "heading_2": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Premium Quality</h3>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h5"
+              }
+            },
+            "text_2": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Expertly formulated using only the finest organic ingredients sourced responsibly.</p>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "rte"
+              }
+            }
+          },
+          "block_order": [
+            "icon_2",
+            "heading_2",
+            "text_2"
+          ]
+        },
+        "benefit_3": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
+            "height": "fit",
+            "inherit_color_scheme": true
+          },
+          "blocks": {
+            "icon_3": {
+              "type": "icon",
+              "settings": {
+                "icon": "heart",
+                "width": 40,
+                "link": ""
+              }
+            },
+            "heading_3": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Wellness First</h3>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h5"
+              }
+            },
+            "text_3": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Designed to support your mind and body with no compromises on purity.</p>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "rte"
+              }
+            }
+          },
+          "block_order": [
+            "icon_3",
+            "heading_3",
+            "text_3"
+          ]
+        }
+      },
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3"
+      ],
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "gap": 48,
+        "section_width": "page-width",
+        "color_scheme": "scheme-2",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "product_showcase": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "width": "fill"
+          },
+          "blocks": {
+            "section_title": {
+              "type": "_product-list-text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Our Collection</h2>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h2"
+              }
+            },
+            "section_subtitle": {
+              "type": "_product-list-text",
+              "settings": {
+                "text": "<p>Thoughtfully crafted for moments of calm</p>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "rte"
+              }
+            }
+          },
+          "block_order": [
+            "section_title",
+            "section_subtitle"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 8,
+            "inherit_color_scheme": true
+          },
+          "blocks": {
+            "product_card_gallery": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "square",
+                "border_radius": 8
+              }
+            },
+            "product_title": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h5",
+                "padding-block-start": 12
+              }
+            },
+            "price": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "type_preset": "rte",
+                "width": "100%",
+                "alignment": "center"
+              }
+            }
+          },
+          "block_order": [
+            "product_card_gallery",
+            "product_title",
+            "price"
+          ]
+        }
+      },
+      "name": "t:names.featured_collection",
+      "settings": {
+        "collection": "all",
+        "layout_type": "grid",
+        "carousel_on_mobile": true,
+        "max_products": 4,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 24,
+        "rows_gap": 24,
+        "section_width": "page-width",
+        "horizontal_alignment": "center",
+        "gap": 48,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "press_quote": {
+      "type": "section",
+      "blocks": {
+        "press_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>\"A new ritual for the modern age\"</p>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "h2",
+            "font": "var(--font-accent--family)",
+            "font_size": "",
+            "line_height": "1.4",
+            "letter_spacing": "-0.01em"
+          }
+        },
+        "press_source": {
+          "type": "text",
+          "settings": {
+            "text": "<p>— VOGUE</p>",
+            "width": "100%",
+            "alignment": "center",
+            "type_preset": "h6",
+            "letter_spacing": "0.1em",
+            "case": "uppercase"
+          }
+        }
+      },
+      "block_order": [
+        "press_text",
+        "press_source"
+      ],
+      "settings": {
+        "horizontal_alignment_flex_direction_column": "center",
+        "gap": 24,
+        "section_width": "page-width",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 100,
+        "padding-block-end": 100
+      }
+    },
+    "philosophy_section": {
+      "type": "media-with-content",
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image"
+          }
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center"
+          },
+          "blocks": {
+            "eyebrow": {
+              "type": "text",
+              "name": "t:names.caption",
+              "settings": {
+                "text": "<p>OUR PHILOSOPHY</p>",
+                "type_preset": "h6",
+                "letter_spacing": "0.15em",
+                "case": "uppercase"
+              }
+            },
+            "heading": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Nature meets science</h2>",
+                "type_preset": "h2",
+                "padding-block-start": 8
+              }
+            },
+            "body": {
+              "type": "text",
+              "settings": {
+                "text": "<p>We believe in the power of plants. Our formulas combine ancient botanical wisdom with modern science to create products that truly work—without any of the downsides. Every ingredient is chosen with intention, every bottle crafted with care.</p>",
+                "max_width": "narrow",
+                "type_preset": "rte",
+                "padding-block-start": 16
+              }
+            },
+            "link": {
+              "type": "button",
+              "settings": {
+                "label": "Learn Our Story",
+                "link": "/pages/about",
+                "style_class": "link"
+              }
+            }
+          },
+          "block_order": [
+            "eyebrow",
+            "heading",
+            "body",
+            "link"
+          ]
+        }
+      },
+      "settings": {
+        "media_position": "left",
+        "media_width": "medium",
+        "media_height": "60svh",
+        "section_width": "full-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "testimonials_carousel": {
+      "type": "carousel",
+      "blocks": {
+        "static-header": {
+          "type": "group",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "gap": 8,
+            "width": "fill",
+            "padding-block-end": 32
+          },
+          "blocks": {
+            "header_text": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>What People Are Saying</h2>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h2"
+              }
+            }
+          },
+          "block_order": [
+            "header_text"
+          ]
+        },
+        "static-carousel-content": {
+          "type": "_carousel-content",
+          "name": "t:names.carousel_content",
+          "static": true,
+          "settings": {
+            "inherit_color_scheme": true,
+            "height": "fit",
+            "position": "top"
+          },
+          "blocks": {
+            "review_1": {
+              "type": "_card",
+              "name": "t:names.card",
+              "settings": {
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-2",
+                "padding-block-start": 32,
+                "padding-block-end": 32,
+                "padding-inline-start": 24,
+                "padding-inline-end": 24
+              },
+              "blocks": {
+                "stars_1": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>★★★★★</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font_size": "1.25rem",
+                    "letter_spacing": "0.1em"
+                  }
+                },
+                "quote_1": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>\"Finally found something that actually works. I feel calmer, more focused, and ready for whatever the day brings.\"</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "padding-block-start": 16
+                  }
+                },
+                "author_1": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>— Sarah M.</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "type_preset": "h6",
+                    "padding-block-start": 16
+                  }
+                }
+              },
+              "block_order": [
+                "stars_1",
+                "quote_1",
+                "author_1"
+              ]
+            },
+            "review_2": {
+              "type": "_card",
+              "name": "t:names.card",
+              "settings": {
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-2",
+                "padding-block-start": 32,
+                "padding-block-end": 32,
+                "padding-inline-start": 24,
+                "padding-inline-end": 24
+              },
+              "blocks": {
+                "stars_2": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>★★★★★</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font_size": "1.25rem",
+                    "letter_spacing": "0.1em"
+                  }
+                },
+                "quote_2": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>\"The quality is unmatched. You can taste the difference. This is now a permanent part of my evening routine.\"</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "padding-block-start": 16
+                  }
+                },
+                "author_2": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>— Michael R.</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "type_preset": "h6",
+                    "padding-block-start": 16
+                  }
+                }
+              },
+              "block_order": [
+                "stars_2",
+                "quote_2",
+                "author_2"
+              ]
+            },
+            "review_3": {
+              "type": "_card",
+              "name": "t:names.card",
+              "settings": {
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-2",
+                "padding-block-start": 32,
+                "padding-block-end": 32,
+                "padding-inline-start": 24,
+                "padding-inline-end": 24
+              },
+              "blocks": {
+                "stars_3": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>★★★★★</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font_size": "1.25rem",
+                    "letter_spacing": "0.1em"
+                  }
+                },
+                "quote_3": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>\"I was skeptical at first, but after a week I was a believer. Game changer for my stress levels.\"</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "padding-block-start": 16
+                  }
+                },
+                "author_3": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>— Emily T.</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "type_preset": "h6",
+                    "padding-block-start": 16
+                  }
+                }
+              },
+              "block_order": [
+                "stars_3",
+                "quote_3",
+                "author_3"
+              ]
+            },
+            "review_4": {
+              "type": "_card",
+              "name": "t:names.card",
+              "settings": {
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-2",
+                "padding-block-start": 32,
+                "padding-block-end": 32,
+                "padding-inline-start": 24,
+                "padding-inline-end": 24
+              },
+              "blocks": {
+                "stars_4": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>★★★★★</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font_size": "1.25rem",
+                    "letter_spacing": "0.1em"
+                  }
+                },
+                "quote_4": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>\"Beautiful packaging, incredible taste, and real results. What more could you ask for?\"</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "padding-block-start": 16
+                  }
+                },
+                "author_4": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>— David K.</p>",
+                    "width": "100%",
+                    "alignment": "left",
+                    "type_preset": "h6",
+                    "padding-block-start": 16
+                  }
+                }
+              },
+              "block_order": [
+                "stars_4",
+                "quote_4",
+                "author_4"
+              ]
+            }
+          },
+          "block_order": [
+            "review_1",
+            "review_2",
+            "review_3",
+            "review_4"
+          ]
+        }
+      },
+      "settings": {
+        "columns": 3,
+        "mobile_columns": "1",
+        "section_width": "page-width",
+        "columns_gap": 24,
+        "color_scheme": "scheme-1",
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "best_sellers": {
       "type": "product-list",
       "blocks": {
         "static-header": {
@@ -95,78 +726,34 @@
           "static": true,
           "settings": {
             "content_direction": "row",
-            "vertical_on_mobile": false,
             "horizontal_alignment": "space-between",
             "vertical_alignment": "flex-end",
             "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
             "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "width": "fill"
           },
           "blocks": {
-            "product_list_text_YFtzcL": {
+            "header_title": {
               "type": "_product-list-text",
-              "name": "t:names.collection_title",
+              "name": "t:names.heading",
               "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
+                "text": "<h2>Best Sellers</h2>",
                 "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "type_preset": "h3"
+              }
             },
-            "product_list_button_MWeP9V": {
+            "view_all": {
               "type": "_product-list-button",
               "name": "t:names.product_list_button",
               "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
+                "label": "View All",
+                "style_class": "link"
+              }
             }
           },
           "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
+            "header_title",
+            "view_all"
           ]
         },
         "static-product-card": {
@@ -174,88 +761,43 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 4,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "product_card_gap": 8,
+            "inherit_color_scheme": true
           },
           "blocks": {
-            "product_card_gallery_677WP3": {
+            "gallery": {
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "image_ratio": "portrait",
+                "border_radius": 8
+              }
             },
-            "product_title_YXxMTj": {
+            "title": {
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
                 "width": "100%",
-                "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "type_preset": "h5",
+                "padding-block-start": 8
+              }
             },
-            "price_JQzVV4": {
+            "price_block": {
               "type": "price",
               "name": "t:names.product_price",
               "settings": {
                 "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
+                "type_preset": "rte",
                 "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "alignment": "left"
+              }
             }
           },
           "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
+            "gallery",
+            "title",
+            "price_block"
           ]
         }
       },
@@ -267,22 +809,74 @@
         "max_products": 8,
         "columns": 4,
         "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
+        "columns_gap": 16,
+        "rows_gap": 32,
         "section_width": "page-width",
         "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "gap": 32,
+        "color_scheme": "scheme-2",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "newsletter_section": {
+      "type": "section",
+      "blocks": {
+        "newsletter_heading": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Stay in the loop</h2>",
+            "width": "100%",
+            "alignment": "center",
+            "type_preset": "h2"
+          }
+        },
+        "newsletter_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Be the first to know about new products, exclusive offers, and wellness tips.</p>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "rte"
+          }
+        },
+        "email_form": {
+          "type": "email-signup",
+          "settings": {
+            "width": "custom",
+            "custom_width": 40,
+            "style_class": "button",
+            "display_type": "arrow",
+            "label": "Subscribe",
+            "integrated_button": true
+          }
+        }
+      },
+      "block_order": [
+        "newsletter_heading",
+        "newsletter_text",
+        "email_form"
+      ],
+      "settings": {
+        "horizontal_alignment_flex_direction_column": "center",
+        "gap": 24,
+        "section_width": "page-width",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 100,
+        "padding-block-end": 100
       }
     }
   },
   "order": [
-    "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "hero_aplos",
+    "benefits_section",
+    "product_showcase",
+    "press_quote",
+    "philosophy_section",
+    "testimonials_carousel",
+    "best_sellers",
+    "newsletter_section"
   ]
 }
