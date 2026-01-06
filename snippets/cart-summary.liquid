@@ -286,9 +286,14 @@
     </button>
   </div>
 
-  <a href="{{ routes.all_products_collection_url }}" class="cart__continue-shopping">
+  <button 
+    type="button"
+    class="cart__continue-shopping button-unstyled"
+    on:click="cart-drawer-component/close"
+    aria-label="{{ 'actions.continue_shopping' | t }}"
+  >
     {{ 'actions.continue_shopping' | t }}
-  </a>
+  </button>
 </div>
 
 {% stylesheet %}
