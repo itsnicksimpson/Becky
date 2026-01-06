@@ -257,6 +257,8 @@
   </div>
 </div>
 
+{% render 'cart-upsell', savings_amount: 500 %}
+
 <div class="cart__ctas">
   <div class="cart__checkout-row">
     {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}

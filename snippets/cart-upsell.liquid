@@ -1,0 +1,201 @@
+{%- doc -%}
+  Cart upsell module - "Buy another and save" promotion.
+  Shows above checkout to encourage adding more items.
+  
+  @param {number} [savings_amount] - Amount saved when adding another (default: 500 = $5.00)
+  @param {string} [upsell_text] - Custom upsell headline
+{%- enddoc -%}
+
+{% liquid
+  assign savings_amount = savings_amount | default: 500
+  assign savings_display = savings_amount | money_without_trailing_zeros
+  
+  # Get the first item in cart to suggest buying another
+  assign first_item = cart.items | first
+  assign has_item = false
+  if first_item
+    assign has_item = true
+    assign product = first_item.product
+    assign variant = first_item.variant
+  endif
+%}
+
+{% if has_item %}
+  <div class="cart-upsell">
+    <div class="cart-upsell__badge">
+      {{ upsell_text | default: 'SAVE' }} {{ savings_display }} {{ 'WITH ANOTHER' }}
+    </div>
+    
+    <div class="cart-upsell__card">
+      <div class="cart-upsell__product">
+        {% if product.featured_image %}
+          <div class="cart-upsell__image">
+            {{ product.featured_image | image_url: width: 100 | image_tag: alt: product.title, loading: 'lazy' }}
+          </div>
+        {% endif %}
+        
+        <div class="cart-upsell__details">
+          <p class="cart-upsell__title">{{ product.title | upcase }}</p>
+          <p class="cart-upsell__subtitle">Add another to your order</p>
+        </div>
+        
+        <button 
+          type="button"
+          class="cart-upsell__add-button"
+          data-variant-id="{{ variant.id }}"
+          onclick="addUpsellToCart({{ variant.id }})"
+          aria-label="Add another {{ product.title }} to cart"
+        >
+          ADD — {{ variant.price | money }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function addUpsellToCart(variantId) {
+      const button = event.currentTarget;
+      const originalText = button.textContent;
+      button.textContent = 'Adding...';
+      button.disabled = true;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: 1
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Refresh the cart drawer
+        if (window.location.pathname === '/cart') {
+          window.location.reload();
+        } else {
+          // Trigger cart update event for drawer
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+          // Fallback: reload section
+          fetch('/?section_id=header')
+            .then(r => r.text())
+            .then(() => {
+              window.location.reload();
+            });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        button.textContent = originalText;
+        button.disabled = false;
+      });
+    }
+  </script>
+{% endif %}
+
+{% stylesheet %}
+  .cart-upsell {
+    position: relative;
+    margin-bottom: var(--margin-lg);
+  }
+
+  .cart-upsell__badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 6px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  .cart-upsell__card {
+    border: 2px solid #1a1a1a;
+    border-radius: 16px;
+    padding: var(--padding-lg);
+    padding-top: calc(var(--padding-lg) + 8px);
+    background-color: var(--color-background);
+  }
+
+  .cart-upsell__product {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+  }
+
+  .cart-upsell__image {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+  }
+
+  .cart-upsell__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cart-upsell__details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cart-upsell__title {
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+    margin: 0 0 2px 0;
+    letter-spacing: 0.02em;
+  }
+
+  .cart-upsell__subtitle {
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / 0.6);
+    margin: 0;
+  }
+
+  .cart-upsell__add-button {
+    flex-shrink: 0;
+    background-color: transparent;
+    border: 2px solid #1a1a1a;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .cart-upsell__add-button:hover {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+
+  .cart-upsell__add-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  @media screen and (max-width: 480px) {
+    .cart-upsell__product {
+      flex-wrap: wrap;
+    }
+
+    .cart-upsell__add-button {
+      width: 100%;
+      margin-top: var(--margin-sm);
+    }
+  }
+{% endstylesheet %}
+
