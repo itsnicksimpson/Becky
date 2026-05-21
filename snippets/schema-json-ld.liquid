@@ -1,0 +1,286 @@
+{%- liquid
+  # ─────────────────────────────────────────────────────────────────
+  # Becky JSON-LD schema emitter
+  # ─────────────────────────────────────────────────────────────────
+  # Emits the appropriate structured data for the current page based on
+  # request.page_type. Output is wrapped in <script type="application/ld+json">.
+  #
+  # Coverage:
+  #   - Organization + WebSite  (every page)
+  #   - BreadcrumbList          (every page with a clear hierarchy)
+  #   - Article                 (article pages)
+  #   - Product                 (product pages)
+  #   - CollectionPage / ItemList (collection pages)
+  #   - Blog                    (blog index pages)
+  #
+  # FAQ schema is emitted by individual FAQ blocks so it lives alongside
+  # the data — see blocks/_faq-accordion.liquid.
+  # ─────────────────────────────────────────────────────────────────
+
+  assign brand_name      = shop.name | default: 'Becky'
+  assign brand_url       = request.origin
+  assign brand_logo_url  = settings.logo | image_url: width: 600
+  assign brand_email     = shop.email
+  assign brand_country   = shop.address.country
+  assign sameAs_links    = ''
+
+  if settings.social_instagram_link != blank
+    assign sameAs_links = sameAs_links | append: '"' | append: settings.social_instagram_link | append: '",'
+  endif
+  if settings.social_tiktok_link != blank
+    assign sameAs_links = sameAs_links | append: '"' | append: settings.social_tiktok_link | append: '",'
+  endif
+  if settings.social_facebook_link != blank
+    assign sameAs_links = sameAs_links | append: '"' | append: settings.social_facebook_link | append: '",'
+  endif
+  if settings.social_youtube_link != blank
+    assign sameAs_links = sameAs_links | append: '"' | append: settings.social_youtube_link | append: '",'
+  endif
+  if settings.social_twitter_link != blank
+    assign sameAs_links = sameAs_links | append: '"' | append: settings.social_twitter_link | append: '",'
+  endif
+  if settings.social_pinterest_link != blank
+    assign sameAs_links = sameAs_links | append: '"' | append: settings.social_pinterest_link | append: '",'
+  endif
+  assign sameAs_links = sameAs_links | replace: ',', ',' | split: ',' | uniq | join: ','
+  assign sameAs_links = sameAs_links | remove_last: ','
+-%}
+
+{%- comment -%} ── Organization (sitewide) ── {%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "{{ brand_url }}/#organization",
+  "name": "{{ brand_name }}",
+  "url": "{{ brand_url }}",
+  {%- if brand_logo_url != blank -%}
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https:{{ brand_logo_url }}",
+    "width": 600,
+    "height": 600
+  },
+  {%- endif -%}
+  {%- if brand_email != blank -%}
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "{{ brand_email }}",
+    "contactType": "customer support",
+    "availableLanguage": ["English"]
+  },
+  {%- endif -%}
+  "description": "Becky is a premium butt scrub and body care brand focused on the skin no one talks about. Vegan, cruelty-free, walnut-shell exfoliant + rosehip + jojoba + B5. 1% of every sale supports Every Mother Counts.",
+  {%- if sameAs_links != '' -%}
+  "sameAs": [{{ sameAs_links }}],
+  {%- endif -%}
+  "founder": { "@type": "Organization", "name": "Becky Booty Scrub LLC" }
+}
+</script>
+
+{%- comment -%} ── WebSite + SearchAction (sitelinks search box) ── {%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "{{ brand_url }}/#website",
+  "url": "{{ brand_url }}",
+  "name": "{{ brand_name }}",
+  "publisher": { "@id": "{{ brand_url }}/#organization" },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ brand_url }}/search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+{%- case request.page_type -%}
+
+  {%- when 'article' -%}
+    {%- liquid
+      assign article_image_url = ''
+      if article.image
+        assign article_image_url = article.image | image_url: width: 1600
+      endif
+      assign article_modified = article.updated_at | default: article.published_at | date: '%Y-%m-%dT%H:%M:%S%z'
+      assign article_published = article.published_at | date: '%Y-%m-%dT%H:%M:%S%z'
+      assign article_summary = article.metafields.becky.summary | default: article.excerpt | default: article.content | strip_html | truncate: 300, '...'
+      assign article_author_name = article.metafields.becky.author_name | default: article.author | default: brand_name
+      assign article_author_url = article.metafields.becky.author_url | default: brand_url
+      assign article_word_count = article.content | strip_html | strip | split: ' ' | size
+    -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "{{ canonical_url }}#article",
+      "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ canonical_url }}" },
+      "headline": {{ article.title | strip_html | json }},
+      "description": {{ article_summary | json }},
+      {%- if article_image_url != blank -%}
+      "image": {
+        "@type": "ImageObject",
+        "url": "https:{{ article_image_url }}",
+        "width": 1600,
+        "height": {{ article.image.height | default: 900 }}
+      },
+      {%- endif -%}
+      "author": {
+        "@type": "Person",
+        "name": {{ article_author_name | json }},
+        "url": "{{ article_author_url }}"
+      },
+      "publisher": { "@id": "{{ brand_url }}/#organization" },
+      "datePublished": "{{ article_published }}",
+      "dateModified": "{{ article_modified }}",
+      "articleSection": {{ blog.title | json }},
+      {%- if article.tags.size > 0 -%}
+      "keywords": {{ article.tags | join: ', ' | json }},
+      {%- endif -%}
+      "wordCount": {{ article_word_count }},
+      "inLanguage": "{{ request.locale.iso_code }}"
+    }
+    </script>
+
+  {%- when 'product' -%}
+    {%- liquid
+      assign product_image_url = ''
+      if product.featured_image
+        assign product_image_url = product.featured_image | image_url: width: 1600
+      endif
+      assign product_description = product.metafields.becky.seo_description | default: product.description | strip_html | truncate: 300, '...'
+      assign product_brand = product.vendor | default: brand_name
+    -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "@id": "{{ canonical_url }}#product",
+      "name": {{ product.title | json }},
+      "description": {{ product_description | json }},
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      "mpn": {{ product.selected_or_first_available_variant.sku | json }},
+      "brand": { "@type": "Brand", "name": {{ product_brand | json }} },
+      "image": [
+        {%- for image in product.images limit: 5 -%}
+          "https:{{ image | image_url: width: 1600 }}"{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      {%- if product.metafields.becky.review_count and product.metafields.becky.review_count > 0 -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ product.metafields.becky.rating_value | default: 4.8 }}",
+        "reviewCount": "{{ product.metafields.becky.review_count }}",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      {%- endif -%}
+      "offers": [
+        {%- for variant in product.variants -%}
+        {
+          "@type": "Offer",
+          "url": "{{ shop.url }}{{ variant.url }}",
+          "price": "{{ variant.price | money_without_currency | strip_html | replace: ',', '' }}",
+          "priceCurrency": "{{ cart.currency.iso_code }}",
+          "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+          "itemCondition": "https://schema.org/NewCondition",
+          {%- if variant.sku != blank -%}
+          "sku": {{ variant.sku | json }},
+          {%- endif -%}
+          "seller": { "@id": "{{ brand_url }}/#organization" }
+        }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+    </script>
+
+  {%- when 'collection' -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": "{{ canonical_url }}#collection",
+      "name": {{ collection.title | json }},
+      "description": {{ collection.description | strip_html | truncate: 300, '...' | json }},
+      "url": "{{ canonical_url }}",
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": {{ collection.products_count }},
+        "itemListElement": [
+          {%- for p in collection.products limit: 20 -%}
+          {
+            "@type": "ListItem",
+            "position": {{ forloop.index }},
+            "url": "{{ shop.url }}{{ p.url }}",
+            "name": {{ p.title | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    }
+    </script>
+
+  {%- when 'blog' -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "@id": "{{ canonical_url }}#blog",
+      "name": {{ blog.title | json }},
+      "url": "{{ canonical_url }}",
+      "publisher": { "@id": "{{ brand_url }}/#organization" },
+      "blogPost": [
+        {%- for a in blog.articles limit: 10 -%}
+        {
+          "@type": "BlogPosting",
+          "headline": {{ a.title | json }},
+          "url": "{{ shop.url }}{{ a.url }}",
+          "datePublished": "{{ a.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+          {%- if a.image -%}
+          "image": "https:{{ a.image | image_url: width: 1200 }}",
+          {%- endif -%}
+          "author": { "@type": "Person", "name": {{ a.author | json }} }
+        }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+    </script>
+
+{%- endcase -%}
+
+{%- comment -%} ── BreadcrumbList (most pages) ── {%- endcomment -%}
+{%- if request.page_type == 'product' or request.page_type == 'article' or request.page_type == 'collection' or request.page_type == 'blog' or request.page_type == 'page' -%}
+  {%- liquid
+    assign breadcrumbs = ''
+    assign breadcrumbs = breadcrumbs | append: '{"@type":"ListItem","position":1,"name":"Home","item":"' | append: brand_url | append: '"}'
+    case request.page_type
+      when 'product'
+        if collection
+          assign breadcrumbs = breadcrumbs | append: ',{"@type":"ListItem","position":2,"name":' | append: collection.title | json | append: ',"item":"' | append: shop.url | append: collection.url | append: '"}'
+          assign breadcrumbs = breadcrumbs | append: ',{"@type":"ListItem","position":3,"name":' | append: product.title | json | append: ',"item":"' | append: canonical_url | append: '"}'
+        else
+          assign breadcrumbs = breadcrumbs | append: ',{"@type":"ListItem","position":2,"name":' | append: product.title | json | append: ',"item":"' | append: canonical_url | append: '"}'
+        endif
+      when 'collection'
+        assign breadcrumbs = breadcrumbs | append: ',{"@type":"ListItem","position":2,"name":' | append: collection.title | json | append: ',"item":"' | append: canonical_url | append: '"}'
+      when 'article'
+        assign breadcrumbs = breadcrumbs | append: ',{"@type":"ListItem","position":2,"name":' | append: blog.title | json | append: ',"item":"' | append: shop.url | append: blog.url | append: '"}'
+        assign breadcrumbs = breadcrumbs | append: ',{"@type":"ListItem","position":3,"name":' | append: article.title | json | append: ',"item":"' | append: canonical_url | append: '"}'
+      when 'blog'
+        assign breadcrumbs = breadcrumbs | append: ',{"@type":"ListItem","position":2,"name":' | append: blog.title | json | append: ',"item":"' | append: canonical_url | append: '"}'
+      when 'page'
+        assign breadcrumbs = breadcrumbs | append: ',{"@type":"ListItem","position":2,"name":' | append: page.title | json | append: ',"item":"' | append: canonical_url | append: '"}'
+    endcase
+  -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{{ breadcrumbs }}]
+  }
+  </script>
+{%- endif -%}
