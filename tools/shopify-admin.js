@@ -12,12 +12,12 @@ const fs = require('fs');
 const path = require('path');
 
 const CONFIG_FILE = path.join(process.env.HOME, '.shopify-admin.json');
-const API_VERSION = '2024-10';
+const API_VERSION = '2025-01';
 
 // ============================================================
 // CONFIGURATION - Set your store details here for easy setup
 // ============================================================
-const DEFAULT_STORE = '00i1tx-13.myshopify.com';
+const DEFAULT_STORE = 'hibecky.myshopify.com';
 // After creating your app, paste your access token here:
 const DEFAULT_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN || '';
 // ============================================================
@@ -28,7 +28,17 @@ function getConfig() {
     accessToken: DEFAULT_TOKEN,
   };
 
-  // Override with config file if exists
+  // 1. Captured OAuth token from oauth-install.js (preferred for Dev Dashboard apps)
+  const oauthTokenPath = path.join(process.env.HOME, '.becky-shopify-token');
+  if (fs.existsSync(oauthTokenPath)) {
+    try {
+      const captured = JSON.parse(fs.readFileSync(oauthTokenPath, 'utf8'));
+      config.store = captured.shop || config.store;
+      config.accessToken = captured.access_token || config.accessToken;
+    } catch (e) {}
+  }
+
+  // 2. Generic config file
   if (fs.existsSync(CONFIG_FILE)) {
     try {
       const fileConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
@@ -37,7 +47,7 @@ function getConfig() {
     } catch (e) {}
   }
 
-  // Override with env vars
+  // 3. Env vars take highest precedence
   config.store = process.env.SHOPIFY_STORE || config.store;
   config.accessToken = process.env.SHOPIFY_ACCESS_TOKEN || config.accessToken;
 
