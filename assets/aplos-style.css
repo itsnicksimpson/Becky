@@ -1,0 +1,736 @@
+/* ==========================================================================
+   APLÓS-INSPIRED CUSTOM STYLES
+   A warm, earthy, elegant aesthetic with botanical vibes
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CSS CUSTOM PROPERTIES - Aplós Color Palette
+   -------------------------------------------------------------------------- */
+:root {
+  /* Aplós Warm Earth Palette */
+  --aplos-cream: #F7F4EF;
+  --aplos-sand: #E8E2D9;
+  --aplos-sage: #9CAF88;
+  --aplos-olive: #6B7B5F;
+  --aplos-forest: #2D3B2D;
+  --aplos-charcoal: #1A1A1A;
+  --aplos-warm-white: #FEFCF9;
+  --aplos-gold: #C9A962;
+  --aplos-terracotta: #C17C5E;
+  
+  /* Typography */
+  --aplos-font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --aplos-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --aplos-font-accent: 'Cormorant Garamond', serif;
+  
+  /* Spacing */
+  --aplos-section-padding: clamp(60px, 10vw, 120px);
+  --aplos-content-max-width: 1400px;
+  --aplos-content-narrow: 800px;
+  
+  /* Transitions */
+  --aplos-transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --aplos-transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --aplos-transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   BASE OVERRIDES - Global Aplós Styling
+   -------------------------------------------------------------------------- */
+.aplos-page {
+  background-color: var(--aplos-cream);
+  color: var(--aplos-charcoal);
+  font-family: var(--aplos-font-body);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+.aplos-page h1,
+.aplos-page h2,
+.aplos-page h3,
+.aplos-page h4 {
+  font-family: var(--aplos-font-display);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   HERO SECTION - Full Screen Video Background
+   -------------------------------------------------------------------------- */
+.aplos-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--aplos-charcoal);
+}
+
+.aplos-hero__video-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.aplos-hero__video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.aplos-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  z-index: 2;
+}
+
+.aplos-hero__content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: var(--aplos-warm-white);
+  padding: var(--aplos-section-padding);
+  max-width: var(--aplos-content-narrow);
+}
+
+.aplos-hero__eyebrow {
+  font-family: var(--aplos-font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.aplos-hero__title {
+  font-family: var(--aplos-font-display);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.aplos-hero__subtitle {
+  font-family: var(--aplos-font-body);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+.aplos-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  background: var(--aplos-warm-white);
+  color: var(--aplos-charcoal);
+  font-family: var(--aplos-font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all var(--aplos-transition-smooth);
+}
+
+.aplos-hero__cta:hover {
+  background: var(--aplos-charcoal);
+  color: var(--aplos-warm-white);
+  transform: translateY(-2px);
+}
+
+.aplos-hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: var(--aplos-warm-white);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  animation: aplos-bounce 2s infinite;
+}
+
+@keyframes aplos-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* --------------------------------------------------------------------------
+   BENEFITS SECTION - 3 Column Icons
+   -------------------------------------------------------------------------- */
+.aplos-benefits {
+  background: var(--aplos-warm-white);
+  padding: var(--aplos-section-padding) 1.5rem;
+}
+
+.aplos-benefits__inner {
+  max-width: var(--aplos-content-max-width);
+  margin: 0 auto;
+}
+
+.aplos-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+}
+
+@media (max-width: 768px) {
+  .aplos-benefits__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.aplos-benefit {
+  text-align: center;
+  padding: 2rem;
+}
+
+.aplos-benefit__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1.5rem;
+  color: var(--aplos-olive);
+}
+
+.aplos-benefit__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.aplos-benefit__title {
+  font-family: var(--aplos-font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  color: var(--aplos-charcoal);
+}
+
+.aplos-benefit__text {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: rgba(26, 26, 26, 0.7);
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   FEATURED PRODUCT SECTION
+   -------------------------------------------------------------------------- */
+.aplos-featured-product {
+  background: var(--aplos-cream);
+  padding: var(--aplos-section-padding) 1.5rem;
+}
+
+.aplos-featured-product__inner {
+  max-width: var(--aplos-content-max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .aplos-featured-product__inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.aplos-featured-product__media {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.aplos-featured-product__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--aplos-transition-slow);
+}
+
+.aplos-featured-product__media:hover .aplos-featured-product__image {
+  transform: scale(1.03);
+}
+
+.aplos-featured-product__content {
+  max-width: 500px;
+}
+
+.aplos-featured-product__eyebrow {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--aplos-olive);
+  margin-bottom: 1rem;
+}
+
+.aplos-featured-product__title {
+  font-family: var(--aplos-font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  color: var(--aplos-charcoal);
+}
+
+.aplos-featured-product__description {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(26, 26, 26, 0.75);
+  margin-bottom: 2rem;
+}
+
+.aplos-featured-product__price {
+  font-family: var(--aplos-font-display);
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--aplos-charcoal);
+}
+
+.aplos-featured-product__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: var(--aplos-charcoal);
+  color: var(--aplos-warm-white);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--aplos-charcoal);
+  transition: all var(--aplos-transition-smooth);
+}
+
+.aplos-featured-product__btn:hover {
+  background: transparent;
+  color: var(--aplos-charcoal);
+}
+
+/* --------------------------------------------------------------------------
+   PRESS QUOTE SECTION
+   -------------------------------------------------------------------------- */
+.aplos-press {
+  background: var(--aplos-sand);
+  padding: var(--aplos-section-padding) 1.5rem;
+  text-align: center;
+}
+
+.aplos-press__inner {
+  max-width: var(--aplos-content-narrow);
+  margin: 0 auto;
+}
+
+.aplos-press__quote {
+  font-family: var(--aplos-font-display);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--aplos-charcoal);
+  margin-bottom: 1.5rem;
+}
+
+.aplos-press__source {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.6);
+}
+
+.aplos-press__logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+  opacity: 0.5;
+}
+
+.aplos-press__logo {
+  height: 24px;
+  width: auto;
+  filter: grayscale(100%);
+}
+
+/* --------------------------------------------------------------------------
+   PHILOSOPHY / STORY SECTION
+   -------------------------------------------------------------------------- */
+.aplos-story {
+  background: var(--aplos-warm-white);
+  padding: 0;
+}
+
+.aplos-story__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+}
+
+@media (max-width: 768px) {
+  .aplos-story__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aplos-story__media {
+  position: relative;
+  overflow: hidden;
+}
+
+.aplos-story__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 400px;
+}
+
+.aplos-story__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--aplos-section-padding);
+  max-width: 600px;
+}
+
+.aplos-story__eyebrow {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--aplos-olive);
+  margin-bottom: 1.5rem;
+}
+
+.aplos-story__title {
+  font-family: var(--aplos-font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  color: var(--aplos-charcoal);
+}
+
+.aplos-story__text {
+  font-size: 1rem;
+  line-height: 1.9;
+  color: rgba(26, 26, 26, 0.75);
+  margin-bottom: 2rem;
+}
+
+.aplos-story__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--aplos-charcoal);
+  text-decoration: none;
+  border-bottom: 1px solid var(--aplos-charcoal);
+  padding-bottom: 0.25rem;
+  transition: all var(--aplos-transition-fast);
+}
+
+.aplos-story__link:hover {
+  gap: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   TESTIMONIALS SECTION
+   -------------------------------------------------------------------------- */
+.aplos-testimonials {
+  background: var(--aplos-cream);
+  padding: var(--aplos-section-padding) 1.5rem;
+}
+
+.aplos-testimonials__inner {
+  max-width: var(--aplos-content-max-width);
+  margin: 0 auto;
+}
+
+.aplos-testimonials__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.aplos-testimonials__title {
+  font-family: var(--aplos-font-display);
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 400;
+  color: var(--aplos-charcoal);
+}
+
+.aplos-testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .aplos-testimonials__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aplos-testimonial {
+  background: var(--aplos-warm-white);
+  padding: 2.5rem;
+  border-radius: 4px;
+}
+
+.aplos-testimonial__stars {
+  color: var(--aplos-gold);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.25rem;
+}
+
+.aplos-testimonial__text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(26, 26, 26, 0.8);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.aplos-testimonial__author {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--aplos-charcoal);
+}
+
+/* --------------------------------------------------------------------------
+   PRODUCT GRID SECTION
+   -------------------------------------------------------------------------- */
+.aplos-products {
+  background: var(--aplos-warm-white);
+  padding: var(--aplos-section-padding) 1.5rem;
+}
+
+.aplos-products__inner {
+  max-width: var(--aplos-content-max-width);
+  margin: 0 auto;
+}
+
+.aplos-products__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+}
+
+.aplos-products__title {
+  font-family: var(--aplos-font-display);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 400;
+  color: var(--aplos-charcoal);
+}
+
+.aplos-products__view-all {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--aplos-charcoal);
+  text-decoration: none;
+  border-bottom: 1px solid var(--aplos-charcoal);
+  padding-bottom: 0.25rem;
+  transition: opacity var(--aplos-transition-fast);
+}
+
+.aplos-products__view-all:hover {
+  opacity: 0.7;
+}
+
+.aplos-products__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .aplos-products__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .aplos-products__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aplos-product-card {
+  text-align: center;
+}
+
+.aplos-product-card__media {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: var(--aplos-sand);
+  border-radius: 4px;
+}
+
+.aplos-product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--aplos-transition-slow);
+}
+
+.aplos-product-card:hover .aplos-product-card__image {
+  transform: scale(1.05);
+}
+
+.aplos-product-card__title {
+  font-family: var(--aplos-font-display);
+  font-size: 1.125rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  color: var(--aplos-charcoal);
+}
+
+.aplos-product-card__price {
+  font-size: 0.9375rem;
+  color: rgba(26, 26, 26, 0.7);
+}
+
+/* --------------------------------------------------------------------------
+   NEWSLETTER SECTION
+   -------------------------------------------------------------------------- */
+.aplos-newsletter {
+  background: var(--aplos-forest);
+  color: var(--aplos-warm-white);
+  padding: var(--aplos-section-padding) 1.5rem;
+  text-align: center;
+}
+
+.aplos-newsletter__inner {
+  max-width: var(--aplos-content-narrow);
+  margin: 0 auto;
+}
+
+.aplos-newsletter__title {
+  font-family: var(--aplos-font-display);
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.aplos-newsletter__text {
+  font-size: 1rem;
+  line-height: 1.7;
+  opacity: 0.85;
+  margin-bottom: 2.5rem;
+  max-width: 400px;
+  margin-inline: auto;
+}
+
+.aplos-newsletter__form {
+  display: flex;
+  gap: 0;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .aplos-newsletter__form {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.aplos-newsletter__input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--aplos-warm-white);
+  font-size: 0.9375rem;
+  outline: none;
+  transition: border-color var(--aplos-transition-fast);
+}
+
+.aplos-newsletter__input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.aplos-newsletter__input:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.aplos-newsletter__btn {
+  padding: 1rem 2rem;
+  background: var(--aplos-warm-white);
+  color: var(--aplos-forest);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all var(--aplos-transition-smooth);
+}
+
+.aplos-newsletter__btn:hover {
+  background: var(--aplos-gold);
+  color: var(--aplos-charcoal);
+}
+
+/* --------------------------------------------------------------------------
+   FADE-IN ANIMATIONS
+   -------------------------------------------------------------------------- */
+.aplos-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.aplos-fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animations */
+.aplos-fade-in:nth-child(1) { transition-delay: 0s; }
+.aplos-fade-in:nth-child(2) { transition-delay: 0.1s; }
+.aplos-fade-in:nth-child(3) { transition-delay: 0.2s; }
+.aplos-fade-in:nth-child(4) { transition-delay: 0.3s; }
+
+
+

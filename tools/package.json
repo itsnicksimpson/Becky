@@ -1,0 +1,16 @@
+{
+  "name": "shopify-admin-cli",
+  "version": "1.0.0",
+  "description": "CLI tool to execute Shopify Admin API GraphQL queries",
+  "main": "shopify-admin.js",
+  "bin": {
+    "shopify-admin": "./shopify-admin.js"
+  },
+  "scripts": {
+    "test": "node shopify-admin.js test"
+  },
+  "keywords": ["shopify", "admin", "graphql", "cli"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

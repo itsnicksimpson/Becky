@@ -257,30 +257,43 @@
   </div>
 </div>
 
-<div class="cart__ctas">
-  <button
-    type="submit"
-    id="checkout"
-    class="cart__checkout-button button"
-    name="checkout"
-    {% if cart == empty %}
-      disabled
-    {% endif %}
-    form="cart-form"
-  >
-    {{ 'content.checkout' | t }}
-  </button>
+{% render 'cart-upsell', savings_amount: 500 %}
 
-  {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
-    <div
-      class="
-        additional-checkout-buttons
-        {% if accelerated_checkout_buttons_layout == 'vertical' %}additional-checkout-buttons--vertical{% endif %}
-      "
+<div class="cart__ctas">
+  <div class="cart__checkout-row">
+    {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
+      <div
+        class="
+          additional-checkout-buttons additional-checkout-buttons--inline
+          {% if accelerated_checkout_buttons_layout == 'vertical' %}additional-checkout-buttons--vertical{% endif %}
+        "
+      >
+        {{ content_for_additional_checkout_buttons }}
+      </div>
+    {% endif %}
+
+    <button
+      type="submit"
+      id="checkout"
+      class="cart__checkout-button button"
+      name="checkout"
+      {% if cart == empty %}
+        disabled
+      {% endif %}
+      form="cart-form"
     >
-      {{ content_for_additional_checkout_buttons }}
-    </div>
-  {% endif %}
+      {{ 'content.checkout' | t }} — {{ cart.total_price | money }}
+    </button>
+  </div>
+
+  <button 
+    type="button"
+    class="cart__continue-shopping button-unstyled"
+    on:click="cart-drawer-component/close"
+    aria-label="{{ 'actions.continue_shopping' | t }}"
+  >
+    {{ 'actions.continue_shopping' | t }}
+  </button>
 </div>
 
 {% stylesheet %}

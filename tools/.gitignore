@@ -1,0 +1,10 @@
+# Never commit credentials
+.shopify-admin.json
+*.token
+.env
+
+# Node modules
+node_modules/
+
+
+
