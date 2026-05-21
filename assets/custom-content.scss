@@ -1,0 +1,93 @@
+*:not(.button) {
+	color:inherit;
+}
+
+/* CUSTOM CSS FOR SECTIONS */
+.divider {
+  	padding:0!important;
+	div {	
+      padding:0;
+      max-width:initial;
+      margin:0;
+      width:100%;
+    }
+  svg {
+  	display:block;
+/*     animation: drift 3000ms infinite linear; */
+  }
+}
+
+@keyframes drift {
+  from { transform: rotate(0deg); }
+  from { transform: rotate(360deg); }
+}
+
+.custom-section {
+  .section-header {
+    width:80%;
+    @media screen and (max-width:980px) {margin-left:auto;margin-right:auto}
+  }
+}
+
+.slide-info {
+  padding-top:0!important;
+  div {text-align:center;}
+  h5 {
+    padding:20px;
+    border-bottom:1px solid #000;
+  }
+  .info {
+    p {display:none}
+  }
+}
+
+.testimonial-section {
+	h3 {
+    	font-family:Bagnard;
+		text-transform:none;
+    }
+}
+
+.help-section {
+	.custom-content {
+      div {
+        text-align:center;
+        padding:0;
+      	margin-bottom:20px;
+        margin-left:auto;
+        margin-right:auto;
+        img {max-width:300px;}
+        p {
+          font-family:Super;
+          font-size:10px;
+          line-height:2;
+          margin-bottom:10px;
+        }
+      }
+    }
+}
+
+.faq-section {
+	.custom__item-inner--html {
+      div {margin-bottom:40px}
+    }
+}
+
+.how-section {
+  form {margin-top:20px}
+}
+
+.ing-section {
+  h1 {
+    font-size:28px;
+	@media screen and (min-width:981px) {
+  		font-size:32px;
+  	}
+  }
+  .custom__item-inner--html {
+    max-width:none;
+    @media screen and (min-width:981px) {
+	    max-width:400px;
+    }
+  }
+}

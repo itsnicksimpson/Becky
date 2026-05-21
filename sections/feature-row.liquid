@@ -1,0 +1,541 @@
+{{ 'feature-row.scss.css' | asset_url | stylesheet_tag }}
+<div style="background-color:{{ section.settings.bg_color }};padding:60px 0">
+  {% capture image_layout %}
+    <div class="flex-item flex-center wrapper-600">
+      {% if section.settings.image != blank %}
+        {% capture img_id %}FeatureRowImage-{{ section.id }}{% endcapture %}
+        {% capture wrapper_id %}FeatureRowImageWrapper-{{ section.id }}{% endcapture %}
+        {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+        {% include 'image-style' with image: section.settings.image, width: 545, height: 545, small_style: true, wrapper_id: wrapper_id, img_id: img_id %}
+         
+            <img src="{{ section.settings.image | img_url: '800x800' }}"
+                 data-src="{{ img_url }}" alt="{{ section.settings.image.alt | escape }}">
+         
+
+
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+  {% endcapture %}
+
+  <div class="flex-container page-width wrapper-1080" style="color:{{section.settings.text_color}}">
+    {% if section.settings.layout == 'left' %}
+      {{ image_layout }}
+    {% endif %}
+
+    <div class="flex-item wrapper-600">
+      {% if section.settings.title != blank %}
+        <h2>{{ section.settings.title | escape }}</h2>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <div class="rte rte-setting featured-row__subtext">
+          {{ section.settings.text }}
+       <div class="custom-content">
+    {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'product' %}
+              {%- assign product = all_products[block.settings.product] -%}
+              {% if product.title.size > 0 %}
+          	    {% if block.settings.add_to_cart %}
+          			{% include 'product-add-to-cart', bg_color:block.settings.button_color, button_alignment:block.settings.button_alignment %}
+          		{% else %}
+                	{% include 'product-card-grid', max_height: max_height %}
+          		{% endif %}
+              {% else %}
+                <div class="grid-view-item">
+                  <a class="grid-view-item__link" href="#">
+                    <div class="grid-view-item__image">
+                      {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                      {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                    <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                    <div class="grid-view-item__meta">
+                      {{ 1999 | money }}
+                    </div>
+                  </a>
+                </div>
+              {% endif %}
+          {% endcase %}
+    {% endfor %}
+  </div>
+      </div>
+      {% endif %}
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <a href="{{ section.settings.button_link }}" style="background:{{section.settings.button_color}}"class="button">
+          {{ section.settings.button_label | escape }}
+        </a>
+      {% endif %}
+     
+    </div>
+
+    {% if section.settings.layout == 'right' %}
+      {{ image_layout }}
+    {% endif %}
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": {
+    "de": "Foto mit Text",
+    "en": "Image with text",
+    "es": "Imagen con texto",
+    "fr": "Image avec du texte",
+    "it": "Immagine con testo",
+    "ja": "テキスト付き画像",
+    "pt-BR": "Imagem com texto"
+  },
+  "class": "row-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": {
+        "de": "Foto",
+        "en": "Image",
+        "es": "Imagen",
+        "fr": "Image",
+        "it": "Immagine",
+        "ja": "画像",
+        "pt-BR": "Imagem"
+      }
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": {
+        "de": "Fotoausrichtung",
+        "en": "Image alignment",
+        "es": "Alineación de imagen",
+        "fr": "Alignement de l'image",
+        "it": "Allineamento immagine",
+        "ja": "画像アラインメント",
+        "pt-BR": "Alinhamento da imagem"
+      },
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": {
+            "de": "Links",
+            "en": "Left",
+            "es": "Izquierda",
+            "fr": "Gauche",
+            "it": "Sinistra",
+            "ja": "左",
+            "pt-BR": "Esquerda"
+          }
+        },
+        {
+          "value": "right",
+          "label": {
+            "de": "Rechts",
+            "en": "Right",
+            "es": "Derecha",
+            "fr": "Droite",
+            "it": "Destra",
+            "ja": "右",
+            "pt-BR": "Direita"
+          }
+        }
+      ]
+    },
+	{
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+	  "default": "#ffffff"
+    },
+	{
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+	  "default": "#ff3465"
+    },
+{
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+	  "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": {
+        "de": "Titel",
+        "en": "Heading",
+        "es": "Título",
+        "fr": "En-tête",
+        "it": "Heading",
+        "ja": "見出し",
+        "pt-BR": "Título"
+      },
+      "default": {
+        "de": "Foto mit Text",
+        "en": "Image with text",
+        "es": "Imagen con texto",
+        "fr": "Image avec du texte",
+        "it": "Immagine con testo",
+        "ja": "テキスト付き画像",
+        "pt-BR": "Imagem com texto"
+      }
+    },
+    {
+      "type": "html",
+      "id": "text",
+      "label": {
+        "de": "Text",
+        "en": "Text",
+        "es": "Texto",
+        "fr": "Texte",
+        "it": "Testo",
+        "ja": "テキスト",
+        "pt-BR": "Texto"
+      },
+      "default": {
+        "de": "<p>Kombinieren Sie große Schrift mit einem Foto, um einen Fokus auf Ihr ausgewähltes Produkt, die Kategorie oder einen Blogpost zu legen. Dazu Details zur Verfügbarkeit, Stil oder ein Review.</p>",
+        "en": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+        "es": "<p>Vincula un texto largo con una imagen para dar visibilidad a tu producto, colección o publicación de blog elegida. Agrega detalles sobre disponibilidad, estilo, o incluso ofrece una reseña.</p>",
+        "fr": "<p>Ajoutez une image à un long texte pour mettre l'accent sur un produit de votre choix, une collection, ou un article de blog. Ajoutez des détails sur la disponibilité, le style, ou mettez un commentaire client en avant.</p>",
+        "it": "<p>Associa un testo di grandi dimensioni a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+        "ja": "<p>あなたが選んだ商品、コレクション、またはブログ投稿に注目を集めるため、大きなテキストと画像を組み合わせます。可用性、スタイル、またはレビュー提供についての詳細を追加します。</p>",
+        "pt-BR": "<p>Emparelhe textos grandes com uma imagem para dar foco ao produto, coleção ou postagem do blog escolhido. Adicione detalhes sobre disponibilidade, estilo ou até mesmo um comentário.</p>"
+      }
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": {
+        "de": "Button-Etikett",
+        "en": "Button label",
+        "es": "Etiqueta de botón",
+        "fr": "Texte du bouton",
+        "it": "Etichetta pulsante",
+        "ja": "ボタンラベル",
+        "pt-BR": "Etiqueta do botão"
+      }
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": {
+        "de": "Button-Link",
+        "en": "Button link",
+        "es": "Enlace de botón",
+        "fr": "Lien du bouton",
+        "it": "Link pulsante",
+        "ja": "ボタンリンク",
+        "pt-BR": "Link do botão"
+      }
+    }
+  ],
+"blocks": [
+{
+      "type": "product",
+      "name": {
+        "de": "Produkt",
+        "en": "Product",
+        "es": "Producto",
+        "fr": "Produit",
+        "it": "Prodotto",
+        "ja": "商品",
+        "pt-BR": "Produto"
+      },
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": {
+            "de": "Produkt",
+            "en": "Product",
+            "es": "Producto",
+            "fr": "Produit",
+            "it": "Prodotto",
+            "ja": "商品",
+            "pt-BR": "Produto"
+          }
+        },
+		{
+		   "type":      "checkbox",
+		   "id":        "add_to_cart",
+		   "label":     "Add to Cart?",
+		   "default":   false,
+		   "info":      "Add 'Add to Cart' button, product will not display"
+		},
+		{
+	      "type": "color",
+    	  "id": "button_color",
+	      "label": {
+    	    "en": "Button color"
+	      },
+	      "default":"#000"
+	    },
+		{
+	      "type": "select",
+    	  "id": "button_alignment",
+	      "label": {
+    	    "en": "Button Alignment"
+	      },
+	      "default":"center",
+		  "options": [
+            {
+              "value": "left",
+              "label": {
+                "en": "left"
+              }
+            },
+			{
+              "value": "center",
+              "label": {
+                "en": "center"
+              }
+            },
+			{
+              "value": "right",
+              "label": {
+                "en": "right"
+              }
+            }
+		  ]		
+	    },
+        {
+          "type": "select",
+          "id": "width",
+          "label": {
+            "de": "Breite des Elements",
+            "en": "Container width",
+            "es": "Ancho del contenedor",
+            "fr": "Largeur du conteneur",
+            "it": "Larghezza contenitore",
+            "ja": "コンテナーの幅",
+            "pt-BR": "Largura do recipiente"
+          },
+          "default": "50%",
+          "options": [
+            {
+              "value": "25%",
+              "label": {
+                "de": "25%",
+                "en": "25%",
+                "es": "25%",
+                "fr": "25 %",
+                "it": "25%",
+                "ja": "25%",
+                "pt-BR": "25%"
+              }
+            },
+            {
+              "value": "33%",
+              "label": {
+                "de": "33%",
+                "en": "33%",
+                "es": "33%",
+                "fr": "33 %",
+                "it": "33%",
+                "ja": "33%",
+                "pt-BR": "33%"
+              }
+            },
+            {
+              "value": "50%",
+              "label": {
+                "de": "50%",
+                "en": "50%",
+                "es": "50%",
+                "fr": "50 %",
+                "it": "50%",
+                "ja": "50%",
+                "pt-BR": "50%"
+              }
+            },
+            {
+              "value": "66%",
+              "label": {
+                "de": "66%",
+                "en": "66%",
+                "es": "66%",
+                "fr": "66 %",
+                "it": "66%",
+                "ja": "66%",
+                "pt-BR": "66%"
+              }
+            },
+            {
+              "value": "75%",
+              "label": {
+                "de": "75%",
+                "en": "75%",
+                "es": "75%",
+                "fr": "75 %",
+                "it": "75%",
+                "ja": "75%",
+                "pt-BR": "75%"
+              }
+            },
+            {
+              "value": "100%",
+              "label": {
+                "de": "100%",
+                "en": "100%",
+                "es": "100%",
+                "fr": "100 %",
+                "it": "100%",
+                "ja": "100%",
+                "pt-BR": "100%"
+              }
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": {
+            "de": "Vertikale Ausrichtung",
+            "en": "Vertical alignment",
+            "es": "Alineación vertical",
+            "fr": "Alignement vertical",
+            "it": "Allineamento verticale",
+            "ja": "垂直アラインメント",
+            "pt-BR": "Alinhamento vertical"
+          },
+          "default": "center",
+          "options": [
+            {
+              "value": "top-left",
+              "label": {
+                "de": "Oben links",
+                "en": "Top left",
+                "es": "Superior izquierda",
+                "fr": "En haut à gauche",
+                "it": "In alto a sinistra",
+                "ja": "左上",
+                "pt-BR": "Superior esquerdo"
+              }
+            },
+            {
+              "value": "top-middle",
+              "label": {
+                "de": "Oben mittig",
+                "en": "Top middle",
+                "es": "Superior al medio",
+                "fr": "En haut au centre",
+                "it": "Al centro in alto",
+                "ja": "中央上",
+                "pt-BR": "Centro da parte superior"
+              }
+            },
+            {
+              "value": "top-right",
+              "label": {
+                "de": "Oben rechts",
+                "en": "Top right",
+                "es": "Superior derecha",
+                "fr": "En haut à droite",
+                "it": "In alto a destra",
+                "ja": "右上",
+                "pt-BR": "Superior direito"
+              }
+            },
+            {
+              "value": "middle-left",
+              "label": {
+                "de": "Mitte links",
+                "en": "Middle left",
+                "es": "Al medio a la izquierda",
+                "fr": "Au milieu à gauche",
+                "it": "In centro a sinistra",
+                "ja": "中央左",
+                "pt-BR": "Meio esquerdo"
+              }
+            },
+            {
+              "value": "center",
+              "label": {
+                "de": "Mitte",
+                "en": "Middle",
+                "es": "Al medio",
+                "fr": "Milieu",
+                "it": "Centro",
+                "ja": "中央",
+                "pt-BR": "Meio"
+              }
+            },
+            {
+              "value": "middle-right",
+              "label": {
+                "de": "Mitte rechts",
+                "en": "Middle right",
+                "es": "Al medio a la derecha",
+                "fr": "Au milieu à droite",
+                "it": "Nel mezzo a destra",
+                "ja": "中央右",
+                "pt-BR": "Meio direito"
+              }
+            },
+            {
+              "value": "bottom-left",
+              "label": {
+                "de": "Unten links",
+                "en": "Bottom left",
+                "es": "Inferior izquierda",
+                "fr": "En bas à gauche",
+                "it": "In basso a sinistra",
+                "ja": "左下",
+                "pt-BR": "Inferior esquerdo"
+              }
+            },
+            {
+              "value": "bottom-middle",
+              "label": {
+                "de": "Unten mittig",
+                "en": "Bottom middle",
+                "es": "Inferior al medio",
+                "fr": "En bas au centre",
+                "it": "Al centro in basso",
+                "ja": "中央下",
+                "pt-BR": "Centro da parte inferior"
+              }
+            },
+            {
+              "value": "bottom-right",
+              "label": {
+                "de": "Unten rechts",
+                "en": "Bottom right",
+                "es": "Inferior derecha",
+                "fr": "En bas à droite",
+                "it": "In basso a destra",
+                "ja": "右下",
+                "pt-BR": "Inferior direito"
+              }
+            }
+          ]
+        }
+      ]
+    }
+],
+  "presets": [
+    {
+      "name": {
+        "de": "Foto mit Text",
+        "en": "Image with text",
+        "es": "Imagen con texto",
+        "fr": "Image avec texte",
+        "it": "Immagine con testo",
+        "ja": "テキスト付き画像",
+        "pt-BR": "Imagem com texto"
+      },
+      "category": {
+        "de": "Foto",
+        "en": "Image",
+        "es": "Imagen",
+        "fr": "Image",
+        "it": "Immagine",
+        "ja": "画像",
+        "pt-BR": "Imagem"
+      }
+    }
+  ]
+}
+{% endschema %}

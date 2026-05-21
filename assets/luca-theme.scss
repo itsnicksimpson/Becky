@@ -1,0 +1,38 @@
+/* CUSTOM CSS FOR BECKY */
+/* AUTHOR: JARROD LUCA */
+
+
+/* REMOVE DEFAULT PADDING FROM HOME PAGE */
+.index-section--slideshow, #MainContent {
+  padding:0;
+}
+
+  
+.custom-content {
+  	flex-direction:column;
+    @media screen and (min-width:981px) {
+	  	flex-direction:row;    
+  	}
+  @media screen and (max-width:980px) {
+    > div {
+    	width:80%;
+      	margin-left:auto;
+      	margin-right:auto;
+    }
+  }
+}
+
+.page-width {
+	padding:0;
+}
+
+.site-footer{margin-top:0;}
+.site-footer__social-icons {margin-left:auto}
+
+.slide-button {pointer:cursor}
+.slide-content {display:none}
+
+#shopify-section-cart-template {
+	width:80%;
+  margin:40px auto;
+}

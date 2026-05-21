@@ -1,0 +1,17 @@
+{{ 'our-story.scss.css' | asset_url | stylesheet_tag }}
+{{ 'layouts.scss.css' | asset_url | stylesheet_tag }}
+<div class="page-content our-story">
+  <div class="grid">
+    <div class="grid__item">
+      <div class="rte">
+        {% section 'hero' %}
+        {% section 'our-story-custom-content' %}
+        {% section 'our-story-custom-content-2' %}
+        {% section 'our-story-custom-content-3' %}
+        {% section 'our-story-custom-content-4' %}
+        {% section 'our-story-custom-content-5' %}
+        {% section 'our-story-custom-content-6' %}
+      </div>
+    </div>
+  </div>
+</div>

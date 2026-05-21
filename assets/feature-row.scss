@@ -1,0 +1,16 @@
+.flex-container {
+  .flex-item {
+    * {
+    	margin-bottom:20px;
+    }
+    *:not(.button) {
+    	color:inherit;
+    }
+  	img {
+    	max-width:400px;
+      	margin:0 auto;
+      	
+    }
+    .button {padding:11px;text-align:center;}
+  }
+}
