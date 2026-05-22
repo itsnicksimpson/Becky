@@ -19,9 +19,13 @@
   .b-pdp__main-img img { width: 90%; height: 90%; object-fit: contain; }
   .b-pdp__badge { position: absolute; top: 20px; left: 20px; background: var(--becky-yellow); padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
   .b-pdp__thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .b-pdp__thumb { background: var(--becky-light); border-radius: 12px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 160ms ease; border: 2px solid transparent; }
+  .b-pdp__thumbs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .b-pdp__thumb { background: var(--becky-light); border-radius: 12px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 160ms ease; border: 2px solid transparent; position: relative; overflow: hidden; }
   .b-pdp__thumb:hover, .b-pdp__thumb.is-active { border-color: var(--becky-pink); }
   .b-pdp__thumb img { width: 88%; height: 88%; object-fit: contain; }
+  .b-pdp__thumb--video { background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%); }
+  .b-pdp__thumb--video[data-empty="true"] { opacity: 0.4; cursor: not-allowed; }
+  .b-pdp__thumb-vid { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
 
   /* INFO PANEL */
   .b-pdp__eyebrow { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--becky-pink); font-weight: 700; margin: 0 0 12px; }
@@ -118,25 +122,71 @@
 
   <div class="b-pdp__hero">
 
-    <!-- GALLERY -->
+    <!-- GALLERY (with 2 video slots) -->
     <div class="b-pdp__gallery">
       <div class="b-pdp__main-img" id="bMainImg">
         <span class="b-pdp__badge">★ {{ rating }} · {{ review_count }}+ reviews</span>
         {%- if product.featured_image -%}
-          <img src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title | escape }}" id="bMainImgEl" width="800" height="800">
+          <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.title | escape }}" id="bMainImgEl" width="800" height="800">
         {%- else -%}
           <div style="font-size: 200px;">🍑</div>
         {%- endif -%}
+        {%- assign vid1 = product.metafields.becky.video_1 | default: '' -%}
+        {%- assign vid2 = product.metafields.becky.video_2 | default: '' -%}
+        {%- if vid1 != '' -%}
+          <video id="bMainVid1" src="{{ vid1 }}" controls playsinline preload="metadata" style="display:none;position:absolute;inset:8%;width:84%;height:84%;object-fit:contain;border-radius:16px;background:#000;"></video>
+        {%- endif -%}
+        {%- if vid2 != '' -%}
+          <video id="bMainVid2" src="{{ vid2 }}" controls playsinline preload="metadata" style="display:none;position:absolute;inset:8%;width:84%;height:84%;object-fit:contain;border-radius:16px;background:#000;"></video>
+        {%- endif -%}
       </div>
-      {%- if product.images.size > 1 -%}
-        <div class="b-pdp__thumbs">
-          {%- for image in product.images limit: 4 -%}
-            <div class="b-pdp__thumb{% if forloop.first %} is-active{% endif %}" onclick="document.getElementById('bMainImgEl').src='{{ image | image_url: width: 1000 }}'; document.querySelectorAll('.b-pdp__thumb').forEach(t=>t.classList.remove('is-active')); this.classList.add('is-active');">
-              <img src="{{ image | image_url: width: 240 }}" alt="" loading="lazy">
-            </div>
-          {%- endfor -%}
+      <div class="b-pdp__thumbs">
+        {%- for image in product.images limit: 4 -%}
+          <div class="b-pdp__thumb{% if forloop.first %} is-active{% endif %}" data-type="image" data-src="{{ image | image_url: width: 1200 }}">
+            <img src="{{ image | image_url: width: 240 }}" alt="" loading="lazy">
+          </div>
+        {%- endfor -%}
+        <!-- Video slot 1 -->
+        <div class="b-pdp__thumb b-pdp__thumb--video" data-type="video" data-vid="1" {% if vid1 == '' %}data-empty="true"{% endif %}>
+          <div class="b-pdp__thumb-vid">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;color:#fff;"><path d="M8 5v14l11-7z"/></svg>
+            <span style="position:absolute;bottom:6px;left:0;right:0;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;font-weight:700;text-align:center;">Video</span>
+          </div>
         </div>
-      {%- endif -%}
+        <!-- Video slot 2 -->
+        <div class="b-pdp__thumb b-pdp__thumb--video" data-type="video" data-vid="2" {% if vid2 == '' %}data-empty="true"{% endif %}>
+          <div class="b-pdp__thumb-vid">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;color:#fff;"><path d="M8 5v14l11-7z"/></svg>
+            <span style="position:absolute;bottom:6px;left:0;right:0;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;font-weight:700;text-align:center;">Video</span>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function(){
+          var thumbs = document.querySelectorAll('.b-pdp__thumb');
+          var mainImg = document.getElementById('bMainImgEl');
+          var vid1 = document.getElementById('bMainVid1');
+          var vid2 = document.getElementById('bMainVid2');
+          thumbs.forEach(function(t){
+            t.addEventListener('click', function(){
+              if (t.dataset.empty === 'true') return; // skip if no video set
+              thumbs.forEach(function(x){ x.classList.remove('is-active'); });
+              t.classList.add('is-active');
+              if (t.dataset.type === 'image') {
+                if (mainImg) { mainImg.style.display='block'; mainImg.src = t.dataset.src; }
+                if (vid1) { vid1.pause(); vid1.style.display='none'; }
+                if (vid2) { vid2.pause(); vid2.style.display='none'; }
+              } else if (t.dataset.type === 'video') {
+                if (mainImg) mainImg.style.display='none';
+                var targetVid = t.dataset.vid === '1' ? vid1 : vid2;
+                var otherVid = t.dataset.vid === '1' ? vid2 : vid1;
+                if (otherVid) { otherVid.pause(); otherVid.style.display='none'; }
+                if (targetVid) { targetVid.style.display='block'; targetVid.play().catch(function(){}); }
+              }
+            });
+          });
+        })();
+      </script>
     </div>
 
     <!-- INFO -->

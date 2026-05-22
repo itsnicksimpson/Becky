@@ -34,6 +34,12 @@
   .art-v4__body blockquote { border-left: 4px solid var(--becky-pink); padding: 16px 28px; margin: 32px 0; background: var(--becky-blush); border-radius: 0 16px 16px 0; font-size: 18px; }
   .art-v4__body blockquote p:last-child { margin: 0; }
 
+  .art-v4__share { margin: 48px 0 0; padding: 28px 0 32px; border-top: 1px solid var(--becky-border); border-bottom: 1px solid var(--becky-border); }
+  .art-v4__share-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--becky-pink); font-weight: 800; margin: 0 0 16px; }
+  .art-v4__share-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .art-v4__share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--becky-light); border: 1px solid var(--becky-border); border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--becky-ink); text-decoration: none; cursor: pointer; font-family: inherit; transition: all 200ms ease; }
+  .art-v4__share-btn:hover { background: var(--becky-pink); color: #fff; border-color: var(--becky-pink); transform: translateY(-1px); }
+  .art-v4__share-btn.is-copied { background: var(--becky-yellow); color: var(--becky-ink); border-color: var(--becky-yellow); }
   .art-v4__cta { background: var(--becky-pink); color: #fff; border-radius: 24px; padding: 48px 36px; margin: 56px 0; text-align: center; }
   .art-v4__cta h3 { color: #fff; margin: 0 0 16px; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; }
   .art-v4__cta p { color: rgba(255,255,255,0.95); margin: 0 0 24px; font-size: 16px; }
@@ -83,12 +89,60 @@
 
     <div class="art-v4__body">{{ article.content }}</div>
 
+    <!-- SHARE BUTTONS -->
+    {%- assign share_url = canonical_url | default: shop.url | append: article.url -%}
+    {%- assign share_text = article.title | url_encode -%}
+    <div class="art-v4__share">
+      <p class="art-v4__share-label">Share this</p>
+      <div class="art-v4__share-row">
+        <a href="https://twitter.com/intent/tweet?text={{ share_text }}&url={{ share_url | url_encode }}" target="_blank" rel="noopener" aria-label="Share on Twitter" class="art-v4__share-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05A4.28 4.28 0 0 0 15.5 4a4.29 4.29 0 0 0-4.21 5.27A12.16 12.16 0 0 1 3 4.79a4.28 4.28 0 0 0 1.33 5.72c-.7-.02-1.37-.21-1.95-.53v.05a4.29 4.29 0 0 0 3.44 4.2c-.67.18-1.37.21-2.05.08a4.29 4.29 0 0 0 4 2.98 8.62 8.62 0 0 1-5.34 1.84A8.7 8.7 0 0 1 1.5 19.05a12.13 12.13 0 0 0 6.55 1.92c7.85 0 12.15-6.51 12.15-12.16v-.55c.83-.6 1.55-1.36 2.12-2.22-.77.34-1.59.57-2.46.67z"/></svg>
+          <span>Twitter</span>
+        </a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | url_encode }}" target="_blank" rel="noopener" aria-label="Share on Facebook" class="art-v4__share-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+          <span>Facebook</span>
+        </a>
+        <a href="https://pinterest.com/pin/create/button/?url={{ share_url | url_encode }}&description={{ share_text }}{% if article.image %}&media={{ article.image | image_url: width: 1200 | url_encode }}{% endif %}" target="_blank" rel="noopener" aria-label="Share on Pinterest" class="art-v4__share-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 0 0-4.37 23.17c-.1-.94-.2-2.4.04-3.43.22-.93 1.4-5.94 1.4-5.94s-.36-.72-.36-1.78c0-1.67.97-2.92 2.17-2.92 1.02 0 1.52.77 1.52 1.69 0 1.03-.66 2.57-1 4-.28 1.2.6 2.18 1.78 2.18 2.14 0 3.78-2.26 3.78-5.51 0-2.88-2.07-4.9-5.03-4.9-3.42 0-5.43 2.57-5.43 5.22 0 1.04.4 2.15.9 2.75.1.12.1.22.08.34l-.34 1.36c-.06.22-.18.27-.4.16-1.5-.7-2.43-2.88-2.43-4.64 0-3.78 2.75-7.26 7.92-7.26 4.16 0 7.4 2.96 7.4 6.93 0 4.13-2.61 7.46-6.23 7.46-1.22 0-2.36-.63-2.75-1.38l-.75 2.85c-.27 1.04-1 2.34-1.5 3.14A12 12 0 1 0 12 0z"/></svg>
+          <span>Pinterest</span>
+        </a>
+        <a href="mailto:?subject={{ article.title | url_encode }}&body=I thought you'd like this: {{ share_url }}" aria-label="Share by email" class="art-v4__share-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>Email</span>
+        </a>
+        <button type="button" class="art-v4__share-btn" data-action="copy" data-url="{{ share_url }}" aria-label="Copy link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span>Copy link</span>
+        </button>
+      </div>
+    </div>
+
     <div class="art-v4__cta">
       <h3>Smooth, even, confident skin in 4 weeks.</h3>
       <p>The Becky Booty Scrub — walnut shell + rosehip exfoliant, $20, ships free over $35.</p>
       <a href="/products/booty-scrub">Shop the Scrub →</a>
     </div>
   </div>
+
+  <script>
+    (function(){
+      var copyBtns = document.querySelectorAll('[data-action="copy"]');
+      copyBtns.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var url = btn.dataset.url;
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(url).then(function(){
+              var orig = btn.innerHTML;
+              btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied!</span>';
+              btn.classList.add('is-copied');
+              setTimeout(function(){ btn.innerHTML = orig; btn.classList.remove('is-copied'); }, 2000);
+            });
+          }
+        });
+      });
+    })();
+  </script>
 
   {%- if related_handles != blank and related_handles.size > 0 -%}
     <div class="art-v4__related">
