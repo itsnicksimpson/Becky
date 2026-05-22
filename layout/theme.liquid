@@ -154,7 +154,7 @@
         --becky-blush: #ffebeb;
         --becky-peach: #fddbd1;
         --becky-lavender: #f3e5fe;
-        --becky-yellow: #fde300;
+        --becky-yellow: #fddbd1; /* mapped to peach — no yellow on site */
         --becky-ink: #1a1a1a;
         --becky-grey: #4a4a4a;
         --becky-light: #f7f7f8;
@@ -189,8 +189,8 @@
       }
 
       /* ANNOUNCEMENT BAR */
-      .becky-announce { background: var(--becky-ink); color: #fff; padding: 8px 24px; text-align: center; font-size: 13px; font-weight: 500; }
-      .becky-announce strong { color: var(--becky-yellow); font-weight: 700; }
+      .becky-announce { background: var(--becky-pink); color: #fff; padding: 10px 24px; text-align: center; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
+      .becky-announce strong { color: #fff; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 
       /* BUTTONS */
       .becky-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; border-radius: 999px; font-weight: 700; font-size: 16px; transition: all 160ms ease; border: 2px solid transparent; cursor: pointer; font-family: inherit; text-decoration: none; }
@@ -344,7 +344,7 @@
       .becky-cart-ship__label .pct { font-family:'Poppins',sans-serif; font-weight:800; color:var(--becky-pink); }
       .becky-cart-ship__label .succ { color:var(--becky-pink); font-weight:800; font-family:'Poppins',sans-serif; }
       .becky-cart-ship__track { height:10px; background:#f0eded; border-radius:999px; overflow:hidden; position:relative; }
-      .becky-cart-ship__fill { position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg, var(--becky-pink) 0%, var(--becky-yellow) 100%); border-radius:999px; transition:width 500ms cubic-bezier(0.4, 0, 0.2, 1); width:0; }
+      .becky-cart-ship__fill { position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg, #ff7a9a 0%, var(--becky-pink) 100%); border-radius:999px; transition:width 500ms cubic-bezier(0.4, 0, 0.2, 1); width:0; }
       .becky-cart-ship__fill.is-full { background:var(--becky-pink); }
       .becky-cart-ship__truck { position:absolute; top:50%; transform:translateY(-50%); font-size:14px; transition:left 500ms cubic-bezier(0.4, 0, 0.2, 1); }
       .becky-cart-subtotal { display:flex; justify-content:space-between; align-items:baseline; margin:16px 0 4px; padding-top:16px; border-top:1px solid var(--becky-border); }
