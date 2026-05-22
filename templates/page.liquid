@@ -1,0 +1,29 @@
+{%- comment -%}
+  Becky page template — OS 1.0 liquid
+  Used for FAQ, Routine, About, etc.
+{%- endcomment -%}
+
+<style>
+  .becky-page { font-family: 'Work Sans', system-ui, sans-serif; color: #1a1a1a; max-width: 820px; margin: 0 auto; padding: 48px 24px; }
+  .becky-page h1, .becky-page h2, .becky-page h3 { font-family: 'Poppins', 'Work Sans', system-ui, sans-serif; line-height: 1.2; }
+  .becky-page__title { font-size: clamp(32px, 5vw, 48px); margin: 0 0 16px; text-wrap: balance; font-weight: 700; }
+  .becky-page__sub { font-size: 18px; color: #666; margin: 0 0 40px; }
+  .becky-page__body { font-size: 18px; line-height: 1.7; color: #2a2a2a; }
+  .becky-page__body h2 { font-size: clamp(24px, 3.5vw, 30px); margin: 40px 0 16px; }
+  .becky-page__body h3 { font-size: clamp(18px, 2.5vw, 22px); margin: 28px 0 12px; }
+  .becky-page__body p { margin: 0 0 18px; }
+  .becky-page__body a { color: #ff3465; text-decoration: underline; }
+  .becky-page__body ul, .becky-page__body ol { padding-left: 24px; margin: 0 0 18px; }
+  .becky-page__body li { margin: 0 0 8px; }
+  .becky-page__body blockquote { border-left: 4px solid #ff3465; padding: 12px 20px; margin: 24px 0; color: #555; font-style: italic; }
+  .becky-page__body details { border-bottom: 1px solid #eee; padding: 20px 0; }
+  .becky-page__body summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; font-weight: 600; font-size: 17px; }
+  .becky-page__body summary::-webkit-details-marker { display: none; }
+  .becky-page__body summary::after { content: '+'; font-size: 22px; transition: transform 200ms ease; }
+  .becky-page__body details[open] summary::after { transform: rotate(45deg); }
+</style>
+
+<div class="becky-page">
+  <h1 class="becky-page__title">{{ page.title }}</h1>
+  <div class="becky-page__body">{{ page.content }}</div>
+</div>

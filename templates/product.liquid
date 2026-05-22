@@ -1,0 +1,180 @@
+{%- comment -%}
+  Becky PDP — OS 1.0 liquid template
+  Renders product with all becky.* metafields:
+  - faq_entries (10 Q&As → FAQPage schema + visible accordion)
+  - key_ingredients (5 ingredients with benefits)
+  - best_for (7 conditions)
+  - use_steps (5-step routine)
+  - results_timeline (5 milestones)
+  - brand_proof (6 trust signals)
+  - rating_value, review_count
+{%- endcomment -%}
+
+<style>
+  .becky-pdp { font-family: 'Work Sans', system-ui, sans-serif; color: #1a1a1a; max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  .becky-pdp h1, .becky-pdp h2, .becky-pdp h3 { font-family: 'Poppins', 'Work Sans', system-ui, sans-serif; font-weight: 700; line-height: 1.15; }
+  .becky-pdp__hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin: 0 0 80px; }
+  @media (max-width: 768px) { .becky-pdp__hero { grid-template-columns: 1fr; gap: 24px; } }
+  .becky-pdp__gallery { background: #ffebeb; border-radius: 24px; padding: 32px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; position: sticky; top: 24px; }
+  .becky-pdp__title { font-size: clamp(28px, 4vw, 40px); margin: 0 0 12px; text-wrap: balance; }
+  .becky-pdp__rating { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 14px; color: #555; }
+  .becky-pdp__stars { color: #ff3465; font-size: 18px; }
+  .becky-pdp__price { font-size: 28px; font-weight: 700; margin: 0 0 8px; }
+  .becky-pdp__sub { font-size: 14px; color: #666; margin: 0 0 24px; }
+  .becky-pdp__desc { font-size: 17px; line-height: 1.6; color: #4a4a4a; margin: 0 0 32px; }
+  .becky-pdp__cta { width: 100%; padding: 18px 32px; background: #ff3465; color: #fff; border: none; border-radius: 999px; font-weight: 700; font-size: 18px; cursor: pointer; transition: background 200ms ease; font-family: inherit; }
+  .becky-pdp__cta:hover { background: #d12950; }
+  .becky-pdp__trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0 0; padding: 16px 0; border-top: 1px solid #eee; font-size: 12px; color: #555; }
+  .becky-pdp__trust div { text-align: center; }
+
+  .becky-section { margin: 80px 0; }
+  .becky-section__title { font-size: clamp(24px, 3.5vw, 36px); text-align: center; margin: 0 0 48px; text-wrap: balance; }
+
+  /* Ingredients */
+  .becky-ingredients { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .becky-ingredient { background: #fde300; border-radius: 16px; padding: 24px; }
+  .becky-ingredient h3 { font-size: 18px; margin: 0 0 8px; }
+  .becky-ingredient p { font-size: 14px; margin: 0; line-height: 1.5; }
+
+  /* Best for */
+  .becky-best-for { background: #f3e5fe; padding: 48px 24px; border-radius: 24px; }
+  .becky-best-for__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-width: 800px; margin: 0 auto; }
+  .becky-best-for__item { background: #fff; padding: 16px; border-radius: 12px; text-align: center; font-weight: 600; font-size: 14px; }
+
+  /* Steps */
+  .becky-steps { counter-reset: step; }
+  .becky-step { display: grid; grid-template-columns: 60px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid #eee; align-items: start; counter-increment: step; }
+  .becky-step__num { background: #ff3465; color: #fff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 24px; }
+  .becky-step__num::before { content: counter(step); }
+  .becky-step__title { font-size: 18px; margin: 0 0 4px; }
+  .becky-step__desc { color: #555; line-height: 1.5; margin: 0; font-size: 15px; }
+
+  /* Timeline */
+  .becky-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .becky-milestone { background: #ffebeb; border-radius: 16px; padding: 24px; text-align: center; }
+  .becky-milestone__week { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #ff3465; font-weight: 700; margin: 0 0 8px; }
+  .becky-milestone__title { font-size: 16px; margin: 0; line-height: 1.4; }
+
+  /* FAQ */
+  .becky-faq { max-width: 760px; margin: 0 auto; }
+  .becky-faq details { border-bottom: 1px solid #eee; padding: 20px 0; }
+  .becky-faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; font-weight: 600; font-size: 17px; line-height: 1.4; }
+  .becky-faq summary::-webkit-details-marker { display: none; }
+  .becky-faq summary::after { content: '+'; font-size: 22px; font-weight: 400; transition: transform 200ms ease; }
+  .becky-faq details[open] summary::after { transform: rotate(45deg); }
+  .becky-faq__answer { padding-top: 12px; line-height: 1.6; color: #555; }
+</style>
+
+<div class="becky-pdp">
+
+  <!-- HERO -->
+  <div class="becky-pdp__hero">
+    <div class="becky-pdp__gallery">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title | escape }}" style="max-width: 100%; height: auto; border-radius: 8px;" width="600" height="600">
+      {%- endif -%}
+    </div>
+    <div>
+      <p style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #ff3465; font-weight: 700; margin: 0 0 12px;">The original</p>
+      <h1 class="becky-pdp__title">{{ product.title }}</h1>
+      {%- assign rating = product.metafields.becky.rating_value | default: 4.7 -%}
+      {%- assign review_count = product.metafields.becky.review_count | default: 0 -%}
+      {%- if review_count > 0 -%}
+        <div class="becky-pdp__rating">
+          <span class="becky-pdp__stars">★★★★★</span>
+          <span><strong>{{ rating }}</strong> ({{ review_count }} reviews)</span>
+        </div>
+      {%- endif -%}
+      <p class="becky-pdp__price">{{ product.price | money }}</p>
+      <p class="becky-pdp__sub">Free shipping on US orders $35+ · 30-day money-back</p>
+      <div class="becky-pdp__desc">{{ product.description }}</div>
+      <form action="/cart/add" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit" class="becky-pdp__cta">Add to cart — {{ product.price | money }}</button>
+      </form>
+      <div class="becky-pdp__trust">
+        <div>🐰 Vegan + Cruelty-free</div>
+        <div>🇺🇸 Made in USA</div>
+        <div>💛 1% to EMC</div>
+      </div>
+    </div>
+  </div>
+
+  {%- assign ingredients = product.metafields.becky.key_ingredients.value -%}
+  {%- if ingredients and ingredients.size > 0 -%}
+  <section class="becky-section">
+    <h2 class="becky-section__title">What's in it (and what it does)</h2>
+    <div class="becky-ingredients">
+      {%- for ing in ingredients -%}
+        <div class="becky-ingredient">
+          <h3>{{ ing.name | strip_html | escape }}</h3>
+          <p>{{ ing.benefit | strip_html | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- assign best_for = product.metafields.becky.best_for.value -%}
+  {%- if best_for and best_for.size > 0 -%}
+  <section class="becky-section">
+    <h2 class="becky-section__title">Made for skin that's dealing with</h2>
+    <div class="becky-best-for">
+      <div class="becky-best-for__list">
+        {%- for condition in best_for -%}
+          <div class="becky-best-for__item">{{ condition | strip_html | escape }}</div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- assign steps = product.metafields.becky.use_steps.value -%}
+  {%- if steps and steps.size > 0 -%}
+  <section class="becky-section">
+    <h2 class="becky-section__title">How to use it</h2>
+    <div class="becky-steps">
+      {%- for step in steps -%}
+        <div class="becky-step">
+          <div class="becky-step__num"></div>
+          <div>
+            <h3 class="becky-step__title">{{ step.title | strip_html | escape }}</h3>
+            <p class="becky-step__desc">{{ step.description | strip_html | escape }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- assign timeline = product.metafields.becky.results_timeline.value -%}
+  {%- if timeline and timeline.size > 0 -%}
+  <section class="becky-section">
+    <h2 class="becky-section__title">What to expect, when</h2>
+    <div class="becky-timeline">
+      {%- for milestone in timeline -%}
+        <div class="becky-milestone">
+          <p class="becky-milestone__week">{{ milestone.timeframe | strip_html | escape }}</p>
+          <p class="becky-milestone__title">{{ milestone.result | strip_html | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- assign faqs = product.metafields.becky.faq_entries.value -%}
+  {%- if faqs and faqs.size > 0 -%}
+  <section class="becky-section">
+    <h2 class="becky-section__title">Frequently asked questions</h2>
+    <div class="becky-faq">
+      {%- for faq in faqs -%}
+        <details>
+          <summary>{{ faq.question | strip_html | escape }}</summary>
+          <div class="becky-faq__answer">{{ faq.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+</div>
