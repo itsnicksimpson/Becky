@@ -1,0 +1,58 @@
+{%- comment -%}
+  Becky FAQ Accordion
+  --------------------------------------------------------------
+  Renders a visual FAQ accordion from a JSON metafield. Native <details>
+  element — no JavaScript required. Designed to be paired with the
+  `faq-schema-json-ld.liquid` snippet which emits FAQPage structured data
+  for the same content (one is UI, one is schema; both should run).
+
+  Usage:
+    {% render 'becky-faq-accordion',
+       faq_entries: product.metafields.becky.faq_entries.value,
+       heading: 'Frequently Asked Questions' %}
+
+  Input shape (becky.faq_entries metafield, type: json):
+    [
+      {"question":"How do I use it?","answer":"Apply to damp skin..."},
+      ...
+    ]
+{%- endcomment -%}
+
+{%- liquid
+  assign heading = heading | default: 'Frequently Asked Questions'
+  assign has_faq = false
+  if faq_entries != blank and faq_entries.size > 0
+    assign has_faq = true
+  endif
+-%}
+
+{%- if has_faq -%}
+  <section class="becky-faq" aria-label="{{ heading }}" style="padding: 48px 24px;">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h2 style="font-family: var(--font-primary--family); font-weight: 700; font-size: 28px; line-height: 1.1; margin: 0 0 32px 0; text-wrap: balance;">
+        {{ heading }}
+      </h2>
+      <div class="becky-faq__list">
+        {%- for entry in faq_entries -%}
+          {%- if entry.question != blank and entry.answer != blank -%}
+            <details class="becky-faq__item" style="border-bottom: 1px solid rgb(232 233 235); padding: 20px 0;">
+              <summary style="list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; font-family: var(--font-primary--family); font-weight: 600; font-size: 17px; line-height: 1.4; color: var(--color-foreground-heading);">
+                <span>{{ entry.question | strip_html | escape }}</span>
+                <span aria-hidden="true" class="becky-faq__icon" style="flex-shrink: 0; font-size: 22px; font-weight: 400; line-height: 1; transition: transform 200ms ease;">+</span>
+              </summary>
+              <div style="padding-top: 12px; font-family: var(--font-body--family); font-size: 15px; line-height: 1.6; color: rgb(105 114 123);">
+                {{ entry.answer }}
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .becky-faq__item[open] > summary > .becky-faq__icon { transform: rotate(45deg); }
+    .becky-faq__item > summary::-webkit-details-marker { display: none; }
+    .becky-faq__item > summary:focus-visible { outline: 2px solid rgb(255 52 101); outline-offset: 4px; border-radius: 2px; }
+  </style>
+{%- endif -%}
