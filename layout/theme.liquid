@@ -358,6 +358,19 @@
       .becky-cart-trust { display:flex; gap:10px; justify-content:center; margin:14px 0 0; font-size:10px; color:#999; flex-wrap:wrap; letter-spacing:0.04em; font-weight:600; text-transform:uppercase; }
     </style>
 
+    <!-- PIXEL PEACH CURSOR FOLLOWER -->
+    <div id="beckyPeachCursor" aria-hidden="true">
+      <img src="{{ 'becky-pixel-peach.svg' | asset_url }}" alt="" width="36" height="36">
+    </div>
+    <style>
+      #beckyPeachCursor { position:fixed; top:0; left:0; width:36px; height:36px; pointer-events:none; z-index:9999; transform:translate(-50%,-50%) scale(0); opacity:0; transition:opacity 200ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1); will-change:transform; }
+      #beckyPeachCursor img { width:100%; height:100%; display:block; image-rendering:pixelated; image-rendering:crisp-edges; filter:drop-shadow(0 2px 6px rgba(255,52,101,0.25)); }
+      #beckyPeachCursor.is-visible { opacity:1; transform:translate(-50%,-50%) scale(1) rotate(var(--peach-rot, 0deg)); }
+      #beckyPeachCursor.is-hovering { transform:translate(-50%,-50%) scale(1.4) rotate(var(--peach-rot, 0deg)); }
+      @media (hover:none), (pointer:coarse) { #beckyPeachCursor { display:none; } }
+      @media (prefers-reduced-motion: reduce) { #beckyPeachCursor { display:none; } }
+    </style>
+
     <script>
       (function() {
         var header = document.getElementById('beckyHeader');
@@ -366,6 +379,65 @@
             if (window.scrollY > 8) header.classList.add('is-scrolled');
             else header.classList.remove('is-scrolled');
           }, { passive: true });
+        }
+
+        // PIXEL PEACH CURSOR
+        var peach = document.getElementById('beckyPeachCursor');
+        if (peach && window.matchMedia('(hover:hover) and (pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          var targetX = window.innerWidth / 2, targetY = window.innerHeight / 2;
+          var currentX = targetX, currentY = targetY;
+          var lastMoveTime = 0;
+          var velocityX = 0;
+          var raf;
+          var seen = false;
+
+          window.addEventListener('mousemove', function(e) {
+            // Offset the peach slightly down-right of the cursor so it doesn't overlap
+            targetX = e.clientX + 18;
+            targetY = e.clientY + 18;
+            if (!seen) {
+              peach.classList.add('is-visible');
+              seen = true;
+            }
+            lastMoveTime = Date.now();
+          }, { passive: true });
+
+          window.addEventListener('mouseleave', function() {
+            peach.classList.remove('is-visible');
+          });
+          window.addEventListener('mouseenter', function() {
+            if (seen) peach.classList.add('is-visible');
+          });
+
+          // Add subtle hover-grow when over interactive elements
+          document.addEventListener('mouseover', function(e) {
+            var t = e.target;
+            if (t.closest && t.closest('a, button, [role="button"], input[type="submit"], .b-pdp__thumb')) {
+              peach.classList.add('is-hovering');
+            }
+          });
+          document.addEventListener('mouseout', function(e) {
+            var t = e.target;
+            if (t.closest && t.closest('a, button, [role="button"], input[type="submit"], .b-pdp__thumb')) {
+              peach.classList.remove('is-hovering');
+            }
+          });
+
+          function tick() {
+            // Lerp toward target with easing — gives the playful trail effect
+            var dx = targetX - currentX;
+            var dy = targetY - currentY;
+            currentX += dx * 0.18;
+            currentY += dy * 0.18;
+            velocityX = dx;
+            // Subtle rotation based on horizontal velocity (wobble as it moves)
+            var rot = Math.max(-15, Math.min(15, velocityX * 0.4));
+            peach.style.setProperty('--peach-rot', rot + 'deg');
+            peach.style.left = currentX + 'px';
+            peach.style.top = currentY + 'px';
+            raf = requestAnimationFrame(tick);
+          }
+          tick();
         }
 
         // CART DRAWER
