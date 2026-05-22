@@ -3,83 +3,95 @@
     "aplos_homepage": {
       "type": "aplos-homepage",
       "blocks": {
-        "benefit_1": {
+        "benefit_walnut": {
           "type": "benefit",
           "settings": {
             "icon": "leaf",
-            "title": "Plant-Powered",
-            "text": "Crafted with adaptogenic herbs and functional botanicals for natural relief."
+            "title": "Walnut shell + rosehip",
+            "text": "Finely milled walnut shell powder physically lifts dead skin, oil, and the keratin that causes buttne and KP bumps. Rosehip oil fades the dark spots."
           }
         },
-        "benefit_2": {
+        "benefit_vegan": {
           "type": "benefit",
           "settings": {
-            "icon": "star",
-            "title": "Premium Quality",
-            "text": "Expertly formulated using only the finest organic ingredients sourced responsibly."
+            "icon": "shield",
+            "title": "Vegan + cruelty-free",
+            "text": "98% natural ingredients. No synthetic fragrance, no parabens, no sulfates, no animal testing. Ever."
           }
         },
-        "benefit_3": {
+        "benefit_mission": {
           "type": "benefit",
           "settings": {
             "icon": "heart",
-            "title": "Wellness First",
-            "text": "Designed to support your mind and body with no compromises on purity."
+            "title": "1% to Every Mother Counts",
+            "text": "We donate 1% of every sale to provide maternal-health care to women around the world. Your routine helps more than just your skin."
           }
         },
         "testimonial_1": {
           "type": "testimonial",
           "settings": {
-            "quote": "Finally found something that actually works. I feel calmer, more focused, and ready for whatever the day brings.",
-            "author": "Sarah M."
+            "quote": "The first time I used this scrub, my skin was so smooth. Now I've only been using it a few weeks and I've already seen a reduction in buttne and stretch marks.",
+            "author": "Verified buyer"
           }
         },
         "testimonial_2": {
           "type": "testimonial",
           "settings": {
-            "quote": "The quality is unmatched. You can taste the difference. This is now a permanent part of my evening routine.",
-            "author": "Michael R."
+            "quote": "I had really bad psoriasis on my arms and tried tons of scrubs out there. After two weeks of using Becky the results were unreal. I no longer feel self conscious in a short sleeve shirt.",
+            "author": "Verified buyer"
           }
         },
         "testimonial_3": {
           "type": "testimonial",
           "settings": {
-            "quote": "I was skeptical at first, but after a week I was a believer. Game changer for my stress levels.",
-            "author": "Emily T."
+            "quote": "My boyfriend noticed. That's the only review you need.",
+            "author": "Verified buyer"
           }
         }
       },
       "block_order": [
-        "benefit_1",
-        "benefit_2",
-        "benefit_3",
+        "benefit_walnut",
+        "benefit_vegan",
+        "benefit_mission",
         "testimonial_1",
         "testimonial_2",
         "testimonial_3"
       ],
       "settings": {
-        "hero_eyebrow": "Functional Botanicals",
-        "hero_title": "Relief without compromise",
-        "hero_subtitle": "Functional botanicals crafted for clarity, calm, and connection.",
-        "hero_cta_text": "Shop Now",
-        "hero_cta_link": "shopify://collections/all",
-        "featured_eyebrow": "Featured",
-        "press_quote": "A new ritual for the modern age",
-        "press_source": "Vogue",
-        "story_eyebrow": "Our Philosophy",
-        "story_title": "Nature meets science",
-        "story_text": "We believe in the power of plants. Our formulas combine ancient botanical wisdom with modern science to create products that truly work—without any of the downsides. Every ingredient is chosen with intention, every bottle crafted with care.",
-        "story_link_text": "Learn Our Story",
-        "testimonials_title": "What People Are Saying",
-        "products_title": "Our Collection",
-        "newsletter_title": "Stay in the loop",
-        "newsletter_text": "Be the first to know about new products, exclusive offers, and wellness tips.",
+        "hero_eyebrow": "Hi, we're Becky.",
+        "hero_title": "The skin no one talks about deserves a routine.",
+        "hero_subtitle": "Walnut shell + rosehip exfoliant for buttne, KP, ingrowns, and dark spots. Vegan, cruelty-free, $20.",
+        "hero_cta_text": "Shop the scrub",
+        "hero_cta_link": "shopify://products/booty-scrub",
+        "featured_eyebrow": "The Original Booty Scrub",
+        "press_quote": "Amazon's best-selling butt scrub. Now on Shopify.",
+        "press_source": "—",
+        "story_eyebrow": "Let's talk about your booty",
+        "story_title": "Because it's not getting enough recognition.",
+        "story_text": "Walking down countless skincare aisles, we saw endless miracle face masks, arm scrubs, and face washes — but everyone forgot about the bum. Big brands were too busy overcharging for synthetic ingredients made in big factories, marketed by women who looked like they hadn't eaten a carb in 3 years. So we made our own. *Disclaimer: we eat carbs.*",
+        "story_link_text": "Read our story →",
+        "story_link": "shopify://pages/our-story",
+        "testimonials_title": "Real people. Real butts. Real results.",
+        "products_title": "Built for the skin between your hips",
+        "newsletter_title": "Can we touch your butt?",
+        "newsletter_text": "Get the routine, the new posts from The Booty Atlas, and 10% off your first order.",
         "newsletter_placeholder": "Enter your email",
         "newsletter_button": "Subscribe"
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog-posts",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "blog": "booty-atlas",
+        "post_count": 3,
+        "show_view_all": true
       }
     }
   },
   "order": [
-    "aplos_homepage"
+    "aplos_homepage",
+    "featured_blog"
   ]
 }
