@@ -4,12 +4,57 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ff3465">
-    {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
-    {%- endif -%}
+    <meta name="apple-mobile-web-app-title" content="Becky">
+    <meta name="application-name" content="Becky">
+    <meta name="msapplication-TileColor" content="#ff3465">
+
+    {%- comment -%} FAVICON SYSTEM — covers every browser, OS, bookmarking surface {%- endcomment -%}
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ 'becky-favicon-16.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'becky-favicon-32.png' | asset_url }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ 'becky-apple-touch.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ 'becky-android-192.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ 'becky-android-512.png' | asset_url }}">
+    <link rel="mask-icon" href="{{ 'becky-safari-pinned.svg' | asset_url }}" color="#ff3465">
+    <link rel="shortcut icon" href="{{ 'becky-favicon-32.png' | asset_url }}" type="image/png">
+    <link rel="manifest" href="{{ 'becky-manifest.json' | asset_url }}">
 
     <title>{{ page_title }}{% if current_tags %} – {{ current_tags | join: ', ' }}{% endif %}{% if current_page != 1 %} – Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} – {{ shop.name }}{% endunless %}</title>
     {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+
+    {%- comment -%} OPEN GRAPH + TWITTER CARD — social link previews {%- endcomment -%}
+    {%- liquid
+      assign og_image = 'becky-og.png' | asset_url
+      assign og_title = page_title
+      assign og_description = page_description | default: shop.description | default: 'Walnut shell + rosehip exfoliant for buttne, KP, ingrowns, and dark spots. The skin no one talks about deserves a routine.'
+      if template contains 'product' and product
+        assign og_title = product.title | append: ' — Becky'
+        if product.featured_image
+          assign og_image = product.featured_image | image_url: width: 1200
+        endif
+        assign og_description = product.description | strip_html | truncate: 200
+      endif
+      if template contains 'article' and article
+        assign og_title = article.title | append: ' — Becky'
+        if article.image
+          assign og_image = article.image | image_url: width: 1200
+        endif
+        assign og_description = article.metafields.becky.tldr | default: article.excerpt | default: article.content | strip_html | truncate: 200
+      endif
+    -%}
+    <meta property="og:type" content="{% if template contains 'article' %}article{% elsif template contains 'product' %}product{% else %}website{% endif %}">
+    <meta property="og:title" content="{{ og_title | escape }}">
+    <meta property="og:description" content="{{ og_description | escape }}">
+    <meta property="og:image" content="{{ og_image }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:site_name" content="Becky">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ og_title | escape }}">
+    <meta name="twitter:description" content="{{ og_description | escape }}">
+    <meta name="twitter:image" content="{{ og_image }}">
+    <meta name="twitter:site" content="@hibecky">
+    <link rel="canonical" href="{{ canonical_url }}">
 
     {% render 'meta-tags' %}
     {% render 'schema-json-ld' %}
@@ -121,11 +166,7 @@
     <header class="becky-header" id="beckyHeader">
       <div class="becky-header__bar">
         <a href="/" class="becky-header__logo" aria-label="Becky home">
-          {% comment %} Inline SVG logo so it ALWAYS renders {% endcomment %}
-          <svg viewBox="0 0 360 80" role="img" aria-label="Becky" style="height: 36px; width: auto;">
-            <text x="4" y="62" style="font: 700 64px 'Poppins', 'Work Sans', sans-serif; fill: #ff3465; letter-spacing: -2px;">becky</text>
-            <circle cx="245" cy="20" r="9" style="fill: #fde300;"/>
-          </svg>
+          <img src="{{ 'becky-logo.png' | asset_url }}" alt="Becky" width="180" height="120" style="height: 44px; width: auto; display: block;">
         </a>
 
         <nav class="becky-header__nav" aria-label="Main">
@@ -178,10 +219,7 @@
 
       <!-- MASSIVE WORDMARK -->
       <div class="becky-footer__wordmark" aria-hidden="true">
-        <svg viewBox="0 0 1000 240" xmlns="http://www.w3.org/2000/svg">
-          <text x="0" y="200" style="font: 800 240px 'Poppins', 'Work Sans', sans-serif; fill: #ffffff; letter-spacing: -12px;">becky</text>
-          <circle cx="755" cy="62" r="28" style="fill: #fde300;"/>
-        </svg>
+        <img src="{{ 'becky-logo-white-real.png' | asset_url }}" alt="" style="width: 100%; max-width: 1400px; height: auto; display: block;">
       </div>
 
       <div class="becky-footer__copyright">
