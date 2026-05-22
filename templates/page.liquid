@@ -29,9 +29,10 @@
     assign max_w = '880px'
   elsif handle == 'reviews'
     assign hero_bg = 'linear-gradient(135deg, #ff3465 0%, #ff7a9a 100%)'
-    assign hero_eyebrow = 'Real reviews. Real butts.'
-    assign hero_sub = '1,247+ verified buyers across Amazon and DTC. Here is what they actually say.'
+    assign hero_eyebrow = ''
+    assign hero_sub = ''
     assign max_w = '1100px'
+    assign reviews_hero = true
   endif
 -%}
 
@@ -56,6 +57,17 @@
   .pg-v4-hero__eyebrow { display: inline-block; padding: 8px 18px; background: var(--becky-ink); color: #fff; border-radius: 999px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; margin: 0 0 24px; }
   .pg-v4-hero__title { font-family: 'Poppins', sans-serif; font-size: clamp(40px, 6.5vw, 80px); line-height: 0.96; letter-spacing: -0.035em; margin: 0 0 20px; font-weight: 800; text-wrap: balance; color: var(--becky-ink); }
   .pg-v4-hero__sub { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.55; max-width: 640px; margin: 0 auto; color: var(--becky-ink); opacity: 0.85; }
+  .pg-v4-hero__title--xl { font-size: clamp(48px, 8vw, 96px) !important; line-height: 0.95 !important; }
+  .pg-v4-hero__title em { font-style: normal; color: #fff; text-decoration: underline; text-underline-offset: 8px; text-decoration-thickness: 5px; }
+  .pg-v4-hero__stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 880px; margin: 48px auto 0; padding: 24px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 24px; border: 1px solid rgba(255,255,255,0.25); }
+  .pg-v4-hero__stat { text-align: center; color: #fff; }
+  .pg-v4-hero__stat-num { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 44px); line-height: 1; letter-spacing: -0.03em; }
+  .pg-v4-hero__stat-stars { color: #fff; font-size: 12px; letter-spacing: 2px; margin: 4px 0 0; }
+  .pg-v4-hero__stat-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin: 8px 0 0; opacity: 0.85; }
+  @media (max-width: 640px) {
+    .pg-v4-hero__stats { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
+    .pg-v4-hero__title--xl { font-size: clamp(40px, 12vw, 56px) !important; }
+  }
 
   /* Decorative blobs in hero */
   .pg-v4-hero::before { content: ''; position: absolute; width: 320px; height: 320px; background: var(--becky-pink); border-radius: 50%; top: -120px; right: -120px; opacity: 0.18; }
@@ -112,12 +124,37 @@
 
   <section class="pg-v4-hero" data-handle="{{ handle }}">
     <div class="pg-v4-hero__inner">
-      {%- if hero_eyebrow != blank -%}
-        <p class="pg-v4-hero__eyebrow">{{ hero_eyebrow }}</p>
-      {%- endif -%}
-      <h1 class="pg-v4-hero__title">{{ hero_title }}</h1>
-      {%- if hero_sub != blank -%}
-        <p class="pg-v4-hero__sub">{{ hero_sub }}</p>
+      {%- if reviews_hero -%}
+        <p class="pg-v4-hero__eyebrow" style="background:#fff;color:#ff3465;">★ {{ shop.metafields.becky.review_count.value | default: '1,247' }}+ verified reviews</p>
+        <h1 class="pg-v4-hero__title pg-v4-hero__title--xl">Real reviews. <em>Real butts.</em></h1>
+        <p class="pg-v4-hero__sub">From women who Googled it at 2am. We get it. Here is what 1,247+ verified buyers actually said about Becky.</p>
+        <div class="pg-v4-hero__stats">
+          <div class="pg-v4-hero__stat">
+            <div class="pg-v4-hero__stat-num">4.7</div>
+            <div class="pg-v4-hero__stat-stars">★★★★★</div>
+            <div class="pg-v4-hero__stat-label">Average</div>
+          </div>
+          <div class="pg-v4-hero__stat">
+            <div class="pg-v4-hero__stat-num">1,247+</div>
+            <div class="pg-v4-hero__stat-label">Verified buyers</div>
+          </div>
+          <div class="pg-v4-hero__stat">
+            <div class="pg-v4-hero__stat-num">93%</div>
+            <div class="pg-v4-hero__stat-label">Recommend</div>
+          </div>
+          <div class="pg-v4-hero__stat">
+            <div class="pg-v4-hero__stat-num">8+ yrs</div>
+            <div class="pg-v4-hero__stat-label">Amazon best-seller</div>
+          </div>
+        </div>
+      {%- else -%}
+        {%- if hero_eyebrow != blank -%}
+          <p class="pg-v4-hero__eyebrow">{{ hero_eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="pg-v4-hero__title">{{ hero_title }}</h1>
+        {%- if hero_sub != blank -%}
+          <p class="pg-v4-hero__sub">{{ hero_sub }}</p>
+        {%- endif -%}
       {%- endif -%}
     </div>
   </section>
