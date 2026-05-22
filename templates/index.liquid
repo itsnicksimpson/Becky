@@ -1,0 +1,194 @@
+{%- comment -%}
+  Becky homepage — OS 1.0 liquid template
+  Replaces the stub index.liquid that Shopify's sync left behind.
+  Pure HTML/Liquid so it doesn't depend on Horizon section configuration.
+{%- endcomment -%}
+
+{%- assign product = all_products['booty-scrub'] -%}
+{%- assign featured_blog = blogs['booty-atlas'] -%}
+
+<style>
+  .becky-home { font-family: 'Work Sans', system-ui, sans-serif; color: #1a1a1a; max-width: 1200px; margin: 0 auto; padding: 0; }
+  .becky-home h1, .becky-home h2, .becky-home h3 { font-family: 'Poppins', 'Work Sans', system-ui, sans-serif; font-weight: 700; line-height: 1.1; margin: 0 0 16px; text-wrap: balance; }
+  .becky-home p { line-height: 1.6; margin: 0 0 16px; }
+  .becky-home a { color: inherit; text-decoration: none; }
+  .becky-home img { max-width: 100%; height: auto; display: block; }
+  .becky-btn { display: inline-block; padding: 14px 32px; border-radius: 999px; font-weight: 600; font-size: 16px; transition: transform 160ms ease, box-shadow 160ms ease; cursor: pointer; border: 2px solid transparent; }
+  .becky-btn-primary { background: #ff3465; color: #ffffff !important; border-color: #ff3465; }
+  .becky-btn-primary:hover { background: #d12950; border-color: #d12950; transform: translateY(-1px); }
+  .becky-btn-secondary { background: transparent; color: #1a1a1a !important; border-color: #1a1a1a; }
+  .becky-btn-secondary:hover { background: #1a1a1a; color: #ffffff !important; }
+
+  /* Hero */
+  .becky-hero { background: linear-gradient(135deg, #ffebeb 0%, #fddbd1 100%); padding: 80px 24px 96px; text-align: center; border-radius: 0 0 32px 32px; }
+  .becky-hero__eyebrow { font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: #ff3465; font-weight: 600; margin: 0 0 16px; }
+  .becky-hero__heading { font-size: clamp(36px, 6vw, 64px); line-height: 1.05; max-width: 900px; margin: 0 auto 24px; }
+  .becky-hero__sub { font-size: 18px; line-height: 1.5; color: #4a4a4a; max-width: 540px; margin: 0 auto 32px; }
+  .becky-hero__ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* Featured product */
+  .becky-product { padding: 80px 24px; }
+  .becky-product__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; max-width: 1100px; margin: 0 auto; align-items: center; }
+  @media (max-width: 768px) { .becky-product__inner { grid-template-columns: 1fr; gap: 32px; } .becky-product__inner img { max-width: 400px; margin: 0 auto; } }
+  .becky-product__img { background: #ffebeb; border-radius: 24px; padding: 32px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+  .becky-product__title { font-size: clamp(28px, 4vw, 40px); }
+  .becky-product__price { font-size: 24px; font-weight: 700; margin: 0 0 16px; }
+  .becky-product__desc { font-size: 17px; line-height: 1.6; color: #4a4a4a; margin: 0 0 24px; }
+  .becky-product__bullets { list-style: none; padding: 0; margin: 0 0 32px; }
+  .becky-product__bullets li { padding: 8px 0 8px 28px; position: relative; }
+  .becky-product__bullets li::before { content: '✓'; position: absolute; left: 0; color: #ff3465; font-weight: 700; font-size: 18px; }
+
+  /* Benefits */
+  .becky-benefits { background: #fde300; padding: 64px 24px; }
+  .becky-benefits__grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  @media (max-width: 768px) { .becky-benefits__grid { grid-template-columns: 1fr; } }
+  .becky-benefit { text-align: center; padding: 24px; }
+  .becky-benefit__icon { font-size: 40px; margin: 0 0 16px; }
+  .becky-benefit__title { font-size: 22px; margin: 0 0 8px; }
+
+  /* Atlas */
+  .becky-atlas { padding: 80px 24px; background: #f3e5fe; }
+  .becky-atlas__header { max-width: 1100px; margin: 0 auto 48px; display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 16px; }
+  .becky-atlas__title { font-size: clamp(28px, 4vw, 40px); margin: 0; }
+  .becky-atlas__subtitle { color: #4a4a4a; margin: 8px 0 0; max-width: 600px; }
+  .becky-atlas__grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 768px) { .becky-atlas__grid { grid-template-columns: 1fr; } }
+  .becky-atlas__card { background: #fff; border-radius: 16px; overflow: hidden; transition: transform 200ms ease, box-shadow 200ms ease; display: block; }
+  .becky-atlas__card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+  .becky-atlas__card-img { aspect-ratio: 4 / 3; background: linear-gradient(135deg, #ffebeb, #fddbd1); display: flex; align-items: center; justify-content: center; font-size: 48px; }
+  .becky-atlas__card-body { padding: 20px; }
+  .becky-atlas__card-meta { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px; }
+  .becky-atlas__card-title { font-size: 18px; line-height: 1.3; margin: 0 0 12px; color: #1a1a1a; }
+  .becky-atlas__card-excerpt { font-size: 14px; line-height: 1.5; color: #555; margin: 0; }
+
+  /* CTA strip */
+  .becky-cta { background: #ff3465; color: #fff; padding: 64px 24px; text-align: center; }
+  .becky-cta h2 { color: #fff; font-size: clamp(28px, 4vw, 40px); margin: 0 0 16px; }
+  .becky-cta p { font-size: 18px; max-width: 580px; margin: 0 auto 32px; opacity: 0.95; }
+  .becky-cta .becky-btn-primary { background: #fff; color: #ff3465 !important; border-color: #fff; }
+  .becky-cta .becky-btn-primary:hover { background: #fde300; color: #1a1a1a !important; border-color: #fde300; }
+
+  /* Brand truth */
+  .becky-truth { padding: 80px 24px; text-align: center; }
+  .becky-truth__inner { max-width: 720px; margin: 0 auto; }
+  .becky-truth h2 { font-size: clamp(24px, 3.5vw, 36px); margin: 0 0 24px; }
+  .becky-truth p { font-size: 17px; line-height: 1.7; color: #4a4a4a; }
+</style>
+
+<div class="becky-home">
+
+  <!-- HERO -->
+  <section class="becky-hero">
+    <p class="becky-hero__eyebrow">Hi, we're Becky.</p>
+    <h1 class="becky-hero__heading">The skin no one talks about<br>deserves a routine.</h1>
+    <p class="becky-hero__sub">Walnut shell + rosehip exfoliant for buttne, KP, ingrowns, and dark spots. Vegan, cruelty-free, $20, ships free.</p>
+    <div class="becky-hero__ctas">
+      <a href="/products/booty-scrub" class="becky-btn becky-btn-primary">Shop the Scrub</a>
+      <a href="/pages/routine" class="becky-btn becky-btn-secondary">Read the Routine</a>
+    </div>
+  </section>
+
+  {%- if product != blank -%}
+  <!-- FEATURED PRODUCT -->
+  <section class="becky-product">
+    <div class="becky-product__inner">
+      <div class="becky-product__img">
+        {%- if product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title | escape }}" loading="lazy" width="600" height="600">
+        {%- else -%}
+          <div style="font-size: 120px;">🍑</div>
+        {%- endif -%}
+      </div>
+      <div>
+        <p style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #ff3465; font-weight: 600; margin: 0 0 12px;">The original</p>
+        <h2 class="becky-product__title">{{ product.title }}</h2>
+        <p class="becky-product__price">{{ product.price | money }}</p>
+        <p class="becky-product__desc">A walnut-shell + rosehip body scrub that smooths buttne, KP, ingrowns, and dark spots. Made for the skin between your hip and your knee — but works everywhere skin gets bumpy.</p>
+        <ul class="becky-product__bullets">
+          <li>Walnut Shell Powder — gentle physical exfoliation</li>
+          <li>Rosehip Seed Oil — vitamin C for dark spots</li>
+          <li>Aloe Vera + Jojoba — soothes and hydrates</li>
+          <li>Vegan + cruelty-free + made in the USA</li>
+          <li>1% of every purchase to Every Mother Counts</li>
+        </ul>
+        <a href="{{ product.url }}" class="becky-btn becky-btn-primary">Add to Cart — {{ product.price | money }}</a>
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
+  <!-- BENEFITS STRIP -->
+  <section class="becky-benefits">
+    <div class="becky-benefits__grid">
+      <div class="becky-benefit">
+        <div class="becky-benefit__icon">🌰</div>
+        <h3 class="becky-benefit__title">Walnut + Rosehip</h3>
+        <p>Real exfoliation, real ingredients. No synthetic microbeads, no fragrance pretending to be science.</p>
+      </div>
+      <div class="becky-benefit">
+        <div class="becky-benefit__icon">🐰</div>
+        <h3 class="becky-benefit__title">Vegan + Cruelty-free</h3>
+        <p>Tested on willing humans only. Leaping Bunny certified. Made small-batch in the USA.</p>
+      </div>
+      <div class="becky-benefit">
+        <div class="becky-benefit__icon">💛</div>
+        <h3 class="becky-benefit__title">1% to EMC</h3>
+        <p>1% of every order goes to <a href="https://everymothercounts.org" target="_blank" rel="noopener" style="text-decoration: underline;">Every Mother Counts</a>. Smoother skin + safer pregnancies. Both matter.</p>
+      </div>
+    </div>
+  </section>
+
+  {%- if featured_blog and featured_blog.articles.size > 0 -%}
+  <!-- THE BOOTY ATLAS -->
+  <section class="becky-atlas">
+    <div class="becky-atlas__header">
+      <div>
+        <h2 class="becky-atlas__title">The Booty Atlas</h2>
+        <p class="becky-atlas__subtitle">Everything we know about the skin between your hip and your knee. Conditions, ingredients, routines, comparisons — researched, written, real.</p>
+      </div>
+      <a href="/blogs/booty-atlas" class="becky-btn becky-btn-secondary">Browse all articles</a>
+    </div>
+    <div class="becky-atlas__grid">
+      {%- for article in featured_blog.articles limit: 3 -%}
+        <a href="{{ article.url }}" class="becky-atlas__card">
+          {%- if article.image -%}
+            <div class="becky-atlas__card-img"><img src="{{ article.image | image_url: width: 600 }}" alt="{{ article.title | escape }}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;"></div>
+          {%- else -%}
+            <div class="becky-atlas__card-img">🍑</div>
+          {%- endif -%}
+          <div class="becky-atlas__card-body">
+            {%- if article.metafields.becky.reading_time_min -%}
+              <p class="becky-atlas__card-meta">{{ article.metafields.becky.reading_time_min }} min read</p>
+            {%- else -%}
+              <p class="becky-atlas__card-meta">The Booty Atlas</p>
+            {%- endif -%}
+            <h3 class="becky-atlas__card-title">{{ article.title }}</h3>
+            <p class="becky-atlas__card-excerpt">{{ article.metafields.becky.tldr | default: article.excerpt | strip_html | truncate: 140 }}</p>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+  <!-- BRAND TRUTH -->
+  <section class="becky-truth">
+    <div class="becky-truth__inner">
+      <h2>Let's talk about your booty.</h2>
+      <p>We eat carbs. We sit at desks. We sweat through workouts and ride bikes and try on swimsuits with the lights on. Photoshop is more popular than we thought. The skin back there breaks out, gets bumpy, gets darker, gets ignored.</p>
+      <p>Becky is for that skin. The skin no one talks about. Whether yours has KP, buttne, ingrowns, stretch marks, or absolutely nothing wrong with it — it deserves a routine. So we made one.</p>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="becky-cta">
+    <h2>Can we touch your butt?</h2>
+    <p>Get smoother skin, real talk, and 10% off your first order. No spam. Promise.</p>
+    {%- form 'customer', class: 'becky-cta__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" placeholder="your@email.com" required style="padding: 14px 20px; border-radius: 999px; border: 2px solid #fff; min-width: 280px; max-width: 90%; font-size: 16px; font-family: inherit; margin-right: 8px;">
+      <button type="submit" class="becky-btn becky-btn-primary">Touch me back</button>
+    {%- endform -%}
+  </section>
+
+</div>
