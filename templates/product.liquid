@@ -1,112 +1,208 @@
 {%- comment -%}
-  Becky PDP — OS 1.0 liquid template
-  Renders product with all becky.* metafields:
-  - faq_entries (10 Q&As → FAQPage schema + visible accordion)
-  - key_ingredients (5 ingredients with benefits)
-  - best_for (7 conditions)
-  - use_steps (5-step routine)
-  - results_timeline (5 milestones)
-  - brand_proof (6 trust signals)
-  - rating_value, review_count
+  Becky PDP — polished v2
+  Gallery + sticky ATC + expandable desc + trust signals + ingredients + steps + timeline + FAQ
 {%- endcomment -%}
 
+{%- assign rating = product.metafields.becky.rating_value | default: 4.7 -%}
+{%- assign review_count = product.metafields.becky.review_count | default: 1247 -%}
+
 <style>
-  .becky-pdp { font-family: 'Work Sans', system-ui, sans-serif; color: #1a1a1a; max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
-  .becky-pdp h1, .becky-pdp h2, .becky-pdp h3 { font-family: 'Poppins', 'Work Sans', system-ui, sans-serif; font-weight: 700; line-height: 1.15; }
-  .becky-pdp__hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin: 0 0 80px; }
-  @media (max-width: 768px) { .becky-pdp__hero { grid-template-columns: 1fr; gap: 24px; } }
-  .becky-pdp__gallery { background: #ffebeb; border-radius: 24px; padding: 32px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; position: sticky; top: 24px; }
-  .becky-pdp__title { font-size: clamp(28px, 4vw, 40px); margin: 0 0 12px; text-wrap: balance; }
-  .becky-pdp__rating { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 14px; color: #555; }
-  .becky-pdp__stars { color: #ff3465; font-size: 18px; }
-  .becky-pdp__price { font-size: 28px; font-weight: 700; margin: 0 0 8px; }
-  .becky-pdp__sub { font-size: 14px; color: #666; margin: 0 0 24px; }
-  .becky-pdp__desc { font-size: 17px; line-height: 1.6; color: #4a4a4a; margin: 0 0 32px; }
-  .becky-pdp__cta { width: 100%; padding: 18px 32px; background: #ff3465; color: #fff; border: none; border-radius: 999px; font-weight: 700; font-size: 18px; cursor: pointer; transition: background 200ms ease; font-family: inherit; }
-  .becky-pdp__cta:hover { background: #d12950; }
-  .becky-pdp__trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0 0; padding: 16px 0; border-top: 1px solid #eee; font-size: 12px; color: #555; }
-  .becky-pdp__trust div { text-align: center; }
+  .b-pdp { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+  .b-pdp__crumb { font-size: 13px; color: var(--becky-grey); margin: 0 0 24px; }
+  .b-pdp__crumb a { color: var(--becky-pink); }
+  .b-pdp__hero { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; margin: 0 0 96px; }
+  @media (max-width: 880px) { .b-pdp__hero { grid-template-columns: 1fr; gap: 32px; } }
 
-  .becky-section { margin: 80px 0; }
-  .becky-section__title { font-size: clamp(24px, 3.5vw, 36px); text-align: center; margin: 0 0 48px; text-wrap: balance; }
+  /* GALLERY */
+  .b-pdp__gallery { position: sticky; top: 96px; }
+  .b-pdp__main-img { background: var(--becky-blush); border-radius: 24px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin: 0 0 16px; }
+  .b-pdp__main-img img { width: 90%; height: 90%; object-fit: contain; }
+  .b-pdp__badge { position: absolute; top: 20px; left: 20px; background: var(--becky-yellow); padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .b-pdp__thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .b-pdp__thumb { background: var(--becky-light); border-radius: 12px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 160ms ease; border: 2px solid transparent; }
+  .b-pdp__thumb:hover, .b-pdp__thumb.is-active { border-color: var(--becky-pink); }
+  .b-pdp__thumb img { width: 88%; height: 88%; object-fit: contain; }
 
-  /* Ingredients */
-  .becky-ingredients { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-  .becky-ingredient { background: #fde300; border-radius: 16px; padding: 24px; }
-  .becky-ingredient h3 { font-size: 18px; margin: 0 0 8px; }
-  .becky-ingredient p { font-size: 14px; margin: 0; line-height: 1.5; }
+  /* INFO PANEL */
+  .b-pdp__eyebrow { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--becky-pink); font-weight: 700; margin: 0 0 12px; }
+  .b-pdp__title { font-size: clamp(28px, 4vw, 42px); margin: 0 0 16px; }
+  .b-pdp__rating { display: flex; align-items: center; gap: 8px; margin: 0 0 24px; flex-wrap: wrap; }
+  .b-pdp__rating .stars { color: var(--becky-pink); font-size: 18px; letter-spacing: 2px; }
+  .b-pdp__rating .num { font-weight: 700; }
+  .b-pdp__rating a { color: var(--becky-grey); text-decoration: underline; font-size: 14px; }
+  .b-pdp__price-row { display: flex; align-items: baseline; gap: 12px; margin: 0 0 8px; }
+  .b-pdp__price { font-family: 'Poppins', sans-serif; font-size: 32px; font-weight: 700; }
+  .b-pdp__compare { font-size: 18px; color: #888; text-decoration: line-through; }
+  .b-pdp__sub { font-size: 13px; color: var(--becky-grey); margin: 0 0 28px; }
 
-  /* Best for */
-  .becky-best-for { background: #f3e5fe; padding: 48px 24px; border-radius: 24px; }
-  .becky-best-for__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-width: 800px; margin: 0 auto; }
-  .becky-best-for__item { background: #fff; padding: 16px; border-radius: 12px; text-align: center; font-weight: 600; font-size: 14px; }
+  .b-pdp__chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; }
+  .b-pdp__chip { padding: 6px 12px; border-radius: 999px; background: var(--becky-light); font-size: 13px; font-weight: 600; }
 
-  /* Steps */
-  .becky-steps { counter-reset: step; }
-  .becky-step { display: grid; grid-template-columns: 60px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid #eee; align-items: start; counter-increment: step; }
-  .becky-step__num { background: #ff3465; color: #fff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 24px; }
-  .becky-step__num::before { content: counter(step); }
-  .becky-step__title { font-size: 18px; margin: 0 0 4px; }
-  .becky-step__desc { color: #555; line-height: 1.5; margin: 0; font-size: 15px; }
+  /* PURCHASE OPTIONS */
+  .b-pdp__buy-options { margin: 0 0 24px; }
+  .b-pdp__buy-option { border: 2px solid var(--becky-border); border-radius: 16px; padding: 16px 20px; margin: 0 0 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 160ms ease; }
+  .b-pdp__buy-option:has(input:checked) { border-color: var(--becky-pink); background: var(--becky-blush); }
+  .b-pdp__buy-option input { margin-right: 12px; accent-color: var(--becky-pink); }
+  .b-pdp__buy-option-label { font-weight: 600; }
+  .b-pdp__buy-option-meta { font-size: 13px; color: var(--becky-grey); display: block; margin-top: 2px; font-weight: 400; }
+  .b-pdp__buy-option-save { background: var(--becky-pink); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; }
 
-  /* Timeline */
-  .becky-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
-  .becky-milestone { background: #ffebeb; border-radius: 16px; padding: 24px; text-align: center; }
-  .becky-milestone__week { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #ff3465; font-weight: 700; margin: 0 0 8px; }
-  .becky-milestone__title { font-size: 16px; margin: 0; line-height: 1.4; }
+  .b-pdp__cta-row { display: flex; gap: 12px; }
+  .b-pdp__cta { flex: 1; padding: 18px 32px; background: var(--becky-pink); color: #fff; border: none; border-radius: 999px; font-weight: 700; font-size: 17px; cursor: pointer; transition: all 200ms ease; font-family: inherit; }
+  .b-pdp__cta:hover { background: var(--becky-pink-dark); transform: translateY(-1px); box-shadow: 0 12px 24px rgba(255,52,101,0.25); }
 
-  /* FAQ */
-  .becky-faq { max-width: 760px; margin: 0 auto; }
-  .becky-faq details { border-bottom: 1px solid #eee; padding: 20px 0; }
-  .becky-faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; font-weight: 600; font-size: 17px; line-height: 1.4; }
-  .becky-faq summary::-webkit-details-marker { display: none; }
-  .becky-faq summary::after { content: '+'; font-size: 22px; font-weight: 400; transition: transform 200ms ease; }
-  .becky-faq details[open] summary::after { transform: rotate(45deg); }
-  .becky-faq__answer { padding-top: 12px; line-height: 1.6; color: #555; }
+  .b-pdp__trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0 0; padding: 20px 0; border-top: 1px solid var(--becky-border); border-bottom: 1px solid var(--becky-border); font-size: 12px; color: var(--becky-grey); }
+  .b-pdp__trust > div { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .b-pdp__trust svg { width: 20px; height: 20px; color: var(--becky-pink); }
+
+  /* DESCRIPTION (expandable) */
+  .b-pdp__desc { margin: 24px 0 0; }
+  .b-pdp__desc-content { font-size: 16px; line-height: 1.7; color: var(--becky-grey); position: relative; max-height: 220px; overflow: hidden; transition: max-height 300ms ease; }
+  .b-pdp__desc-content::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(transparent, #fff); pointer-events: none; }
+  .b-pdp__desc-content.is-expanded { max-height: 2000px; }
+  .b-pdp__desc-content.is-expanded::after { display: none; }
+  .b-pdp__desc-toggle { background: none; border: none; color: var(--becky-pink); font-weight: 700; padding: 12px 0 0; cursor: pointer; font-family: inherit; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  /* SECTIONS */
+  .b-section { padding: 64px 0; border-top: 1px solid var(--becky-border); }
+  .b-section__title { text-align: center; font-size: clamp(24px, 3.5vw, 36px); margin: 0 0 48px; }
+
+  .b-ingredients { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .b-ingredient { background: var(--becky-yellow); border-radius: 20px; padding: 24px; transition: transform 200ms ease; }
+  .b-ingredient:hover { transform: translateY(-2px); }
+  .b-ingredient h3 { font-size: 17px; margin: 0 0 8px; }
+  .b-ingredient p { font-size: 14px; margin: 0; line-height: 1.5; color: var(--becky-ink); }
+
+  .b-best-for { background: var(--becky-lavender); border-radius: 24px; padding: 48px 32px; }
+  .b-best-for__list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 900px; margin: 0 auto; }
+  .b-best-for__item { background: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 600; font-size: 15px; }
+
+  .b-steps { counter-reset: stp; max-width: 800px; margin: 0 auto; }
+  .b-step { display: grid; grid-template-columns: 70px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--becky-border); align-items: start; counter-increment: stp; }
+  .b-step__num { width: 60px; height: 60px; border-radius: 50%; background: var(--becky-pink); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 26px; }
+  .b-step__num::before { content: counter(stp); }
+  .b-step h3 { font-size: 19px; margin: 0 0 6px; }
+  .b-step p { color: var(--becky-grey); line-height: 1.55; margin: 0; }
+
+  .b-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .b-mile { background: var(--becky-blush); border-radius: 20px; padding: 24px; text-align: center; }
+  .b-mile__week { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--becky-pink); font-weight: 700; margin: 0 0 8px; }
+  .b-mile__title { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 16px; margin: 0; line-height: 1.4; }
+
+  .b-faq { max-width: 760px; margin: 0 auto; }
+  .b-faq details { border-bottom: 1px solid var(--becky-border); padding: 24px 0; }
+  .b-faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.4; color: var(--becky-ink); }
+  .b-faq summary::-webkit-details-marker { display: none; }
+  .b-faq summary::after { content: '+'; font-size: 26px; font-weight: 400; line-height: 1; transition: transform 200ms ease; color: var(--becky-pink); flex-shrink: 0; }
+  .b-faq details[open] summary::after { transform: rotate(45deg); }
+  .b-faq__answer { padding-top: 16px; line-height: 1.65; color: var(--becky-grey); font-size: 15px; }
+
+  /* STICKY MOBILE ATC */
+  .b-sticky-atc { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--becky-border); padding: 12px 16px; z-index: 80; display: none; align-items: center; gap: 12px; box-shadow: 0 -8px 24px rgba(0,0,0,0.06); }
+  .b-sticky-atc__info strong { display: block; font-weight: 700; font-size: 14px; }
+  .b-sticky-atc__info span { font-size: 12px; color: var(--becky-grey); }
+  .b-sticky-atc__btn { flex: 1; padding: 14px 20px; background: var(--becky-pink); color: #fff; border: none; border-radius: 999px; font-weight: 700; font-size: 15px; cursor: pointer; font-family: inherit; }
+  @media (max-width: 880px) { .b-sticky-atc { display: flex; } body { padding-bottom: 80px; } }
 </style>
 
-<div class="becky-pdp">
+<div class="b-pdp">
+  <p class="b-pdp__crumb"><a href="/">Becky</a> · <a href="/products/booty-scrub">Shop</a> · {{ product.title }}</p>
 
-  <!-- HERO -->
-  <div class="becky-pdp__hero">
-    <div class="becky-pdp__gallery">
-      {%- if product.featured_image -%}
-        <img src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title | escape }}" style="max-width: 100%; height: auto; border-radius: 8px;" width="600" height="600">
-      {%- endif -%}
-    </div>
-    <div>
-      <p style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #ff3465; font-weight: 700; margin: 0 0 12px;">The original</p>
-      <h1 class="becky-pdp__title">{{ product.title }}</h1>
-      {%- assign rating = product.metafields.becky.rating_value | default: 4.7 -%}
-      {%- assign review_count = product.metafields.becky.review_count | default: 0 -%}
-      {%- if review_count > 0 -%}
-        <div class="becky-pdp__rating">
-          <span class="becky-pdp__stars">★★★★★</span>
-          <span><strong>{{ rating }}</strong> ({{ review_count }} reviews)</span>
+  <div class="b-pdp__hero">
+
+    <!-- GALLERY -->
+    <div class="b-pdp__gallery">
+      <div class="b-pdp__main-img" id="bMainImg">
+        <span class="b-pdp__badge">★ {{ rating }} · {{ review_count }}+ reviews</span>
+        {%- if product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title | escape }}" id="bMainImgEl" width="800" height="800">
+        {%- else -%}
+          <div style="font-size: 200px;">🍑</div>
+        {%- endif -%}
+      </div>
+      {%- if product.images.size > 1 -%}
+        <div class="b-pdp__thumbs">
+          {%- for image in product.images limit: 4 -%}
+            <div class="b-pdp__thumb{% if forloop.first %} is-active{% endif %}" onclick="document.getElementById('bMainImgEl').src='{{ image | image_url: width: 1000 }}'; document.querySelectorAll('.b-pdp__thumb').forEach(t=>t.classList.remove('is-active')); this.classList.add('is-active');">
+              <img src="{{ image | image_url: width: 240 }}" alt="" loading="lazy">
+            </div>
+          {%- endfor -%}
         </div>
       {%- endif -%}
-      <p class="becky-pdp__price">{{ product.price | money }}</p>
-      <p class="becky-pdp__sub">Free shipping on US orders $35+ · 30-day money-back</p>
-      <div class="becky-pdp__desc">{{ product.description }}</div>
+    </div>
+
+    <!-- INFO -->
+    <div>
+      <p class="b-pdp__eyebrow">The original</p>
+      <h1 class="b-pdp__title">{{ product.title }}</h1>
+
+      <div class="b-pdp__rating">
+        <span class="stars">★★★★★</span>
+        <span class="num">{{ rating }}</span>
+        <a href="#reviews">{{ review_count }} verified reviews</a>
+      </div>
+
+      <div class="b-pdp__price-row">
+        <span class="b-pdp__price">{{ product.price | money }}</span>
+        {%- if product.compare_at_price > product.price -%}
+          <span class="b-pdp__compare">{{ product.compare_at_price | money }}</span>
+        {%- endif -%}
+      </div>
+      <p class="b-pdp__sub">Free US shipping over $35 · 30-day money-back · Ships in 1-2 days</p>
+
+      <div class="b-pdp__chip-row">
+        <span class="b-pdp__chip">For: buttne</span>
+        <span class="b-pdp__chip">KP</span>
+        <span class="b-pdp__chip">Ingrowns</span>
+        <span class="b-pdp__chip">Dark spots</span>
+      </div>
+
       <form action="/cart/add" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-        <button type="submit" class="becky-pdp__cta">Add to cart — {{ product.price | money }}</button>
+
+        <div class="b-pdp__buy-options">
+          <label class="b-pdp__buy-option">
+            <span style="display: flex; align-items: center;">
+              <input type="radio" name="selling_plan" value="" checked>
+              <span class="b-pdp__buy-option-label">One-time purchase<span class="b-pdp__buy-option-meta">Ships in 1-2 days · Free over $35</span></span>
+            </span>
+            <span style="font-weight: 700;">{{ product.price | money }}</span>
+          </label>
+          <label class="b-pdp__buy-option">
+            <span style="display: flex; align-items: center;">
+              <input type="radio" name="selling_plan" value="subscribe">
+              <span class="b-pdp__buy-option-label">Subscribe & save 15%<span class="b-pdp__buy-option-meta">Every 6 weeks · Skip or cancel anytime</span></span>
+            </span>
+            <span style="display: flex; align-items: center; gap: 8px;"><span class="b-pdp__buy-option-save">SAVE 15%</span><span style="font-weight: 700;">${{ product.price | divided_by: 100.0 | times: 0.85 | round: 2 }}</span></span>
+          </label>
+        </div>
+
+        <div class="b-pdp__cta-row">
+          <button type="submit" class="b-pdp__cta">Add to cart · {{ product.price | money }}</button>
+        </div>
       </form>
-      <div class="becky-pdp__trust">
-        <div>🐰 Vegan + Cruelty-free</div>
-        <div>🇺🇸 Made in USA</div>
-        <div>💛 1% to EMC</div>
+
+      <div class="b-pdp__trust">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 12 2 2 4-4"/><path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3M12 21c0-1-1-3-3-3s-3 2-3 3 1 3 3 3 3-2 3-3"/></svg><span>Vegan + Cruelty-free</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>30-day money-back</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>1% to EMC</span></div>
+      </div>
+
+      <div class="b-pdp__desc">
+        <h3 style="font-size: 17px; margin: 0 0 12px;">About the Booty Scrub</h3>
+        <div class="b-pdp__desc-content" id="bDescContent">{{ product.description }}</div>
+        <button type="button" class="b-pdp__desc-toggle" id="bDescToggle">Read more <span style="display:inline-block; transition: transform 200ms ease;">↓</span></button>
       </div>
     </div>
   </div>
 
   {%- assign ingredients = product.metafields.becky.key_ingredients.value -%}
   {%- if ingredients and ingredients.size > 0 -%}
-  <section class="becky-section">
-    <h2 class="becky-section__title">What's in it (and what it does)</h2>
-    <div class="becky-ingredients">
+  <section class="b-section">
+    <h2 class="b-section__title">What's in it (and what it does)</h2>
+    <div class="b-ingredients">
       {%- for ing in ingredients -%}
-        <div class="becky-ingredient">
+        <div class="b-ingredient">
           <h3>{{ ing.name | strip_html | escape }}</h3>
           <p>{{ ing.benefit | strip_html | escape }}</p>
         </div>
@@ -117,12 +213,12 @@
 
   {%- assign best_for = product.metafields.becky.best_for.value -%}
   {%- if best_for and best_for.size > 0 -%}
-  <section class="becky-section">
-    <h2 class="becky-section__title">Made for skin that's dealing with</h2>
-    <div class="becky-best-for">
-      <div class="becky-best-for__list">
+  <section class="b-section">
+    <h2 class="b-section__title">Made for skin dealing with</h2>
+    <div class="b-best-for">
+      <div class="b-best-for__list">
         {%- for condition in best_for -%}
-          <div class="becky-best-for__item">{{ condition | strip_html | escape }}</div>
+          <span class="b-best-for__item">{{ condition | strip_html | escape }}</span>
         {%- endfor -%}
       </div>
     </div>
@@ -131,15 +227,15 @@
 
   {%- assign steps = product.metafields.becky.use_steps.value -%}
   {%- if steps and steps.size > 0 -%}
-  <section class="becky-section">
-    <h2 class="becky-section__title">How to use it</h2>
-    <div class="becky-steps">
+  <section class="b-section">
+    <h2 class="b-section__title">How to use it</h2>
+    <div class="b-steps">
       {%- for step in steps -%}
-        <div class="becky-step">
-          <div class="becky-step__num"></div>
+        <div class="b-step">
+          <div class="b-step__num"></div>
           <div>
-            <h3 class="becky-step__title">{{ step.title | strip_html | escape }}</h3>
-            <p class="becky-step__desc">{{ step.description | strip_html | escape }}</p>
+            <h3>{{ step.title | strip_html | escape }}</h3>
+            <p>{{ step.description | strip_html | escape }}</p>
           </div>
         </div>
       {%- endfor -%}
@@ -149,13 +245,13 @@
 
   {%- assign timeline = product.metafields.becky.results_timeline.value -%}
   {%- if timeline and timeline.size > 0 -%}
-  <section class="becky-section">
-    <h2 class="becky-section__title">What to expect, when</h2>
-    <div class="becky-timeline">
+  <section class="b-section">
+    <h2 class="b-section__title">What to expect, when</h2>
+    <div class="b-timeline">
       {%- for milestone in timeline -%}
-        <div class="becky-milestone">
-          <p class="becky-milestone__week">{{ milestone.timeframe | strip_html | escape }}</p>
-          <p class="becky-milestone__title">{{ milestone.result | strip_html | escape }}</p>
+        <div class="b-mile">
+          <p class="b-mile__week">{{ milestone.timeframe | strip_html | escape }}</p>
+          <p class="b-mile__title">{{ milestone.result | strip_html | escape }}</p>
         </div>
       {%- endfor -%}
     </div>
@@ -164,13 +260,13 @@
 
   {%- assign faqs = product.metafields.becky.faq_entries.value -%}
   {%- if faqs and faqs.size > 0 -%}
-  <section class="becky-section">
-    <h2 class="becky-section__title">Frequently asked questions</h2>
-    <div class="becky-faq">
+  <section class="b-section" id="reviews">
+    <h2 class="b-section__title">Frequently asked questions</h2>
+    <div class="b-faq">
       {%- for faq in faqs -%}
         <details>
           <summary>{{ faq.question | strip_html | escape }}</summary>
-          <div class="becky-faq__answer">{{ faq.answer }}</div>
+          <div class="b-faq__answer">{{ faq.answer }}</div>
         </details>
       {%- endfor -%}
     </div>
@@ -178,3 +274,32 @@
   {%- endif -%}
 
 </div>
+
+<!-- STICKY MOBILE ATC -->
+<div class="b-sticky-atc">
+  <div class="b-sticky-atc__info">
+    <strong>{{ product.title }}</strong>
+    <span>★ {{ rating }} · {{ product.price | money }}</span>
+  </div>
+  <form action="/cart/add" method="post" style="flex: 1; display: flex;">
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <button type="submit" class="b-sticky-atc__btn">Add to cart</button>
+  </form>
+</div>
+
+<script>
+  (function(){
+    var toggle = document.getElementById('bDescToggle');
+    var content = document.getElementById('bDescContent');
+    if (toggle && content) {
+      toggle.addEventListener('click', function(){
+        content.classList.toggle('is-expanded');
+        if (content.classList.contains('is-expanded')) {
+          toggle.innerHTML = 'Read less <span style="display:inline-block; transition: transform 200ms ease; transform: rotate(180deg);">↓</span>';
+        } else {
+          toggle.innerHTML = 'Read more <span style="display:inline-block;">↓</span>';
+        }
+      });
+    }
+  })();
+</script>

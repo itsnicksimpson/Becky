@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" role="img" aria-label="Becky">
+  <style>
+    .b-text { font: 700 64px 'Poppins', 'Work Sans', system-ui, sans-serif; fill: #ff3465; letter-spacing: -2px; }
+    .b-dot { fill: #fde300; }
+  </style>
+  <text x="4" y="62" class="b-text">becky</text>
+  <circle cx="245" cy="20" r="9" class="b-dot"/>
+</svg>
