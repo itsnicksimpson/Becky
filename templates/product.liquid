@@ -97,12 +97,20 @@
   .b-faq details[open] summary::after { transform: rotate(45deg); }
   .b-faq__answer { padding-top: 16px; line-height: 1.65; color: var(--becky-grey); font-size: 15px; }
 
-  /* STICKY MOBILE ATC */
-  .b-sticky-atc { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--becky-border); padding: 12px 16px; z-index: 80; display: none; align-items: center; gap: 12px; box-shadow: 0 -8px 24px rgba(0,0,0,0.06); }
-  .b-sticky-atc__info strong { display: block; font-weight: 700; font-size: 14px; }
-  .b-sticky-atc__info span { font-size: 12px; color: var(--becky-grey); }
-  .b-sticky-atc__btn { flex: 1; padding: 14px 20px; background: var(--becky-pink); color: #fff; border: none; border-radius: 999px; font-weight: 700; font-size: 15px; cursor: pointer; font-family: inherit; }
-  @media (max-width: 880px) { .b-sticky-atc { display: flex; } body { padding-bottom: 80px; } }
+  /* STICKY ATC BAR — desktop + mobile, appears on scroll */
+  .b-sticky-atc { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 2px solid var(--becky-ink); padding: 14px 24px; z-index: 80; display: flex; align-items: center; gap: 20px; max-width: 1280px; margin: 0 auto; box-shadow: 0 -12px 30px rgba(0,0,0,0.08); transform: translateY(100%); transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .b-sticky-atc.is-visible { transform: translateY(0); }
+  .b-sticky-atc__img { width: 56px; height: 56px; border-radius: 12px; background: var(--becky-blush); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+  .b-sticky-atc__img img { width: 80%; height: 80%; object-fit: contain; }
+  .b-sticky-atc__info { flex: 1; min-width: 0; }
+  .b-sticky-atc__title { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 15px; margin: 0 0 2px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .b-sticky-atc__meta { font-size: 12px; color: var(--becky-grey); display: flex; gap: 10px; align-items: center; }
+  .b-sticky-atc__meta strong { color: var(--becky-pink); font-weight: 700; }
+  .b-sticky-atc__btn { padding: 14px 28px; background: var(--becky-pink); color: #fff; border: none; border-radius: 999px; font-weight: 800; font-size: 15px; cursor: pointer; font-family: inherit; transition: all 200ms ease; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .b-sticky-atc__btn:hover { background: var(--becky-pink-dark); transform: translateY(-1px); }
+  .b-sticky-atc__btn::after { content: '→'; transition: transform 200ms ease; }
+  .b-sticky-atc__btn:hover::after { transform: translateX(3px); }
+  @media (max-width: 540px) { .b-sticky-atc__title { font-size: 14px; } .b-sticky-atc__btn { padding: 12px 18px; font-size: 13px; } .b-sticky-atc { padding: 10px 14px; gap: 12px; } .b-sticky-atc__img { width: 48px; height: 48px; } }
 </style>
 
 <div class="b-pdp">
@@ -281,13 +289,26 @@
 
 </div>
 
-<!-- STICKY MOBILE ATC -->
-<div class="b-sticky-atc">
-  <div class="b-sticky-atc__info">
-    <strong>{{ product.title }}</strong>
-    <span>★ {{ rating }} · {{ product.price | money }}</span>
+<!-- STICKY ATC BAR (desktop + mobile, appears on scroll past hero) -->
+<div class="b-sticky-atc" id="bStickyAtc">
+  <div class="b-sticky-atc__img">
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 200 }}" alt="{{ product.title | escape }}">
+    {%- else -%}
+      🍑
+    {%- endif -%}
   </div>
-  <form action="/cart/add" method="post" style="flex: 1; display: flex;">
+  <div class="b-sticky-atc__info">
+    <p class="b-sticky-atc__title">{{ product.title }}</p>
+    <div class="b-sticky-atc__meta">
+      <span>★ {{ rating }}</span>
+      <span>·</span>
+      <strong>{{ product.price | money }}</strong>
+      <span>·</span>
+      <span>Ships free $35+</span>
+    </div>
+  </div>
+  <form action="/cart/add" method="post" style="margin: 0;">
     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
     <button type="submit" class="b-sticky-atc__btn">Add to cart</button>
   </form>
@@ -301,11 +322,21 @@
       toggle.addEventListener('click', function(){
         content.classList.toggle('is-expanded');
         if (content.classList.contains('is-expanded')) {
-          toggle.innerHTML = 'Read less <span style="display:inline-block; transition: transform 200ms ease; transform: rotate(180deg);">↓</span>';
+          toggle.innerHTML = 'Read less <span style="display:inline-block; transform: rotate(180deg);">↓</span>';
         } else {
           toggle.innerHTML = 'Read more <span style="display:inline-block;">↓</span>';
         }
       });
+    }
+    // Show sticky ATC once user scrolls past hero
+    var sticky = document.getElementById('bStickyAtc');
+    if (sticky) {
+      var heroBuyBtn = document.querySelector('.b-pdp__cta');
+      var threshold = heroBuyBtn ? heroBuyBtn.getBoundingClientRect().top + window.scrollY + 100 : 800;
+      window.addEventListener('scroll', function(){
+        if (window.scrollY > threshold) sticky.classList.add('is-visible');
+        else sticky.classList.remove('is-visible');
+      }, { passive: true });
     }
   })();
 </script>

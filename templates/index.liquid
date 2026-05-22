@@ -1,7 +1,7 @@
 {%- comment -%}
-  Becky homepage — refined v3
-  Sophisticated feminine direction (Topicals/Necessaire energy)
-  More whitespace, refined typography, pink as accent not pervasive
+  Becky homepage v4 — COLORFUL + FUN + SOPHISTICATED
+  Pink/yellow/peach/lavender brought back as section anchors
+  Sticker badges, asymmetric layouts, playful copy
 {%- endcomment -%}
 
 {%- assign product = all_products['booty-scrub'] -%}
@@ -10,141 +10,181 @@
 {%- assign review_count = product.metafields.becky.review_count | default: 1247 -%}
 
 <style>
-  .home-v3 { width: 100%; --gutter: clamp(20px, 4vw, 64px); }
-  .home-v3 p { margin: 0 0 16px; line-height: 1.6; }
-  .home-v3 a { color: inherit; }
-  .v3-wrap { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter); }
+  .v4 { width: 100%; --g: clamp(20px, 4vw, 64px); }
+  .v4 p { margin: 0 0 16px; line-height: 1.6; }
 
-  /* HERO — refined, less peach, more whitespace */
-  .v3-hero { padding: clamp(80px, 12vw, 160px) var(--gutter) clamp(96px, 14vw, 180px); background: #fff; position: relative; overflow: hidden; }
-  .v3-hero__inner { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(40px, 6vw, 96px); align-items: center; }
-  @media (max-width: 880px) { .v3-hero__inner { grid-template-columns: 1fr; gap: 48px; } }
-  .v3-hero__pill { display: inline-block; padding: 8px 16px; background: #ffebeb; border-radius: 999px; font-size: 12px; font-weight: 700; color: var(--becky-pink); letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 28px; }
-  .v3-hero__title { font-size: clamp(44px, 7.5vw, 92px); line-height: 0.96; letter-spacing: -0.035em; margin: 0 0 32px; max-width: 720px; font-weight: 700; color: var(--becky-ink); }
-  .v3-hero__sub { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.5; color: #5a5a5a; max-width: 520px; margin: 0 0 40px; }
-  .v3-hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; }
-  .v3-hero__img-wrap { aspect-ratio: 4 / 5; background: linear-gradient(165deg, #ffebeb 0%, #fddbd1 100%); border-radius: 32px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .v3-hero__img-wrap img { width: 80%; height: 80%; object-fit: contain; }
-  .v3-hero__credits { position: absolute; bottom: 28px; left: 28px; right: 28px; display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--becky-ink); }
-  .v3-hero__credits small { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(26,26,26,0.55); display: block; margin: 0 0 2px; }
+  /* HERO — yellow + pink, big and fun */
+  .v4-hero { padding: clamp(80px, 12vw, 140px) var(--g); background: var(--becky-yellow); position: relative; overflow: hidden; }
+  .v4-hero::before { content: ''; position: absolute; width: 480px; height: 480px; background: var(--becky-pink); border-radius: 50%; top: -120px; right: -120px; opacity: 0.18; }
+  .v4-hero::after { content: '🍑'; position: absolute; font-size: 220px; left: -40px; bottom: -60px; opacity: 0.10; transform: rotate(-15deg); }
+  .v4-hero__inner { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px, 6vw, 96px); align-items: center; position: relative; z-index: 1; }
+  @media (max-width: 880px) { .v4-hero__inner { grid-template-columns: 1fr; gap: 48px; } }
+  .v4-hero__pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--becky-ink); color: #fff; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; margin: 0 0 28px; }
+  .v4-hero__pill::before { content: '🍑'; }
+  .v4-hero__title { font-size: clamp(48px, 8vw, 104px); line-height: 0.92; letter-spacing: -0.04em; margin: 0 0 32px; font-weight: 800; color: var(--becky-ink); }
+  .v4-hero__title em { font-style: normal; color: var(--becky-pink); position: relative; display: inline-block; }
+  .v4-hero__title em::after { content: ''; position: absolute; left: 4px; right: 4px; bottom: 8px; height: 12px; background: rgba(255,255,255,0.6); z-index: -1; border-radius: 4px; transform: skew(-3deg); }
+  .v4-hero__sub { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.5; color: var(--becky-ink); max-width: 540px; margin: 0 0 40px; font-weight: 500; }
+  .v4-hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .v4-hero__btn-primary { background: var(--becky-ink); color: #fff !important; border: 2px solid var(--becky-ink); padding: 16px 32px; border-radius: 999px; font-weight: 700; transition: all 200ms ease; display: inline-flex; align-items: center; gap: 8px; }
+  .v4-hero__btn-primary:hover { background: var(--becky-pink); border-color: var(--becky-pink); transform: translateY(-1px); }
+  .v4-hero__small-text { font-size: 13px; color: var(--becky-ink); font-weight: 600; opacity: 0.7; }
+  .v4-hero__img-wrap { aspect-ratio: 4/5; background: #fff; border-radius: 32px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
+  .v4-hero__img-wrap img { width: 80%; height: 80%; object-fit: contain; }
+  .v4-hero__sticker { position: absolute; top: -16px; right: -16px; background: var(--becky-pink); color: #fff; width: 110px; height: 110px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(12deg); font-family: 'Poppins', sans-serif; font-weight: 800; box-shadow: 0 12px 24px rgba(255,52,101,0.4); animation: v4spin 8s linear infinite; }
+  .v4-hero__sticker span:first-child { font-size: 28px; line-height: 1; }
+  .v4-hero__sticker span:last-child { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+  @keyframes v4spin { 100% { transform: rotate(372deg); } }
+  .v4-hero__credits { position: absolute; bottom: 28px; left: 28px; right: 28px; display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--becky-ink); }
+  .v4-hero__credits small { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(26,26,26,0.55); display: block; margin: 0 0 2px; font-weight: 600; }
 
-  /* MARQUEE — As seen in */
-  .v3-marquee { padding: 32px var(--gutter); background: var(--becky-ink); color: #fff; overflow: hidden; }
-  .v3-marquee__track { display: flex; gap: 80px; align-items: center; animation: v3scroll 30s linear infinite; white-space: nowrap; }
-  .v3-marquee__item { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; opacity: 0.7; }
-  .v3-marquee__item.label { color: var(--becky-yellow); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 1; font-weight: 700; }
-  @keyframes v3scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  /* MARQUEE */
+  .v4-marquee { padding: 28px var(--g); background: var(--becky-ink); color: #fff; overflow: hidden; }
+  .v4-marquee__track { display: flex; gap: 80px; align-items: center; animation: v4scroll 30s linear infinite; white-space: nowrap; }
+  .v4-marquee__item { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: -0.01em; opacity: 0.85; }
+  .v4-marquee__item.dot::before { content: '·'; margin-right: 80px; color: var(--becky-yellow); font-size: 32px; }
+  .v4-marquee__item.label { color: var(--becky-yellow); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 1; font-weight: 800; }
+  @keyframes v4scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-  /* PRODUCT — clean editorial */
-  .v3-product { padding: clamp(96px, 12vw, 160px) var(--gutter); background: #fff; }
-  .v3-product__inner { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(48px, 7vw, 120px); align-items: center; }
-  @media (max-width: 880px) { .v3-product__inner { grid-template-columns: 1fr; } }
-  .v3-product__img { aspect-ratio: 1; background: #f9f1f1; border-radius: 24px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-  .v3-product__img img { width: 70%; height: 70%; object-fit: contain; }
-  .v3-product__num { position: absolute; top: 24px; left: 24px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.08em; color: rgba(26,26,26,0.5); }
-  .v3-product__eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--becky-pink); font-weight: 700; margin: 0 0 20px; }
-  .v3-product__title { font-size: clamp(32px, 5vw, 56px); line-height: 1; letter-spacing: -0.02em; margin: 0 0 24px; max-width: 480px; font-weight: 700; }
-  .v3-product__rating { display: flex; align-items: center; gap: 12px; margin: 0 0 32px; font-size: 14px; color: #666; }
-  .v3-product__stars { color: var(--becky-pink); font-size: 18px; letter-spacing: 2px; }
-  .v3-product__desc { font-size: 17px; line-height: 1.65; color: #5a5a5a; margin: 0 0 36px; max-width: 480px; }
-  .v3-product__split { display: flex; gap: 32px; padding: 24px 0; margin: 0 0 32px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
-  .v3-product__split > div { flex: 1; }
-  .v3-product__split-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #999; font-weight: 600; margin: 0 0 6px; }
-  .v3-product__split-value { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px; }
+  /* PRODUCT spotlight */
+  .v4-product { padding: clamp(96px, 12vw, 160px) var(--g); background: #fff; }
+  .v4-product__inner { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(48px, 7vw, 120px); align-items: center; }
+  @media (max-width: 880px) { .v4-product__inner { grid-template-columns: 1fr; } }
+  .v4-product__img { aspect-ratio: 1; background: var(--becky-blush); border-radius: 32px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .v4-product__img img { width: 70%; height: 70%; object-fit: contain; }
+  .v4-product__corner-sticker { position: absolute; top: 24px; left: 24px; background: var(--becky-yellow); color: var(--becky-ink); padding: 10px 16px; border-radius: 999px; font-weight: 800; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; transform: rotate(-6deg); }
+  .v4-product__eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--becky-pink); font-weight: 800; margin: 0 0 20px; }
+  .v4-product__title { font-size: clamp(36px, 5.5vw, 64px); line-height: 1; letter-spacing: -0.025em; margin: 0 0 24px; max-width: 480px; font-weight: 800; }
+  .v4-product__rating { display: flex; align-items: center; gap: 12px; margin: 0 0 32px; font-size: 14px; color: #666; }
+  .v4-product__stars { color: var(--becky-pink); font-size: 18px; letter-spacing: 2px; }
+  .v4-product__desc { font-size: 17px; line-height: 1.65; color: #5a5a5a; margin: 0 0 36px; max-width: 480px; }
+  .v4-product__split { display: flex; gap: 0; padding: 24px 0; margin: 0 0 32px; border-top: 2px solid var(--becky-ink); border-bottom: 2px solid var(--becky-ink); }
+  .v4-product__split > div { flex: 1; padding: 0 24px; border-right: 1px solid #eee; }
+  .v4-product__split > div:last-child { border-right: none; }
+  .v4-product__split > div:first-child { padding-left: 0; }
+  .v4-product__split-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #999; font-weight: 700; margin: 0 0 6px; }
+  .v4-product__split-value { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+  .v4-product__bigcta { display: inline-flex; align-items: center; gap: 12px; padding: 20px 36px; background: var(--becky-ink); color: #fff; border-radius: 999px; font-weight: 800; font-size: 18px; transition: all 200ms ease; text-decoration: none; }
+  .v4-product__bigcta:hover { background: var(--becky-pink); transform: translateY(-2px); }
+  .v4-product__bigcta::after { content: '→'; font-size: 22px; transition: transform 200ms ease; }
+  .v4-product__bigcta:hover::after { transform: translateX(4px); }
 
-  /* WHY (4-up grid, generous spacing) */
-  .v3-why { padding: clamp(80px, 12vw, 140px) var(--gutter); background: #fafafa; }
-  .v3-why__header { max-width: 720px; margin: 0 auto clamp(56px, 8vw, 88px); text-align: center; }
-  .v3-why__eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--becky-pink); font-weight: 700; margin: 0 0 16px; }
-  .v3-why__title { font-size: clamp(32px, 5vw, 56px); margin: 0; line-height: 1.05; letter-spacing: -0.02em; }
-  .v3-why__grid { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
-  @media (max-width: 880px) { .v3-why__grid { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
-  @media (max-width: 540px) { .v3-why__grid { grid-template-columns: 1fr; } }
-  .v3-why__card { background: #fff; padding: 36px 28px; border-radius: 20px; }
-  .v3-why__num { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: var(--becky-pink); margin: 0 0 16px; letter-spacing: 0.1em; }
-  .v3-why__card h3 { font-size: 19px; margin: 0 0 12px; line-height: 1.3; }
-  .v3-why__card p { font-size: 14px; line-height: 1.55; color: #666; margin: 0; }
+  /* WHY — fun 4-up with colored cards */
+  .v4-why { padding: clamp(96px, 14vw, 160px) var(--g); background: var(--becky-lavender); }
+  .v4-why__head { max-width: 720px; margin: 0 auto clamp(56px, 8vw, 88px); text-align: center; }
+  .v4-why__eyebrow { display: inline-block; padding: 8px 16px; background: var(--becky-ink); color: #fff; border-radius: 999px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 800; margin: 0 0 24px; }
+  .v4-why__title { font-size: clamp(36px, 5.5vw, 64px); line-height: 1; letter-spacing: -0.025em; margin: 0; font-weight: 800; }
+  .v4-why__grid { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 880px) { .v4-why__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .v4-why__grid { grid-template-columns: 1fr; } }
+  .v4-why__card { background: #fff; padding: 36px 28px; border-radius: 24px; position: relative; transition: transform 200ms ease; }
+  .v4-why__card:hover { transform: translateY(-4px); }
+  .v4-why__card:nth-child(1) { background: var(--becky-yellow); }
+  .v4-why__card:nth-child(2) { background: var(--becky-blush); }
+  .v4-why__card:nth-child(3) { background: var(--becky-peach); }
+  .v4-why__card:nth-child(4) { background: #fff; }
+  .v4-why__icon { font-size: 36px; margin: 0 0 16px; display: inline-block; }
+  .v4-why__num { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 14px; color: var(--becky-ink); margin: 0 0 16px; letter-spacing: 0.1em; opacity: 0.5; }
+  .v4-why__card h3 { font-size: 22px; margin: 0 0 12px; line-height: 1.2; font-weight: 800; letter-spacing: -0.01em; }
+  .v4-why__card p { font-size: 14px; line-height: 1.55; color: var(--becky-ink); margin: 0; opacity: 0.75; }
 
-  /* REVIEWS — editorial */
-  .v3-reviews { padding: clamp(96px, 14vw, 160px) var(--gutter); background: #fff; }
-  .v3-reviews__head { max-width: 720px; margin: 0 auto clamp(56px, 8vw, 88px); text-align: center; }
-  .v3-reviews__head h2 { font-size: clamp(32px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 16px; }
-  .v3-reviews__head p { color: #666; max-width: 480px; margin: 0 auto; font-size: 16px; }
-  .v3-reviews__grid { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  @media (max-width: 880px) { .v3-reviews__grid { grid-template-columns: 1fr; } }
-  .v3-review { background: #faf6f6; padding: 36px 32px; border-radius: 24px; position: relative; }
-  .v3-review__stars { color: var(--becky-pink); font-size: 17px; letter-spacing: 2px; margin: 0 0 20px; }
-  .v3-review__quote { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 22px; line-height: 1.25; margin: 0 0 20px; letter-spacing: -0.01em; }
-  .v3-review__body { font-size: 15px; line-height: 1.55; color: #5a5a5a; margin: 0 0 24px; }
-  .v3-review__meta { display: flex; gap: 8px; align-items: center; font-size: 13px; color: #888; padding-top: 20px; border-top: 1px solid #eee; }
-  .v3-review__meta strong { color: var(--becky-ink); font-weight: 600; }
-  .v3-review__verified { background: #ffebeb; color: var(--becky-pink); padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; }
+  /* REVIEWS */
+  .v4-reviews { padding: clamp(96px, 14vw, 160px) var(--g); background: #fff; }
+  .v4-reviews__head { max-width: 760px; margin: 0 auto clamp(56px, 8vw, 88px); text-align: center; }
+  .v4-reviews__sticker { display: inline-block; padding: 10px 20px; background: var(--becky-pink); color: #fff; border-radius: 999px; font-weight: 800; font-size: 14px; transform: rotate(-2deg); margin: 0 0 24px; }
+  .v4-reviews__head h2 { font-size: clamp(36px, 5.5vw, 64px); line-height: 1; letter-spacing: -0.025em; margin: 0 0 16px; font-weight: 800; }
+  .v4-reviews__head p { color: #666; max-width: 480px; margin: 0 auto; font-size: 16px; }
+  .v4-reviews__grid { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 880px) { .v4-reviews__grid { grid-template-columns: 1fr; } }
+  .v4-review { padding: 36px 32px; border-radius: 24px; position: relative; transform: rotate(-1deg); }
+  .v4-review:nth-child(2) { transform: rotate(1deg); }
+  .v4-review:nth-child(3) { transform: rotate(-0.5deg); }
+  .v4-review:nth-child(1) { background: var(--becky-blush); }
+  .v4-review:nth-child(2) { background: var(--becky-yellow); }
+  .v4-review:nth-child(3) { background: var(--becky-peach); }
+  .v4-review:hover { transform: rotate(0deg) scale(1.02); transition: transform 300ms ease; }
+  .v4-review__stars { color: var(--becky-pink); font-size: 17px; letter-spacing: 2px; margin: 0 0 20px; }
+  .v4-review__quote { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.15; margin: 0 0 20px; letter-spacing: -0.02em; }
+  .v4-review__body { font-size: 15px; line-height: 1.55; color: var(--becky-ink); margin: 0 0 24px; opacity: 0.85; }
+  .v4-review__meta { display: flex; gap: 8px; align-items: center; font-size: 13px; padding-top: 20px; border-top: 1px solid rgba(26,26,26,0.1); }
+  .v4-review__meta strong { color: var(--becky-ink); font-weight: 700; }
+  .v4-review__verified { background: var(--becky-ink); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; }
 
-  /* ROUTINE — 3-step large */
-  .v3-routine { padding: clamp(96px, 14vw, 160px) var(--gutter); background: #ffebeb; }
-  .v3-routine__inner { max-width: 1320px; margin: 0 auto; }
-  .v3-routine__head { max-width: 720px; margin: 0 auto clamp(56px, 8vw, 88px); text-align: center; }
-  .v3-routine__eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--becky-pink); font-weight: 700; margin: 0 0 16px; }
-  .v3-routine__head h2 { font-size: clamp(32px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 16px; }
-  .v3-routine__head p { color: #5a5a5a; font-size: 17px; max-width: 540px; margin: 0 auto; }
-  .v3-routine__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  @media (max-width: 880px) { .v3-routine__grid { grid-template-columns: 1fr; } }
-  .v3-routine__step { background: #fff; border-radius: 24px; padding: 40px 32px; }
-  .v3-routine__step-num { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 48px; line-height: 1; color: var(--becky-pink); margin: 0 0 24px; letter-spacing: -0.02em; }
-  .v3-routine__step h3 { font-size: 24px; margin: 0 0 12px; }
-  .v3-routine__step p { color: #5a5a5a; line-height: 1.55; margin: 0; font-size: 15px; }
-  .v3-routine__cta { text-align: center; margin: 56px 0 0; }
+  /* ROUTINE */
+  .v4-routine { padding: clamp(96px, 14vw, 160px) var(--g); background: var(--becky-pink); color: #fff; }
+  .v4-routine__inner { max-width: 1320px; margin: 0 auto; }
+  .v4-routine__head { max-width: 760px; margin: 0 auto clamp(56px, 8vw, 88px); text-align: center; }
+  .v4-routine__eyebrow { display: inline-block; padding: 8px 16px; background: var(--becky-yellow); color: var(--becky-ink); border-radius: 999px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 800; margin: 0 0 24px; }
+  .v4-routine__head h2 { color: #fff; font-size: clamp(36px, 5.5vw, 64px); line-height: 1; letter-spacing: -0.025em; margin: 0 0 16px; font-weight: 800; }
+  .v4-routine__head p { color: rgba(255,255,255,0.9); font-size: 17px; max-width: 540px; margin: 0 auto; }
+  .v4-routine__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 880px) { .v4-routine__grid { grid-template-columns: 1fr; } }
+  .v4-routine__step { background: #fff; color: var(--becky-ink); border-radius: 24px; padding: 40px 32px; position: relative; }
+  .v4-routine__step-num { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 80px; line-height: 0.85; color: var(--becky-pink); margin: 0 0 16px; letter-spacing: -0.04em; }
+  .v4-routine__step h3 { font-size: 26px; margin: 0 0 12px; font-weight: 800; letter-spacing: -0.01em; }
+  .v4-routine__step p { color: #5a5a5a; line-height: 1.55; margin: 0; font-size: 15px; }
+  .v4-routine__cta { text-align: center; margin: 56px 0 0; }
+  .v4-routine__cta a { display: inline-flex; align-items: center; gap: 8px; padding: 18px 36px; background: var(--becky-yellow); color: var(--becky-ink); border-radius: 999px; font-weight: 800; font-size: 17px; text-decoration: none; transition: transform 200ms ease; }
+  .v4-routine__cta a:hover { transform: translateY(-2px); }
 
-  /* ATLAS — editorial */
-  .v3-atlas { padding: clamp(96px, 14vw, 160px) var(--gutter); background: #fff; }
-  .v3-atlas__inner { max-width: 1320px; margin: 0 auto; }
-  .v3-atlas__head { display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; margin: 0 0 clamp(56px, 8vw, 88px); }
-  .v3-atlas__head h2 { font-size: clamp(32px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 0; }
-  .v3-atlas__head p { color: #666; max-width: 480px; margin: 16px 0 0; font-size: 16px; line-height: 1.5; }
-  .v3-atlas__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-  @media (max-width: 880px) { .v3-atlas__grid { grid-template-columns: 1fr; } }
-  .v3-atlas__card { display: block; transition: opacity 200ms ease; }
-  .v3-atlas__card:hover { opacity: 0.85; }
-  .v3-atlas__card-img { aspect-ratio: 5 / 4; background: #f9f1f1; border-radius: 16px; overflow: hidden; margin: 0 0 20px; display: flex; align-items: center; justify-content: center; }
-  .v3-atlas__card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 400ms ease; }
-  .v3-atlas__card:hover .v3-atlas__card-img img { transform: scale(1.04); }
-  .v3-atlas__card-meta { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #999; font-weight: 600; margin: 0 0 10px; }
-  .v3-atlas__card-title { font-size: 22px; line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.01em; color: var(--becky-ink); }
-  .v3-atlas__card-excerpt { font-size: 14px; line-height: 1.55; color: #666; margin: 0; }
+  /* ATLAS */
+  .v4-atlas { padding: clamp(96px, 14vw, 160px) var(--g); background: #fff; }
+  .v4-atlas__inner { max-width: 1320px; margin: 0 auto; }
+  .v4-atlas__head { display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; margin: 0 0 clamp(56px, 8vw, 88px); }
+  .v4-atlas__head h2 { font-size: clamp(36px, 5.5vw, 64px); line-height: 1; letter-spacing: -0.025em; margin: 0; font-weight: 800; }
+  .v4-atlas__head p { color: #666; max-width: 480px; margin: 16px 0 0; font-size: 16px; line-height: 1.5; }
+  .v4-atlas__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  @media (max-width: 880px) { .v4-atlas__grid { grid-template-columns: 1fr; } }
+  .v4-atlas__card { display: block; transition: opacity 200ms ease; }
+  .v4-atlas__card:hover { opacity: 0.9; }
+  .v4-atlas__card-img { aspect-ratio: 5/4; background: var(--becky-blush); border-radius: 20px; overflow: hidden; margin: 0 0 20px; display: flex; align-items: center; justify-content: center; }
+  .v4-atlas__card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 400ms ease; }
+  .v4-atlas__card:hover .v4-atlas__card-img img { transform: scale(1.05); }
+  .v4-atlas__card-meta { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--becky-pink); font-weight: 800; margin: 0 0 10px; }
+  .v4-atlas__card-title { font-size: 22px; line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.01em; color: var(--becky-ink); font-weight: 700; }
+  .v4-atlas__card-excerpt { font-size: 14px; line-height: 1.55; color: #666; margin: 0; }
 
-  /* TRUTH — minimal, big */
-  .v3-truth { padding: clamp(120px, 16vw, 200px) var(--gutter); background: #fff; text-align: center; }
-  .v3-truth__inner { max-width: 760px; margin: 0 auto; }
-  .v3-truth h2 { font-size: clamp(36px, 6vw, 64px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 32px; }
-  .v3-truth p { font-size: clamp(17px, 1.6vw, 19px); line-height: 1.65; color: #5a5a5a; margin: 0 0 20px; }
+  /* TRUTH — colorful and fun */
+  .v4-truth { padding: clamp(120px, 16vw, 200px) var(--g); background: linear-gradient(135deg, var(--becky-peach) 0%, var(--becky-blush) 50%, var(--becky-lavender) 100%); position: relative; overflow: hidden; text-align: center; }
+  .v4-truth::before { content: ''; position: absolute; width: 320px; height: 320px; background: var(--becky-yellow); border-radius: 50%; top: 20%; left: -100px; opacity: 0.5; filter: blur(60px); }
+  .v4-truth::after { content: ''; position: absolute; width: 320px; height: 320px; background: var(--becky-pink); border-radius: 50%; bottom: 10%; right: -80px; opacity: 0.3; filter: blur(60px); }
+  .v4-truth__inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+  .v4-truth__sticker { display: inline-block; padding: 10px 20px; background: var(--becky-ink); color: #fff; border-radius: 999px; font-weight: 700; font-size: 13px; letter-spacing: 0.04em; margin: 0 0 32px; transform: rotate(-2deg); }
+  .v4-truth h2 { font-size: clamp(40px, 6.5vw, 80px); line-height: 0.95; letter-spacing: -0.035em; margin: 0 0 36px; font-weight: 800; color: var(--becky-ink); }
+  .v4-truth h2 em { font-style: normal; color: var(--becky-pink); }
+  .v4-truth p { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.65; color: var(--becky-ink); margin: 0 0 20px; opacity: 0.85; }
 
-  /* CTA */
-  .v3-cta { padding: clamp(80px, 12vw, 140px) var(--gutter); background: #fafafa; text-align: center; }
-  .v3-cta__inner { max-width: 600px; margin: 0 auto; }
-  .v3-cta h2 { font-size: clamp(28px, 4vw, 40px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 16px; }
-  .v3-cta p { color: #666; margin: 0 0 28px; font-size: 16px; }
+  /* CTA — final pink */
+  .v4-final-cta { padding: clamp(80px, 12vw, 140px) var(--g); background: var(--becky-ink); color: #fff; text-align: center; }
+  .v4-final-cta__inner { max-width: 720px; margin: 0 auto; }
+  .v4-final-cta__eyebrow { display: inline-block; padding: 10px 20px; background: var(--becky-pink); color: #fff; border-radius: 999px; font-weight: 700; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 28px; }
+  .v4-final-cta h2 { color: #fff; font-size: clamp(36px, 5.5vw, 64px); line-height: 1; letter-spacing: -0.025em; margin: 0 0 24px; font-weight: 800; }
+  .v4-final-cta p { color: rgba(255,255,255,0.8); margin: 0 0 40px; font-size: 17px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .v4-final-cta a.btn { display: inline-flex; align-items: center; gap: 12px; padding: 20px 40px; background: var(--becky-pink); color: #fff; border-radius: 999px; font-weight: 800; font-size: 18px; text-decoration: none; transition: all 200ms ease; }
+  .v4-final-cta a.btn:hover { background: var(--becky-yellow); color: var(--becky-ink); transform: translateY(-2px); }
 </style>
 
-<div class="home-v3">
+<div class="v4">
 
-  <!-- HERO -->
-  <section class="v3-hero">
-    <div class="v3-hero__inner">
+  <!-- HERO — yellow + pink, fun -->
+  <section class="v4-hero">
+    <div class="v4-hero__inner">
       <div>
-        <span class="v3-hero__pill">Hi, we're Becky</span>
-        <h1 class="v3-hero__title">The skin no one talks about deserves a routine.</h1>
-        <p class="v3-hero__sub">A walnut-shell + rosehip exfoliant for buttne, KP, ingrowns, and dark spots. Vegan, cruelty-free, $20.</p>
-        <div class="v3-hero__ctas">
-          <a href="/products/booty-scrub" class="becky-btn becky-btn-primary">Shop the Scrub</a>
-          <a href="/pages/routine" class="becky-btn becky-btn-secondary">Read the Routine</a>
+        <span class="v4-hero__pill">Hi, we're Becky</span>
+        <h1 class="v4-hero__title">The skin no one talks about <em>deserves a routine.</em></h1>
+        <p class="v4-hero__sub">A walnut-shell + rosehip exfoliant for buttne, KP, ingrowns, and dark spots. Vegan, cruelty-free, $20.</p>
+        <div class="v4-hero__ctas">
+          <a href="/products/booty-scrub" class="v4-hero__btn-primary">Shop the Scrub →</a>
+          <a href="/pages/routine" class="v4-hero__small-text" style="text-decoration: underline; text-underline-offset: 4px;">or read the routine first</a>
         </div>
       </div>
-      <div class="v3-hero__img-wrap">
+      <div class="v4-hero__img-wrap">
+        <span class="v4-hero__sticker"><span>$20</span><span>Always</span></span>
         {%- if product.featured_image -%}
           <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.title | escape }}" width="800" height="800">
         {%- endif -%}
-        <div class="v3-hero__credits">
-          <div><small>Bestseller</small><strong>Booty Scrub · {{ product.price | money }}</strong></div>
+        <div class="v4-hero__credits">
+          <div><small>Bestseller</small><strong>Booty Scrub · 2oz</strong></div>
           <div style="text-align:right;"><small>Rating</small><strong>★ {{ avg_rating }} ({{ review_count }})</strong></div>
         </div>
       </div>
@@ -152,117 +192,90 @@
   </section>
 
   <!-- MARQUEE -->
-  <div class="v3-marquee">
-    <div class="v3-marquee__track">
-      <span class="v3-marquee__item label">As featured in</span>
-      <span class="v3-marquee__item">Cosmopolitan</span>
-      <span class="v3-marquee__item">PopSugar</span>
-      <span class="v3-marquee__item">Marie Claire</span>
-      <span class="v3-marquee__item">Yahoo</span>
-      <span class="v3-marquee__item">Bustle</span>
-      <span class="v3-marquee__item">Refinery29</span>
-      <span class="v3-marquee__item label">As featured in</span>
-      <span class="v3-marquee__item">Cosmopolitan</span>
-      <span class="v3-marquee__item">PopSugar</span>
-      <span class="v3-marquee__item">Marie Claire</span>
-      <span class="v3-marquee__item">Yahoo</span>
-      <span class="v3-marquee__item">Bustle</span>
-      <span class="v3-marquee__item">Refinery29</span>
+  <div class="v4-marquee">
+    <div class="v4-marquee__track">
+      <span class="v4-marquee__item label">★ As featured in</span>
+      <span class="v4-marquee__item">Cosmopolitan</span>
+      <span class="v4-marquee__item">PopSugar</span>
+      <span class="v4-marquee__item">Marie Claire</span>
+      <span class="v4-marquee__item">Yahoo</span>
+      <span class="v4-marquee__item">Bustle</span>
+      <span class="v4-marquee__item">Refinery29</span>
+      <span class="v4-marquee__item label">★ As featured in</span>
+      <span class="v4-marquee__item">Cosmopolitan</span>
+      <span class="v4-marquee__item">PopSugar</span>
+      <span class="v4-marquee__item">Marie Claire</span>
+      <span class="v4-marquee__item">Yahoo</span>
+      <span class="v4-marquee__item">Bustle</span>
+      <span class="v4-marquee__item">Refinery29</span>
     </div>
   </div>
 
   {%- if product != blank -%}
-  <!-- PRODUCT -->
-  <section class="v3-product">
-    <div class="v3-product__inner">
-      <div class="v3-product__img">
-        <span class="v3-product__num">N° 01</span>
+  <section class="v4-product">
+    <div class="v4-product__inner">
+      <div class="v4-product__img">
+        <span class="v4-product__corner-sticker">★ Bestseller</span>
         {%- if product.featured_image -%}
           <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.title | escape }}" width="800" height="800">
         {%- endif -%}
       </div>
       <div>
-        <p class="v3-product__eyebrow">Bestseller · The Original</p>
-        <h2 class="v3-product__title">{{ product.title }}</h2>
-        <div class="v3-product__rating">
-          <span class="v3-product__stars">★★★★★</span>
+        <p class="v4-product__eyebrow">The Original · N° 01</p>
+        <h2 class="v4-product__title">{{ product.title }}</h2>
+        <div class="v4-product__rating">
+          <span class="v4-product__stars">★★★★★</span>
           <span><strong>{{ avg_rating }}</strong> from {{ review_count }}+ verified reviews</span>
         </div>
-        <p class="v3-product__desc">Walnut shell + rosehip exfoliant for the skin between your hip and your knee. Smooths buttne, KP, ingrowns, and dark spots in 4 weeks. Works on butt, thighs, anywhere bumpy.</p>
-        <div class="v3-product__split">
-          <div>
-            <p class="v3-product__split-label">Price</p>
-            <p class="v3-product__split-value">{{ product.price | money }}</p>
-          </div>
-          <div>
-            <p class="v3-product__split-label">Lasts</p>
-            <p class="v3-product__split-value">4-6 weeks</p>
-          </div>
-          <div>
-            <p class="v3-product__split-label">Ships</p>
-            <p class="v3-product__split-value">Free $35+</p>
-          </div>
+        <p class="v4-product__desc">Walnut shell + rosehip exfoliant for the skin between your hip and your knee. Smooths buttne, KP, ingrowns, and dark spots in 4 weeks.</p>
+        <div class="v4-product__split">
+          <div><p class="v4-product__split-label">Price</p><p class="v4-product__split-value">{{ product.price | money }}</p></div>
+          <div><p class="v4-product__split-label">Lasts</p><p class="v4-product__split-value">4-6 wks</p></div>
+          <div><p class="v4-product__split-label">Ships</p><p class="v4-product__split-value">Free $35+</p></div>
         </div>
-        <a href="{{ product.url }}" class="becky-btn becky-btn-primary" style="width: 100%;">Add to cart — {{ product.price | money }}</a>
+        <a href="{{ product.url }}" class="v4-product__bigcta">Add to cart · {{ product.price | money }}</a>
       </div>
     </div>
   </section>
   {%- endif -%}
 
-  <!-- WHY -->
-  <section class="v3-why">
-    <div class="v3-why__header">
-      <p class="v3-why__eyebrow">Why Becky</p>
-      <h2 class="v3-why__title">Real ingredients. Real results. Real talk.</h2>
+  <section class="v4-why">
+    <div class="v4-why__head">
+      <p class="v4-why__eyebrow">Why Becky</p>
+      <h2 class="v4-why__title">Real ingredients.<br>Real results. Real talk.</h2>
     </div>
-    <div class="v3-why__grid">
-      <div class="v3-why__card">
-        <p class="v3-why__num">01</p>
-        <h3>Walnut + Rosehip</h3>
-        <p>Mechanical exfoliation paired with vitamin-A precursors. No synthetic microbeads. No fragrance theater.</p>
-      </div>
-      <div class="v3-why__card">
-        <p class="v3-why__num">02</p>
-        <h3>Vegan + Cruelty-free</h3>
-        <p>Tested on willing humans only. Leaping Bunny certified. Made small-batch in the USA.</p>
-      </div>
-      <div class="v3-why__card">
-        <p class="v3-why__num">03</p>
-        <h3>1% to EMC</h3>
-        <p>1% of every order goes to Every Mother Counts — Christy Turlington's maternal health nonprofit.</p>
-      </div>
-      <div class="v3-why__card">
-        <p class="v3-why__num">04</p>
-        <h3>Money back, 30 days</h3>
-        <p>If it doesn't work in your first month, email us. Refund or replacement. No questions.</p>
-      </div>
+    <div class="v4-why__grid">
+      <div class="v4-why__card"><p class="v4-why__num">N° 01</p><h3>Walnut + Rosehip</h3><p>Mechanical exfoliation + vitamin-A precursors. No synthetic microbeads. No fragrance theater.</p></div>
+      <div class="v4-why__card"><p class="v4-why__num">N° 02</p><h3>Vegan + Cruelty-free</h3><p>Tested on willing humans only. Leaping Bunny certified. Made small-batch in Portland.</p></div>
+      <div class="v4-why__card"><p class="v4-why__num">N° 03</p><h3>1% to EMC</h3><p>1% of every order to Every Mother Counts — Christy Turlington's maternal health nonprofit.</p></div>
+      <div class="v4-why__card"><p class="v4-why__num">N° 04</p><h3>30-day money-back</h3><p>If it doesn't work in your first month, email us. Refund or replacement. No questions.</p></div>
     </div>
   </section>
 
-  <!-- REVIEWS -->
-  <section class="v3-reviews">
-    <div class="v3-reviews__head">
+  <section class="v4-reviews">
+    <div class="v4-reviews__head">
+      <p class="v4-reviews__sticker">★ {{ review_count }}+ verified reviews</p>
       <h2>Real reviews. Real butts.</h2>
-      <p>{{ review_count }}+ verified buyers across Amazon and DTC. Here's what they actually say.</p>
+      <p>Here's what {{ review_count }}+ buyers actually say.</p>
     </div>
-    <div class="v3-reviews__grid">
-      <div class="v3-review">
-        <p class="v3-review__stars">★★★★★</p>
-        <p class="v3-review__quote">"Changed. My. LIFE."</p>
-        <p class="v3-review__body">"I had a ton of dark marks on my butt due to dermatitis. Tried the anese that booty tho but couldn't justify the price. Switched to Becky and it's even better than the anese."</p>
-        <p class="v3-review__meta"><strong>Amanda</strong><span class="v3-review__verified">VERIFIED</span></p>
+    <div class="v4-reviews__grid">
+      <div class="v4-review">
+        <p class="v4-review__stars">★★★★★</p>
+        <p class="v4-review__quote">"Changed. My. LIFE."</p>
+        <p class="v4-review__body">I had a ton of dark marks on my butt due to dermatitis. Tried the anese that booty tho but couldn't justify the price. Switched to Becky and it's even better.</p>
+        <p class="v4-review__meta"><strong>Amanda</strong><span class="v4-review__verified">VERIFIED</span></p>
       </div>
-      <div class="v3-review">
-        <p class="v3-review__stars">★★★★★</p>
-        <p class="v3-review__quote">"The best booty scrub ever."</p>
-        <p class="v3-review__body">"I never run out of this stuff. Makes the cheeks so soft and wards off 'buttne.' My new shower essential."</p>
-        <p class="v3-review__meta"><strong>Tabitha B.</strong><span class="v3-review__verified">VERIFIED</span></p>
+      <div class="v4-review">
+        <p class="v4-review__stars">★★★★★</p>
+        <p class="v4-review__quote">"The best ever."</p>
+        <p class="v4-review__body">I never run out of this stuff. Makes the cheeks so soft and wards off 'buttne.' My new shower essential.</p>
+        <p class="v4-review__meta"><strong>Tabitha B.</strong><span class="v4-review__verified">VERIFIED</span></p>
       </div>
-      <div class="v3-review">
-        <p class="v3-review__stars">★★★★★</p>
-        <p class="v3-review__quote">"Worked very well for me."</p>
-        <p class="v3-review__body">"I'd always been embarrassed about my booty. After a few weeks, almost all the weird booty marks are gone and it is smoother than ever."</p>
-        <p class="v3-review__meta"><strong>Sarah K.</strong><span class="v3-review__verified">VERIFIED</span></p>
+      <div class="v4-review">
+        <p class="v4-review__stars">★★★★★</p>
+        <p class="v4-review__quote">"Smoother than ever."</p>
+        <p class="v4-review__body">I'd always been embarrassed about my booty. After a few weeks, almost all the weird booty marks are gone and it is smoother than ever.</p>
+        <p class="v4-review__meta"><strong>Sarah K.</strong><span class="v4-review__verified">VERIFIED</span></p>
       </div>
     </div>
     <div style="text-align: center; margin: 56px 0 0;">
@@ -270,59 +283,36 @@
     </div>
   </section>
 
-  <!-- ROUTINE -->
-  <section class="v3-routine">
-    <div class="v3-routine__inner">
-      <div class="v3-routine__head">
-        <p class="v3-routine__eyebrow">The 3-step Becky Routine</p>
+  <section class="v4-routine">
+    <div class="v4-routine__inner">
+      <div class="v4-routine__head">
+        <p class="v4-routine__eyebrow">The 3-step Becky Routine</p>
         <h2>Smooth skin in 4 weeks.</h2>
-        <p>Three steps. Four minutes. Three times a week. The protocol that takes your skin from bumpy and embarrassed to smooth and confident.</p>
+        <p>Three steps. Four minutes. Three times a week.</p>
       </div>
-      <div class="v3-routine__grid">
-        <div class="v3-routine__step">
-          <p class="v3-routine__step-num">01</p>
-          <h3>Exfoliate</h3>
-          <p>Becky Booty Scrub. 60 seconds on damp skin. Walnut shell + rosehip. 3x a week, not daily.</p>
-        </div>
-        <div class="v3-routine__step">
-          <p class="v3-routine__step-num">02</p>
-          <h3>Acid</h3>
-          <p>Salicylic acid for buttne. Glycolic acid for KP and dark spots. 2x a week, after shower.</p>
-        </div>
-        <div class="v3-routine__step">
-          <p class="v3-routine__step-num">03</p>
-          <h3>Moisturize</h3>
-          <p>Ceramide body lotion within 60 seconds of toweling off. Every day. Non-negotiable.</p>
-        </div>
+      <div class="v4-routine__grid">
+        <div class="v4-routine__step"><p class="v4-routine__step-num">01</p><h3>Exfoliate</h3><p>Becky Booty Scrub. 60 seconds on damp skin. Walnut + rosehip. 3x a week.</p></div>
+        <div class="v4-routine__step"><p class="v4-routine__step-num">02</p><h3>Acid</h3><p>Salicylic for buttne. Glycolic for KP + dark spots. 2x a week after shower.</p></div>
+        <div class="v4-routine__step"><p class="v4-routine__step-num">03</p><h3>Moisturize</h3><p>Ceramide body lotion within 60s of toweling off. Every day. Non-negotiable.</p></div>
       </div>
-      <div class="v3-routine__cta">
-        <a href="/pages/routine" class="becky-btn becky-btn-primary">See the full routine →</a>
-      </div>
+      <div class="v4-routine__cta"><a href="/pages/routine">See the full routine →</a></div>
     </div>
   </section>
 
   {%- if featured_blog and featured_blog.articles.size > 0 -%}
-  <!-- ATLAS -->
-  <section class="v3-atlas">
-    <div class="v3-atlas__inner">
-      <div class="v3-atlas__head">
-        <div>
-          <h2>The Booty Atlas</h2>
-          <p>Everything we know about the skin between your hip and your knee. Conditions, ingredients, routines — researched, written, real.</p>
-        </div>
+  <section class="v4-atlas">
+    <div class="v4-atlas__inner">
+      <div class="v4-atlas__head">
+        <div><h2>The Booty Atlas</h2><p>Everything we know about the skin between your hip and your knee.</p></div>
         <a href="/blogs/booty-atlas" class="becky-btn becky-btn-secondary">All articles →</a>
       </div>
-      <div class="v3-atlas__grid">
+      <div class="v4-atlas__grid">
         {%- for article in featured_blog.articles limit: 3 -%}
-          <a href="{{ article.url }}" class="v3-atlas__card">
-            <div class="v3-atlas__card-img">
-              {%- if article.image -%}<img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.title | escape }}" loading="lazy">{%- endif -%}
-            </div>
-            <p class="v3-atlas__card-meta">
-              {%- if article.metafields.becky.reading_time_min -%}{{ article.metafields.becky.reading_time_min }} min read{%- else -%}The Atlas{%- endif -%}
-            </p>
-            <h3 class="v3-atlas__card-title">{{ article.title }}</h3>
-            <p class="v3-atlas__card-excerpt">{{ article.metafields.becky.tldr | default: article.excerpt | strip_html | truncate: 140 }}</p>
+          <a href="{{ article.url }}" class="v4-atlas__card">
+            <div class="v4-atlas__card-img">{%- if article.image -%}<img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.title | escape }}" loading="lazy">{%- endif -%}</div>
+            <p class="v4-atlas__card-meta">{%- if article.metafields.becky.reading_time_min -%}{{ article.metafields.becky.reading_time_min }} min read{%- else -%}The Atlas{%- endif -%}</p>
+            <h3 class="v4-atlas__card-title">{{ article.title }}</h3>
+            <p class="v4-atlas__card-excerpt">{{ article.metafields.becky.tldr | default: article.excerpt | strip_html | truncate: 140 }}</p>
           </a>
         {%- endfor -%}
       </div>
@@ -330,12 +320,21 @@
   </section>
   {%- endif -%}
 
-  <!-- TRUTH -->
-  <section class="v3-truth">
-    <div class="v3-truth__inner">
-      <h2>Let's talk about your booty.</h2>
+  <section class="v4-truth">
+    <div class="v4-truth__inner">
+      <span class="v4-truth__sticker">🍑 Real talk</span>
+      <h2>Let's talk about <em>your booty.</em></h2>
       <p>We eat carbs. We sit at desks. We sweat through workouts and ride bikes and try on swimsuits with the lights on. The skin back there breaks out, gets bumpy, gets darker, gets ignored.</p>
       <p>Becky is for that skin. Whether yours has KP, buttne, ingrowns, stretch marks, or nothing wrong with it — it deserves a routine.</p>
+    </div>
+  </section>
+
+  <section class="v4-final-cta">
+    <div class="v4-final-cta__inner">
+      <p class="v4-final-cta__eyebrow">Ready when you are</p>
+      <h2>Smooth skin starts with one jar.</h2>
+      <p>$20 · ships free over $35 · 30-day money-back · made in the USA</p>
+      <a href="/products/booty-scrub" class="btn">Shop the Booty Scrub →</a>
     </div>
   </section>
 
