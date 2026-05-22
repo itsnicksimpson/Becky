@@ -27,6 +27,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
+    {%- comment -%} Junip review widget {%- endcomment -%}
+    <script src="https://static.juniphq.com/v1/widget.js" defer></script>
+
     {{ content_for_header }}
 
     <style>
@@ -123,22 +126,21 @@
 
         <nav class="becky-header__nav" aria-label="Main">
           <a href="/products/booty-scrub"{% if template contains 'product' %} class="active"{% endif %}>Shop</a>
-          <a href="/pages/routine"{% if template contains 'page.routine' %} class="active"{% endif %}>The Routine</a>
+          <a href="/pages/routine"{% if page.handle == 'routine' %} class="active"{% endif %}>Routine</a>
           <a href="/blogs/booty-atlas"{% if template contains 'blog' or template contains 'article' %} class="active"{% endif %}>The Atlas</a>
-          <a href="/pages/faq"{% if template contains 'page.faq' %} class="active"{% endif %}>FAQ</a>
-          <a href="/pages/our-story"{% if template contains 'page.our-story' %} class="active"{% endif %}>About</a>
+          <a href="/pages/reviews"{% if page.handle == 'reviews' %} class="active"{% endif %}>Reviews</a>
+          <a href="/pages/faq"{% if page.handle == 'faq' %} class="active"{% endif %}>FAQ</a>
+          <a href="/pages/our-story"{% if page.handle == 'our-story' %} class="active"{% endif %}>About</a>
         </nav>
 
         <div class="becky-header__actions">
           <a href="/search" class="becky-header__icon" aria-label="Search">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </a>
-          <a href="/cart" class="becky-header__icon" aria-label="Cart">
+          <button type="button" class="becky-header__icon" id="beckyCartBtn" aria-label="Open cart">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            {%- if cart.item_count > 0 -%}
-              <span class="becky-cart-count">{{ cart.item_count }}</span>
-            {%- endif -%}
-          </a>
+            <span class="becky-cart-count" id="beckyCartCount"{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+          </button>
         </div>
       </div>
     </header>
@@ -199,9 +201,56 @@
       </div>
     </footer>
 
+    <!-- SLIDE-IN CART DRAWER -->
+    <div class="becky-cart-overlay" id="beckyCartOverlay"></div>
+    <aside class="becky-cart-drawer" id="beckyCartDrawer" aria-label="Shopping cart" aria-hidden="true">
+      <div class="becky-cart-head">
+        <h3>Your cart</h3>
+        <button type="button" class="becky-cart-close" id="beckyCartClose" aria-label="Close cart">×</button>
+      </div>
+      <div class="becky-cart-body" id="beckyCartBody">
+        <div class="becky-cart-empty">
+          <p style="font-size:48px;margin:0 0 8px;">🍑</p>
+          <h4>Your cart is empty</h4>
+          <p style="color:var(--becky-grey);font-size:14px;margin:0 0 24px;">Add a Booty Scrub to get started.</p>
+          <a href="/products/booty-scrub" class="becky-btn becky-btn-primary" style="width:100%;">Shop the Scrub →</a>
+        </div>
+      </div>
+    </aside>
+
+    <style>
+      .becky-cart-overlay { position:fixed; inset:0; background:rgba(26,26,26,0.5); opacity:0; pointer-events:none; transition:opacity 200ms ease; z-index:200; }
+      .becky-cart-overlay.is-open { opacity:1; pointer-events:auto; }
+      .becky-cart-drawer { position:fixed; top:0; right:0; bottom:0; width:100%; max-width:440px; background:#fff; transform:translateX(100%); transition:transform 280ms cubic-bezier(0.4,0,0.2,1); z-index:201; display:flex; flex-direction:column; box-shadow:-12px 0 32px rgba(0,0,0,0.08); }
+      .becky-cart-drawer.is-open { transform:translateX(0); }
+      .becky-cart-head { display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--becky-border); }
+      .becky-cart-head h3 { font-size:20px; margin:0; }
+      .becky-cart-close { background:none; border:none; font-size:32px; line-height:1; color:var(--becky-ink); cursor:pointer; padding:0 8px; }
+      .becky-cart-close:hover { color:var(--becky-pink); }
+      .becky-cart-body { flex:1; overflow-y:auto; padding:24px; }
+      .becky-cart-empty { text-align:center; padding:48px 0; }
+      .becky-cart-empty h4 { font-size:18px; margin:0 0 8px; }
+      .becky-cart-item { display:grid; grid-template-columns:80px 1fr auto; gap:16px; padding:20px 0; border-bottom:1px solid var(--becky-border); align-items:center; }
+      .becky-cart-item__img { width:80px; height:80px; background:var(--becky-blush); border-radius:12px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+      .becky-cart-item__img img { width:100%; height:100%; object-fit:cover; }
+      .becky-cart-item__title { font-weight:600; font-size:15px; margin:0 0 6px; }
+      .becky-cart-item__price { font-weight:700; color:var(--becky-pink); font-size:14px; }
+      .becky-cart-item__qty { display:flex; align-items:center; gap:8px; margin-top:6px; }
+      .becky-cart-item__qty button { width:24px; height:24px; border-radius:50%; border:1px solid var(--becky-border); background:#fff; cursor:pointer; font-size:14px; }
+      .becky-cart-item__qty button:hover { border-color:var(--becky-pink); color:var(--becky-pink); }
+      .becky-cart-item__qty span { min-width:24px; text-align:center; font-weight:600; }
+      .becky-cart-item__remove { background:none; border:none; color:#999; cursor:pointer; font-size:11px; text-decoration:underline; padding:0; }
+      .becky-cart-foot { border-top:1px solid var(--becky-border); padding:20px 24px; background:#fff; }
+      .becky-cart-subtotal { display:flex; justify-content:space-between; align-items:baseline; margin:0 0 4px; }
+      .becky-cart-subtotal strong { font-family:'Poppins',sans-serif; font-size:20px; font-weight:700; }
+      .becky-cart-shipnote { font-size:13px; color:var(--becky-grey); margin:0 0 16px; }
+      .becky-cart-checkout { display:block; width:100%; padding:16px; background:var(--becky-pink); color:#fff !important; border:none; border-radius:999px; font-weight:700; font-size:16px; text-align:center; text-decoration:none; font-family:inherit; cursor:pointer; transition:background 200ms ease; }
+      .becky-cart-checkout:hover { background:var(--becky-pink-dark); }
+      .becky-cart-trust { display:flex; gap:8px; justify-content:center; margin:12px 0 0; font-size:11px; color:#999; flex-wrap:wrap; }
+    </style>
+
     <script>
       (function() {
-        // Sticky header shadow on scroll
         var header = document.getElementById('beckyHeader');
         if (header) {
           window.addEventListener('scroll', function() {
@@ -209,6 +258,101 @@
             else header.classList.remove('is-scrolled');
           }, { passive: true });
         }
+
+        // CART DRAWER
+        var drawer = document.getElementById('beckyCartDrawer');
+        var overlay = document.getElementById('beckyCartOverlay');
+        var openBtn = document.getElementById('beckyCartBtn');
+        var closeBtn = document.getElementById('beckyCartClose');
+        var cartCountEl = document.getElementById('beckyCartCount');
+        var cartBody = document.getElementById('beckyCartBody');
+
+        function openCart() {
+          drawer.classList.add('is-open');
+          overlay.classList.add('is-open');
+          drawer.setAttribute('aria-hidden','false');
+          document.body.style.overflow = 'hidden';
+          refreshCart();
+        }
+        function closeCart() {
+          drawer.classList.remove('is-open');
+          overlay.classList.remove('is-open');
+          drawer.setAttribute('aria-hidden','true');
+          document.body.style.overflow = '';
+        }
+        function money(cents){ return '$' + (cents/100).toFixed(2); }
+
+        function refreshCart() {
+          fetch('/cart.js', {headers:{'Accept':'application/json'}})
+            .then(r => r.json())
+            .then(cart => {
+              if (cartCountEl) {
+                cartCountEl.textContent = cart.item_count;
+                if (cart.item_count > 0) cartCountEl.removeAttribute('hidden');
+                else cartCountEl.setAttribute('hidden','');
+              }
+              if (cart.item_count === 0) {
+                cartBody.innerHTML = '<div class="becky-cart-empty"><p style="font-size:48px;margin:0 0 8px;">🍑</p><h4>Your cart is empty</h4><p style="color:#666;font-size:14px;margin:0 0 24px;">Add a Booty Scrub to get started.</p><a href="/products/booty-scrub" class="becky-btn becky-btn-primary" style="width:100%;">Shop the Scrub →</a></div>';
+                return;
+              }
+              var html = '';
+              cart.items.forEach(function(item) {
+                var img = item.image ? '<img src="'+item.image+'" alt="'+item.title+'" loading="lazy">' : '🍑';
+                html += '<div class="becky-cart-item" data-key="'+item.key+'"><div class="becky-cart-item__img">'+img+'</div><div><p class="becky-cart-item__title">'+item.product_title+'</p><div class="becky-cart-item__price">'+money(item.final_price)+'</div><div class="becky-cart-item__qty"><button type="button" data-action="dec">−</button><span>'+item.quantity+'</span><button type="button" data-action="inc">+</button></div><button type="button" class="becky-cart-item__remove" data-action="remove">Remove</button></div></div>';
+              });
+              var freeShipMet = cart.total_price >= 3500;
+              var shipNote = freeShipMet ? '✅ You qualify for free shipping' : '🚚 Add ' + money(3500 - cart.total_price) + ' for free shipping';
+              html += '<div class="becky-cart-foot"><p class="becky-cart-subtotal"><span>Subtotal</span><strong>'+money(cart.total_price)+'</strong></p><p class="becky-cart-shipnote">'+shipNote+'</p><a href="/checkout" class="becky-cart-checkout">Checkout →</a><p class="becky-cart-trust">30-day money-back · 1% to EMC · Vegan</p></div>';
+              cartBody.innerHTML = html;
+
+              // Wire up qty + remove buttons
+              cartBody.querySelectorAll('.becky-cart-item').forEach(function(itemEl){
+                var key = itemEl.dataset.key;
+                var item = cart.items.find(function(i){ return i.key === key; });
+                itemEl.querySelectorAll('[data-action]').forEach(function(btn){
+                  btn.addEventListener('click', function(){
+                    var action = btn.dataset.action;
+                    var newQty = action === 'remove' ? 0 : (action === 'inc' ? item.quantity + 1 : item.quantity - 1);
+                    fetch('/cart/change.js', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:key, quantity:newQty})})
+                      .then(function(){ refreshCart(); });
+                  });
+                });
+              });
+            });
+        }
+
+        if (openBtn) openBtn.addEventListener('click', openCart);
+        if (closeBtn) closeBtn.addEventListener('click', closeCart);
+        if (overlay) overlay.addEventListener('click', closeCart);
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeCart(); });
+
+        // Intercept any form with action="/cart/add"
+        document.addEventListener('submit', function(e){
+          var form = e.target;
+          if (form.action && form.action.indexOf('/cart/add') !== -1) {
+            e.preventDefault();
+            var data = new FormData(form);
+            var submitBtn = form.querySelector('[type="submit"]');
+            var origText = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) submitBtn.innerHTML = 'Adding...';
+            fetch('/cart/add.js', {method:'POST', body:data, headers:{'Accept':'application/json'}})
+              .then(function(r){ return r.json(); })
+              .then(function(){
+                if (submitBtn) submitBtn.innerHTML = 'Added ✓';
+                setTimeout(function(){
+                  if (submitBtn) submitBtn.innerHTML = origText;
+                }, 1500);
+                openCart();
+              })
+              .catch(function(){
+                if (submitBtn) submitBtn.innerHTML = origText;
+                alert('Could not add to cart. Please try again.');
+              });
+          }
+        });
+
+        // Initial cart count refresh
+        refreshCart();
       })();
     </script>
   </body>

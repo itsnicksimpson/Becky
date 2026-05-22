@@ -137,9 +137,7 @@
       <h1 class="b-pdp__title">{{ product.title }}</h1>
 
       <div class="b-pdp__rating">
-        <span class="stars">★★★★★</span>
-        <span class="num">{{ rating }}</span>
-        <a href="#reviews">{{ review_count }} verified reviews</a>
+        <junip-product-summary product-id="{{ product.id }}"></junip-product-summary>
       </div>
 
       <div class="b-pdp__price-row">
@@ -258,9 +256,17 @@
   </section>
   {%- endif -%}
 
+  <!-- JUNIP REVIEWS -->
+  <section class="b-section" id="reviews">
+    <h2 class="b-section__title">Reviews</h2>
+    <div style="max-width: 1000px; margin: 0 auto;">
+      <junip-product-review product-id="{{ product.id }}"></junip-product-review>
+    </div>
+  </section>
+
   {%- assign faqs = product.metafields.becky.faq_entries.value -%}
   {%- if faqs and faqs.size > 0 -%}
-  <section class="b-section" id="reviews">
+  <section class="b-section">
     <h2 class="b-section__title">Frequently asked questions</h2>
     <div class="b-faq">
       {%- for faq in faqs -%}
