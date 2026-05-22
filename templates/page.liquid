@@ -63,15 +63,19 @@
   .pg-v4-hero[data-handle="reviews"]::before { background: var(--becky-pink); opacity: 0.18; }
   .pg-v4-hero::after { content: ''; position: absolute; width: 240px; height: 240px; background: var(--becky-peach); border-radius: 50%; bottom: -100px; left: -80px; opacity: 0.18; }
 
-  /* BODY container */
-  .pg-v4-body { max-width: {{ max_w }}; margin: 0 auto; padding: clamp(48px, 8vw, 88px) var(--g); font-size: 17px; line-height: 1.75; color: #2a2a2a; }
-  .pg-v4-body h2 { font-family: 'Poppins', sans-serif; font-size: clamp(28px, 4vw, 40px); margin: 56px 0 24px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 800; }
+  /* BODY container — left-aligned typography, generous spacing */
+  .pg-v4-body { max-width: {{ max_w }}; margin: 0 auto; padding: clamp(48px, 8vw, 88px) var(--g); font-size: 17px; line-height: 1.75; color: #2a2a2a; text-align: left; }
+  .pg-v4-body > * { max-width: 100%; }
+  .pg-v4-body .lede { font-family: 'Poppins', sans-serif; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.45; font-weight: 500; color: var(--becky-ink); margin: 0 0 48px; padding: 0 0 32px; border-bottom: 1px solid var(--becky-border); font-style: italic; text-wrap: balance; }
+  .pg-v4-body h1, .pg-v4-body h2, .pg-v4-body h3, .pg-v4-body h4 { text-align: left; }
+  .pg-v4-body h2 { font-family: 'Poppins', sans-serif; font-size: clamp(26px, 3.6vw, 36px); margin: 56px 0 20px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; color: var(--becky-ink); text-wrap: balance; }
   .pg-v4-body h2:first-child { margin-top: 0; }
-  .pg-v4-body h3 { font-family: 'Poppins', sans-serif; font-size: clamp(20px, 2.8vw, 26px); margin: 36px 0 16px; line-height: 1.2; font-weight: 700; }
+  .pg-v4-body h3 { font-family: 'Poppins', sans-serif; font-size: clamp(20px, 2.6vw, 24px); margin: 36px 0 14px; line-height: 1.2; font-weight: 700; color: var(--becky-ink); text-wrap: balance; }
+  .pg-v4-body p { margin: 0 0 20px; max-width: 68ch; }
   .pg-v4-body strong { color: var(--becky-ink); font-weight: 700; }
   .pg-v4-body em { color: var(--becky-pink); font-style: normal; font-weight: 600; }
-  .pg-v4-body ul, .pg-v4-body ol { padding-left: 28px; margin: 0 0 24px; }
-  .pg-v4-body li { margin: 0 0 12px; line-height: 1.65; }
+  .pg-v4-body ul, .pg-v4-body ol { padding-left: 24px; margin: 0 0 24px; max-width: 68ch; }
+  .pg-v4-body li { margin: 0 0 10px; line-height: 1.65; }
   .pg-v4-body hr { border: none; height: 1px; background: var(--becky-border); margin: 48px 0; }
 
   .pg-v4-body blockquote { border-left: 4px solid var(--becky-pink); padding: 20px 28px; margin: 32px 0; background: var(--becky-blush); border-radius: 0 16px 16px 0; font-size: 18px; }

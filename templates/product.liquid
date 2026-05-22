@@ -20,6 +20,7 @@
   .b-pdp__badge { position: absolute; top: 20px; left: 20px; background: var(--becky-peach); padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
   .b-pdp__thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   .b-pdp__thumbs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  @media (max-width: 540px) { .b-pdp__thumbs { grid-template-columns: repeat(4, 1fr); } }
   .b-pdp__thumb { background: var(--becky-light); border-radius: 12px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 160ms ease; border: 2px solid transparent; position: relative; overflow: hidden; }
   .b-pdp__thumb:hover, .b-pdp__thumb.is-active { border-color: var(--becky-pink); }
   .b-pdp__thumb img { width: 88%; height: 88%; object-fit: contain; }
