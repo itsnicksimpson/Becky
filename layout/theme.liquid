@@ -75,6 +75,76 @@
     {%- comment -%} Junip review widget {%- endcomment -%}
     <script src="https://static.juniphq.com/v1/widget.js" defer></script>
 
+    {%- comment -%}
+      ═══════════════════════════════════════════════════════════════════════
+      TRACKING PIXEL SCAFFOLDING — replace the placeholder IDs with your real
+      IDs, push to GitHub, and Shopify syncs in ~30 seconds. Comment out any
+      pixel you don't use yet.
+
+      WHERE TO GET EACH ID:
+      • GA4: analytics.google.com → Admin → Property → "Data streams"
+      • Facebook Pixel: business.facebook.com → Events Manager → Pixels
+      • TikTok Pixel: ads.tiktok.com → Assets → Events → Web Events
+      • Pinterest Tag: ads.pinterest.com → Conversions → Pinterest Tag
+      • Microsoft Clarity: clarity.microsoft.com → Settings → Setup
+      • Google Search Console: search.google.com/search-console → Property
+        → Settings → "Ownership verification" → HTML tag method
+      ═══════════════════════════════════════════════════════════════════════
+    {%- endcomment -%}
+
+    {%- comment -%} === GOOGLE ANALYTICS 4 === {%- endcomment -%}
+    {%- comment -%}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    {%- endcomment -%}
+
+    {%- comment -%} === META (FACEBOOK + INSTAGRAM) PIXEL === {%- endcomment -%}
+    {%- comment -%}
+    <script>
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', 'YOUR_PIXEL_ID');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+    {%- endcomment -%}
+
+    {%- comment -%} === TIKTOK PIXEL === {%- endcomment -%}
+    {%- comment -%}
+    <script>
+      !function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"];ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+      ttq.load('YOUR_TIKTOK_PIXEL_ID');
+      ttq.page();
+    }(window, document, 'ttq');
+    </script>
+    {%- endcomment -%}
+
+    {%- comment -%} === PINTEREST TAG === {%- endcomment -%}
+    {%- comment -%}
+    <script>
+      !function(e){if(!window.pintrk){window.pintrk = function () {window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";var t=document.createElement("script");t.async=!0,t.src=e;var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+      pintrk('load', 'YOUR_PINTEREST_TAG_ID');
+      pintrk('page');
+    </script>
+    <noscript><img height="1" width="1" style="display:none;" alt="" src="https://ct.pinterest.com/v3/?event=init&tid=YOUR_PINTEREST_TAG_ID&noscript=1"/></noscript>
+    {%- endcomment -%}
+
+    {%- comment -%} === MICROSOFT CLARITY (free heatmaps + session recordings) === {%- endcomment -%}
+    {%- comment -%}
+    <script>
+      (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window, document, "clarity", "script", "YOUR_CLARITY_PROJECT_ID");
+    </script>
+    {%- endcomment -%}
+
+    {%- comment -%} === GOOGLE SEARCH CONSOLE VERIFICATION === {%- endcomment -%}
+    {%- comment -%}
+    <meta name="google-site-verification" content="YOUR_VERIFICATION_TOKEN">
+    {%- endcomment -%}
+
     {{ content_for_header }}
 
     <style>
