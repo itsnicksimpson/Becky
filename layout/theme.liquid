@@ -72,8 +72,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
-    {%- comment -%} Junip review widget {%- endcomment -%}
+    {%- comment -%} Junip review widget + custom styling {%- endcomment -%}
     <script src="https://static.juniphq.com/v1/widget.js" defer></script>
+    <style>
+      /* Junip widget custom styling to match Becky brand */
+      junip-product-summary, junip-product-review, junip-all-reviews { font-family: 'Work Sans', system-ui, sans-serif !important; --junip-product-review-text-color: #1a1a1a; --junip-action-color: #ff3465; --junip-action-color-hover: #d12950; --junip-action-color-text: #ffffff; --junip-form-input-color: #1a1a1a; --junip-form-input-color-focus: #ff3465; --junip-star-color: #ff3465; --junip-star-color-empty: #f0eded; --junip-product-review-border-radius: 16px; --junip-button-border-radius: 999px; }
+      junip-product-review, junip-all-reviews { display: block; }
+      junip-product-review *, junip-all-reviews *, junip-product-summary * { font-family: 'Work Sans', system-ui, sans-serif !important; }
+      [data-junip-review-card] { background: #faf6f6 !important; border-radius: 20px !important; padding: 28px !important; border: none !important; margin: 0 0 16px !important; }
+      [data-junip-stars] svg { color: #ff3465 !important; fill: #ff3465 !important; }
+      [data-junip-action], button[data-junip-action], junip-product-review button { background: #ff3465 !important; color: #fff !important; border-radius: 999px !important; font-weight: 700 !important; font-family: 'Poppins', sans-serif !important; }
+      [data-junip-action]:hover { background: #d12950 !important; }
+      [data-junip-review-header-author] { font-family: 'Poppins', sans-serif !important; font-weight: 700 !important; color: #1a1a1a !important; }
+      [data-junip-review-verified-badge] { background: #ff3465 !important; color: #fff !important; border-radius: 4px !important; font-weight: 800 !important; letter-spacing: 0.06em !important; padding: 3px 8px !important; font-size: 10px !important; }
+    </style>
 
     {%- comment -%}
       ═══════════════════════════════════════════════════════════════════════

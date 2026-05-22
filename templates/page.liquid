@@ -53,7 +53,8 @@
   .pg-v4-hero[data-handle="faq"] { color: #fff; }
   .pg-v4-hero[data-handle="faq"] .pg-v4-hero__title, .pg-v4-hero[data-handle="faq"] .pg-v4-hero__sub { color: #fff; }
   .pg-v4-hero[data-handle="faq"] .pg-v4-hero__eyebrow { background: #fff; color: var(--becky-pink); }
-  .pg-v4-hero__inner { max-width: 920px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+  .pg-v4-hero__inner { max-width: 920px; margin: 0 auto; text-align: center; position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+  .pg-v4-hero__inner > * { max-width: 760px; }
   .pg-v4-hero__eyebrow { display: inline-block; padding: 8px 18px; background: var(--becky-ink); color: #fff; border-radius: 999px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; margin: 0 0 24px; }
   .pg-v4-hero__title { font-family: 'Poppins', sans-serif; font-size: clamp(40px, 6.5vw, 80px); line-height: 0.96; letter-spacing: -0.035em; margin: 0 0 20px; font-weight: 800; text-wrap: balance; color: var(--becky-ink); }
   .pg-v4-hero__sub { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.55; max-width: 640px; margin: 0 auto; color: var(--becky-ink); opacity: 0.85; }
@@ -69,11 +70,12 @@
     .pg-v4-hero__title--xl { font-size: clamp(40px, 12vw, 56px) !important; }
   }
 
-  /* Decorative blobs in hero */
-  .pg-v4-hero::before { content: ''; position: absolute; width: 320px; height: 320px; background: var(--becky-pink); border-radius: 50%; top: -120px; right: -120px; opacity: 0.18; }
-  .pg-v4-hero[data-handle="routine"]::before { background: var(--becky-peach); opacity: 0.25; }
-  .pg-v4-hero[data-handle="reviews"]::before { background: var(--becky-pink); opacity: 0.18; }
-  .pg-v4-hero::after { content: ''; position: absolute; width: 240px; height: 240px; background: var(--becky-peach); border-radius: 50%; bottom: -100px; left: -80px; opacity: 0.18; }
+  /* Decorative blobs — symmetric, balanced */
+  .pg-v4-hero::before, .pg-v4-hero::after { content: ''; position: absolute; width: 280px; height: 280px; background: rgba(255,255,255,0.12); border-radius: 50%; pointer-events: none; }
+  .pg-v4-hero::before { top: -100px; right: -100px; }
+  .pg-v4-hero::after { bottom: -100px; left: -100px; }
+  .pg-v4-hero[data-handle="our-story"]::before, .pg-v4-hero[data-handle="our-story"]::after,
+  .pg-v4-hero[data-handle="faq"]::before, .pg-v4-hero[data-handle="faq"]::after { background: rgba(255,52,101,0.15); }
 
   /* BODY container — left-aligned typography, generous spacing */
   .pg-v4-body { max-width: {{ max_w }}; margin: 0 auto; padding: clamp(48px, 8vw, 88px) var(--g); font-size: 17px; line-height: 1.75; color: #2a2a2a; text-align: left; }
