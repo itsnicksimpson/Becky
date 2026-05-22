@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges" role="img" aria-label="Pixel peach">
+  <!-- Background transparent. Each rect is one "pixel" of the 32x32 grid -->
+  <style>
+    .peach-light { fill: #ffc8b3; }
+    .peach-mid { fill: #ff9b7a; }
+    .peach-dark { fill: #d96f4f; }
+    .peach-shine { fill: #ffe4d6; }
+    .leaf-light { fill: #6dbe6d; }
+    .leaf-dark { fill: #3a8a3a; }
+    .stem { fill: #5e3a1f; }
+    .cleft { fill: #c95a3a; }
+  </style>
+  <!-- Stem (top) -->
+  <rect x="15" y="3" class="stem" width="2" height="2"/>
+  <!-- Leaf -->
+  <rect x="17" y="2" class="leaf-light" width="3" height="1"/>
+  <rect x="16" y="3" class="leaf-light" width="5" height="1"/>
+  <rect x="17" y="4" class="leaf-dark" width="3" height="1"/>
+  <rect x="18" y="5" class="leaf-dark" width="1" height="1"/>
+  <!-- Peach body — top row -->
+  <rect x="11" y="6" class="peach-mid" width="10" height="1"/>
+  <rect x="9" y="7" class="peach-light" width="2" height="1"/>
+  <rect x="11" y="7" class="peach-mid" width="2" height="1"/>
+  <rect x="13" y="7" class="peach-light" width="6" height="1"/>
+  <rect x="19" y="7" class="peach-mid" width="2" height="1"/>
+  <rect x="21" y="7" class="peach-dark" width="2" height="1"/>
+  <!-- Row 8 -->
+  <rect x="8" y="8" class="peach-light" width="2" height="1"/>
+  <rect x="10" y="8" class="peach-mid" width="2" height="1"/>
+  <rect x="12" y="8" class="peach-light" width="2" height="1"/>
+  <rect x="14" y="8" class="peach-shine" width="3" height="1"/>
+  <rect x="17" y="8" class="peach-light" width="3" height="1"/>
+  <rect x="20" y="8" class="peach-mid" width="2" height="1"/>
+  <rect x="22" y="8" class="peach-dark" width="2" height="1"/>
+  <!-- Rows 9-15 — main peach body -->
+  <rect x="7" y="9" class="peach-light" width="2" height="1"/>
+  <rect x="9" y="9" class="peach-light" width="4" height="1"/>
+  <rect x="13" y="9" class="peach-shine" width="3" height="1"/>
+  <rect x="16" y="9" class="cleft" width="1" height="1"/>
+  <rect x="17" y="9" class="peach-light" width="5" height="1"/>
+  <rect x="22" y="9" class="peach-mid" width="2" height="1"/>
+  <rect x="24" y="9" class="peach-dark" width="1" height="1"/>
+  <rect x="7" y="10" class="peach-light" width="6" height="1"/>
+  <rect x="13" y="10" class="peach-shine" width="2" height="1"/>
+  <rect x="15" y="10" class="peach-light" width="1" height="1"/>
+  <rect x="16" y="10" class="cleft" width="1" height="1"/>
+  <rect x="17" y="10" class="peach-light" width="6" height="1"/>
+  <rect x="23" y="10" class="peach-mid" width="2" height="1"/>
+  <rect x="6" y="11" class="peach-light" width="2" height="1"/>
+  <rect x="8" y="11" class="peach-mid" width="5" height="1"/>
+  <rect x="13" y="11" class="peach-light" width="3" height="1"/>
+  <rect x="16" y="11" class="cleft" width="1" height="1"/>
+  <rect x="17" y="11" class="peach-light" width="6" height="1"/>
+  <rect x="23" y="11" class="peach-mid" width="2" height="1"/>
+  <rect x="25" y="11" class="peach-dark" width="1" height="1"/>
+  <rect x="6" y="12" class="peach-light" width="2" height="1"/>
+  <rect x="8" y="12" class="peach-mid" width="8" height="1"/>
+  <rect x="16" y="12" class="cleft" width="1" height="1"/>
+  <rect x="17" y="12" class="peach-mid" width="7" height="1"/>
+  <rect x="24" y="12" class="peach-dark" width="2" height="1"/>
+  <rect x="6" y="13" class="peach-light" width="2" height="1"/>
+  <rect x="8" y="13" class="peach-mid" width="8" height="1"/>
+  <rect x="16" y="13" class="cleft" width="1" height="1"/>
+  <rect x="17" y="13" class="peach-mid" width="7" height="1"/>
+  <rect x="24" y="13" class="peach-dark" width="2" height="1"/>
+  <rect x="6" y="14" class="peach-mid" width="10" height="1"/>
+  <rect x="16" y="14" class="cleft" width="1" height="1"/>
+  <rect x="17" y="14" class="peach-mid" width="8" height="1"/>
+  <rect x="25" y="14" class="peach-dark" width="1" height="1"/>
+  <rect x="6" y="15" class="peach-mid" width="10" height="1"/>
+  <rect x="16" y="15" class="cleft" width="1" height="1"/>
+  <rect x="17" y="15" class="peach-mid" width="8" height="1"/>
+  <rect x="25" y="15" class="peach-dark" width="1" height="1"/>
+  <!-- Bottom of peach (curving in) -->
+  <rect x="6" y="16" class="peach-mid" width="10" height="1"/>
+  <rect x="16" y="16" class="cleft" width="1" height="1"/>
+  <rect x="17" y="16" class="peach-mid" width="8" height="1"/>
+  <rect x="25" y="16" class="peach-dark" width="1" height="1"/>
+  <rect x="7" y="17" class="peach-mid" width="9" height="1"/>
+  <rect x="16" y="17" class="cleft" width="1" height="1"/>
+  <rect x="17" y="17" class="peach-mid" width="7" height="1"/>
+  <rect x="24" y="17" class="peach-dark" width="1" height="1"/>
+  <rect x="7" y="18" class="peach-mid" width="9" height="1"/>
+  <rect x="16" y="18" class="cleft" width="1" height="1"/>
+  <rect x="17" y="18" class="peach-mid" width="7" height="1"/>
+  <rect x="24" y="18" class="peach-dark" width="1" height="1"/>
+  <rect x="8" y="19" class="peach-mid" width="8" height="1"/>
+  <rect x="16" y="19" class="cleft" width="1" height="1"/>
+  <rect x="17" y="19" class="peach-mid" width="6" height="1"/>
+  <rect x="23" y="19" class="peach-dark" width="1" height="1"/>
+  <rect x="8" y="20" class="peach-mid" width="8" height="1"/>
+  <rect x="16" y="20" class="peach-dark" width="1" height="1"/>
+  <rect x="17" y="20" class="peach-mid" width="6" height="1"/>
+  <rect x="23" y="20" class="peach-dark" width="1" height="1"/>
+  <rect x="9" y="21" class="peach-mid" width="14" height="1"/>
+  <rect x="23" y="21" class="peach-dark" width="1" height="1"/>
+  <rect x="10" y="22" class="peach-mid" width="12" height="1"/>
+  <rect x="22" y="22" class="peach-dark" width="1" height="1"/>
+  <rect x="11" y="23" class="peach-mid" width="10" height="1"/>
+  <rect x="21" y="23" class="peach-dark" width="1" height="1"/>
+  <rect x="12" y="24" class="peach-mid" width="8" height="1"/>
+  <rect x="20" y="24" class="peach-dark" width="1" height="1"/>
+  <rect x="13" y="25" class="peach-dark" width="6" height="1"/>
+</svg>

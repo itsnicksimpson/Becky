@@ -1,75 +1,129 @@
 {%- comment -%}
-  Becky page — polished v2 (Routine, FAQ, About, etc.)
+  Becky page v4 — colorful, wide, matches homepage system
+  Used for Routine, FAQ, About (our-story), Reviews, generic pages
 {%- endcomment -%}
 
+{%- liquid
+  assign handle = page.handle
+  assign hero_bg = 'linear-gradient(135deg, #ffebeb 0%, #fddbd1 60%, #f3e5fe 100%)'
+  assign hero_eyebrow = 'Becky'
+  assign hero_title = page.title
+  assign hero_sub = ''
+  assign max_w = '1100px'
+
+  if handle == 'routine'
+    assign hero_bg = '#ff3465'
+    assign hero_eyebrow = 'The 3-step Becky Routine'
+    assign hero_title = 'Smooth skin in 4 weeks.'
+    assign hero_sub = 'Three steps. Four minutes. Three times a week. The protocol that takes your skin from bumpy and embarrassed to smooth and confident.'
+    assign max_w = '1100px'
+  elsif handle == 'faq'
+    assign hero_bg = 'linear-gradient(135deg, #fde300 0%, #ffebeb 100%)'
+    assign hero_eyebrow = 'Frequently asked questions'
+    assign hero_sub = 'Everything we get asked about Becky, the Booty Scrub, ingredients, conditions, and how to actually use it.'
+    assign max_w = '880px'
+  elsif handle == 'our-story'
+    assign hero_bg = 'linear-gradient(135deg, #f3e5fe 0%, #ffebeb 100%)'
+    assign hero_eyebrow = 'Our story'
+    assign hero_sub = 'Becky started because every woman we knew was Googling questions about her butt at 2 a.m. — and finding listicles, shame spirals, and zero actual help. So we did something about it.'
+    assign max_w = '880px'
+  elsif handle == 'reviews'
+    assign hero_bg = '#fde300'
+    assign hero_eyebrow = 'Real reviews. Real butts.'
+    assign hero_sub = '1,247+ verified buyers across Amazon and DTC. Here is what they actually say.'
+    assign max_w = '1100px'
+  endif
+-%}
+
 <style>
-  .b-page-hero { background: linear-gradient(135deg, var(--becky-blush) 0%, var(--becky-lavender) 100%); padding: 80px 24px; text-align: center; }
-  .b-page-hero__inner { max-width: 760px; margin: 0 auto; }
-  .b-page-hero__eyebrow { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--becky-pink); font-weight: 700; margin: 0 0 16px; }
-  .b-page-hero h1 { font-size: clamp(36px, 6vw, 64px); margin: 0 0 16px; line-height: 1.05; }
-  .b-page-hero p { font-size: 18px; color: var(--becky-grey); max-width: 540px; margin: 0 auto; }
+  .pg-v4 { width: 100%; --g: clamp(20px, 4vw, 64px); }
+  .pg-v4 p { margin: 0 0 20px; line-height: 1.65; }
+  .pg-v4 a { color: var(--becky-pink); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 
-  .b-page { max-width: 760px; margin: 0 auto; padding: 64px 24px 48px; font-size: 17px; line-height: 1.7; color: #2a2a2a; }
-  .b-page h2 { font-size: clamp(24px, 3.5vw, 32px); margin: 56px 0 20px; line-height: 1.15; }
-  .b-page h3 { font-size: clamp(20px, 2.8vw, 24px); margin: 36px 0 14px; }
-  .b-page h2:first-child, .b-page h3:first-child { margin-top: 0; }
-  .b-page p { margin: 0 0 20px; }
-  .b-page a { color: var(--becky-pink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
-  .b-page a:hover { color: var(--becky-pink-dark); }
-  .b-page ul, .b-page ol { padding-left: 24px; margin: 0 0 24px; }
-  .b-page li { margin: 0 0 12px; line-height: 1.65; }
-  .b-page strong { color: var(--becky-ink); font-weight: 700; }
-  .b-page em { color: var(--becky-pink); font-style: normal; font-weight: 600; }
+  /* HERO */
+  .pg-v4-hero { padding: clamp(80px, 12vw, 140px) var(--g); background: {{ hero_bg }}; position: relative; overflow: hidden; }
+  .pg-v4-hero[data-handle="routine"] { color: #fff; }
+  .pg-v4-hero[data-handle="routine"] .pg-v4-hero__title,
+  .pg-v4-hero[data-handle="routine"] .pg-v4-hero__sub { color: #fff; }
+  .pg-v4-hero[data-handle="routine"] .pg-v4-hero__eyebrow { background: var(--becky-yellow); color: var(--becky-ink); }
+  .pg-v4-hero[data-handle="reviews"] .pg-v4-hero__eyebrow { background: var(--becky-ink); color: #fff; }
+  .pg-v4-hero__inner { max-width: 920px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+  .pg-v4-hero__eyebrow { display: inline-block; padding: 8px 18px; background: var(--becky-ink); color: #fff; border-radius: 999px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; margin: 0 0 24px; }
+  .pg-v4-hero__title { font-family: 'Poppins', sans-serif; font-size: clamp(40px, 6.5vw, 80px); line-height: 0.96; letter-spacing: -0.035em; margin: 0 0 20px; font-weight: 800; text-wrap: balance; color: var(--becky-ink); }
+  .pg-v4-hero__sub { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.55; max-width: 640px; margin: 0 auto; color: var(--becky-ink); opacity: 0.85; }
 
-  .b-page blockquote { border-left: 4px solid var(--becky-pink); padding: 20px 28px; margin: 32px 0; background: var(--becky-blush); border-radius: 0 16px 16px 0; font-size: 18px; color: var(--becky-ink); }
-  .b-page blockquote p:last-child { margin: 0; }
+  /* Decorative blobs in hero */
+  .pg-v4-hero::before { content: ''; position: absolute; width: 320px; height: 320px; background: var(--becky-pink); border-radius: 50%; top: -120px; right: -120px; opacity: 0.18; }
+  .pg-v4-hero[data-handle="routine"]::before { background: var(--becky-yellow); opacity: 0.25; }
+  .pg-v4-hero[data-handle="reviews"]::before { background: var(--becky-pink); opacity: 0.18; }
+  .pg-v4-hero::after { content: ''; position: absolute; width: 240px; height: 240px; background: var(--becky-yellow); border-radius: 50%; bottom: -100px; left: -80px; opacity: 0.18; }
 
-  .b-page details { background: var(--becky-light); border-radius: 16px; padding: 0 24px; margin: 0 0 12px; transition: background 200ms ease; }
-  .b-page details[open] { background: var(--becky-blush); }
-  .b-page summary { padding: 20px 0; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 17px; line-height: 1.4; color: var(--becky-ink); }
-  .b-page summary::-webkit-details-marker { display: none; }
-  .b-page summary::after { content: '+'; font-size: 24px; font-weight: 400; line-height: 1; transition: transform 200ms ease; color: var(--becky-pink); flex-shrink: 0; }
-  .b-page details[open] summary::after { transform: rotate(45deg); }
-  .b-page details > div, .b-page details > p { padding: 0 0 24px; line-height: 1.65; color: var(--becky-grey); }
+  /* BODY container */
+  .pg-v4-body { max-width: {{ max_w }}; margin: 0 auto; padding: clamp(48px, 8vw, 88px) var(--g); font-size: 17px; line-height: 1.75; color: #2a2a2a; }
+  .pg-v4-body h2 { font-family: 'Poppins', sans-serif; font-size: clamp(28px, 4vw, 40px); margin: 56px 0 24px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 800; }
+  .pg-v4-body h2:first-child { margin-top: 0; }
+  .pg-v4-body h3 { font-family: 'Poppins', sans-serif; font-size: clamp(20px, 2.8vw, 26px); margin: 36px 0 16px; line-height: 1.2; font-weight: 700; }
+  .pg-v4-body strong { color: var(--becky-ink); font-weight: 700; }
+  .pg-v4-body em { color: var(--becky-pink); font-style: normal; font-weight: 600; }
+  .pg-v4-body ul, .pg-v4-body ol { padding-left: 28px; margin: 0 0 24px; }
+  .pg-v4-body li { margin: 0 0 12px; line-height: 1.65; }
+  .pg-v4-body hr { border: none; height: 1px; background: var(--becky-border); margin: 48px 0; }
 
-  /* Routine specifically — step cards */
-  .b-page .routine-step { background: #fff; border: 1px solid var(--becky-border); border-radius: 20px; padding: 32px; margin: 20px 0; }
-  .b-page .routine-step h3 { color: var(--becky-pink); margin-top: 0; }
+  .pg-v4-body blockquote { border-left: 4px solid var(--becky-pink); padding: 20px 28px; margin: 32px 0; background: var(--becky-blush); border-radius: 0 16px 16px 0; font-size: 18px; }
+  .pg-v4-body blockquote p:last-child { margin: 0; }
 
-  /* Inline CTA */
-  .b-page-cta { background: var(--becky-pink); color: #fff; border-radius: 24px; padding: 40px; text-align: center; margin: 48px 0; }
-  .b-page-cta h3 { color: #fff; margin: 0 0 12px; font-size: 24px; }
-  .b-page-cta p { color: rgba(255,255,255,0.95); margin: 0 0 24px; }
-  .b-page-cta .becky-btn { background: #fff; color: var(--becky-pink); border-color: #fff; }
-  .b-page-cta .becky-btn:hover { background: var(--becky-yellow); color: var(--becky-ink); border-color: var(--becky-yellow); }
+  .pg-v4-body details { background: var(--becky-light); border-radius: 16px; padding: 0 24px; margin: 0 0 12px; transition: all 200ms ease; border: 1px solid transparent; }
+  .pg-v4-body details[open] { background: #fff; border-color: var(--becky-pink); }
+  .pg-v4-body summary { padding: 22px 0; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.4; color: var(--becky-ink); }
+  .pg-v4-body summary::-webkit-details-marker { display: none; }
+  .pg-v4-body summary::after { content: '+'; font-size: 28px; font-weight: 400; line-height: 1; transition: transform 250ms ease; color: var(--becky-pink); flex-shrink: 0; }
+  .pg-v4-body details[open] summary::after { transform: rotate(45deg); }
+  .pg-v4-body details > div, .pg-v4-body details > p { padding: 0 0 22px; line-height: 1.7; color: #5a5a5a; }
+  .pg-v4-body details > div > p:last-child, .pg-v4-body details > p:last-child { margin-bottom: 0; }
 
-  /* Tables */
-  .b-page table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 15px; }
-  .b-page th, .b-page td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--becky-border); }
-  .b-page th { background: var(--becky-light); font-weight: 700; }
-  .b-page tr:hover { background: var(--becky-blush); }
+  .pg-v4-body table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 15px; border-radius: 16px; overflow: hidden; }
+  .pg-v4-body th, .pg-v4-body td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--becky-border); }
+  .pg-v4-body th { background: var(--becky-yellow); font-weight: 800; }
+  .pg-v4-body tr:nth-child(even) td { background: #faf6f6; }
+
+  /* Page footer CTA (auto-injected) */
+  .pg-v4-ctablock { padding: clamp(64px, 10vw, 100px) var(--g); background: var(--becky-pink); color: #fff; text-align: center; }
+  .pg-v4-ctablock__inner { max-width: 700px; margin: 0 auto; }
+  .pg-v4-ctablock h3 { color: #fff; font-family: 'Poppins', sans-serif; font-size: clamp(32px, 5vw, 52px); line-height: 1; letter-spacing: -0.025em; margin: 0 0 20px; font-weight: 800; }
+  .pg-v4-ctablock p { color: rgba(255,255,255,0.9); font-size: 17px; margin: 0 0 32px; }
+  .pg-v4-ctablock a { display: inline-flex; align-items: center; gap: 10px; padding: 20px 40px; background: #fff; color: var(--becky-pink); border-radius: 999px; font-weight: 800; font-size: 17px; text-decoration: none; transition: all 200ms ease; }
+  .pg-v4-ctablock a:hover { background: var(--becky-yellow); color: var(--becky-ink); transform: translateY(-2px); }
+  .pg-v4-ctablock a::after { content: '→'; transition: transform 200ms ease; }
+  .pg-v4-ctablock a:hover::after { transform: translateX(4px); }
+  .pg-v4-ctablock__pixel { display: inline-block; margin: 0 auto 24px; }
+  .pg-v4-ctablock__pixel img { image-rendering: pixelated; image-rendering: crisp-edges; }
 </style>
 
-<div class="b-page-hero">
-  <div class="b-page-hero__inner">
-    {%- if page.handle == 'routine' -%}<p class="b-page-hero__eyebrow">The 3-Step Becky Routine</p>{%- endif -%}
-    {%- if page.handle == 'faq' -%}<p class="b-page-hero__eyebrow">Frequently asked questions</p>{%- endif -%}
-    {%- if page.handle == 'our-story' -%}<p class="b-page-hero__eyebrow">Our story</p>{%- endif -%}
-    <h1>{{ page.title }}</h1>
-    {%- if page.handle == 'routine' -%}<p>Four minutes, three times a week, four weeks. The protocol that takes your skin from bumpy and embarrassed to smooth and confident.</p>{%- endif -%}
-    {%- if page.handle == 'faq' -%}<p>Everything we get asked about Becky, the Booty Scrub, ingredients, conditions, and how to actually use it.</p>{%- endif -%}
-  </div>
-</div>
+<div class="pg-v4">
 
-<article class="b-page">
-  {{ page.content }}
-
-  {%- comment -%}Add inline CTA to all pages except those that already have one{%- endcomment -%}
-  {%- unless page.content contains 'becky-btn-primary' or page.handle == 'cart' -%}
-    <div class="b-page-cta">
-      <h3>Ready to start your routine?</h3>
-      <p>The Becky Booty Scrub — walnut shell + rosehip exfoliant, $20, ships free over $35.</p>
-      <a href="/products/booty-scrub" class="becky-btn">Shop the Scrub →</a>
+  <section class="pg-v4-hero" data-handle="{{ handle }}">
+    <div class="pg-v4-hero__inner">
+      {%- if hero_eyebrow != blank -%}
+        <p class="pg-v4-hero__eyebrow">{{ hero_eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="pg-v4-hero__title">{{ hero_title }}</h1>
+      {%- if hero_sub != blank -%}
+        <p class="pg-v4-hero__sub">{{ hero_sub }}</p>
+      {%- endif -%}
     </div>
+  </section>
+
+  <article class="pg-v4-body">{{ page.content }}</article>
+
+  {%- unless page.content contains 'pg-v4-ctablock' or page.content contains 'becky-btn-primary' or page.handle == 'cart' or page.handle == 'contact' -%}
+    <section class="pg-v4-ctablock">
+      <div class="pg-v4-ctablock__inner">
+        <span class="pg-v4-ctablock__pixel">{% render 'becky-pixel-peach', size: 64 %}</span>
+        <h3>Ready to start your routine?</h3>
+        <p>The Becky Booty Scrub — walnut shell + rosehip exfoliant, $20, ships free over $35.</p>
+        <a href="/products/booty-scrub">Shop the Scrub</a>
+      </div>
+    </section>
   {%- endunless -%}
-</article>
+
+</div>

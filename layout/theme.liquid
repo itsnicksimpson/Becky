@@ -132,7 +132,7 @@
       .becky-btn-yellow:hover { background: #f0d600; border-color: #f0d600; }
 
       /* MINIMAL FOOTER (Buttface-inspired) */
-      .becky-footer { background: var(--becky-ink); color: #fff; padding: 96px 24px 0; margin-top: 120px; overflow: hidden; }
+      .becky-footer { background: var(--becky-ink); color: #fff; padding: 96px 24px 0; margin-top: 0; overflow: hidden; }
       .becky-footer__top { max-width: 920px; margin: 0 auto; text-align: center; padding: 0 0 80px; }
       .becky-footer__eyebrow { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--becky-yellow); font-weight: 700; margin: 0 0 20px; }
       .becky-footer__pitch { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 44px); line-height: 1.1; margin: 0 0 32px; letter-spacing: -0.02em; }
@@ -267,12 +267,25 @@
       .becky-cart-item__qty span { min-width:24px; text-align:center; font-weight:600; }
       .becky-cart-item__remove { background:none; border:none; color:#999; cursor:pointer; font-size:11px; text-decoration:underline; padding:0; }
       .becky-cart-foot { border-top:1px solid var(--becky-border); padding:20px 24px; background:#fff; }
-      .becky-cart-subtotal { display:flex; justify-content:space-between; align-items:baseline; margin:0 0 4px; }
-      .becky-cart-subtotal strong { font-family:'Poppins',sans-serif; font-size:20px; font-weight:700; }
-      .becky-cart-shipnote { font-size:13px; color:var(--becky-grey); margin:0 0 16px; }
-      .becky-cart-checkout { display:block; width:100%; padding:16px; background:var(--becky-pink); color:#fff !important; border:none; border-radius:999px; font-weight:700; font-size:16px; text-align:center; text-decoration:none; font-family:inherit; cursor:pointer; transition:background 200ms ease; }
-      .becky-cart-checkout:hover { background:var(--becky-pink-dark); }
-      .becky-cart-trust { display:flex; gap:8px; justify-content:center; margin:12px 0 0; font-size:11px; color:#999; flex-wrap:wrap; }
+      .becky-cart-ship { margin:0 0 16px; }
+      .becky-cart-ship__label { display:flex; justify-content:space-between; align-items:center; font-size:13px; margin:0 0 8px; }
+      .becky-cart-ship__label strong { font-weight:800; color:var(--becky-ink); }
+      .becky-cart-ship__label .pct { font-family:'Poppins',sans-serif; font-weight:800; color:var(--becky-pink); }
+      .becky-cart-ship__label .succ { color:var(--becky-pink); font-weight:800; font-family:'Poppins',sans-serif; }
+      .becky-cart-ship__track { height:10px; background:#f0eded; border-radius:999px; overflow:hidden; position:relative; }
+      .becky-cart-ship__fill { position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg, var(--becky-pink) 0%, var(--becky-yellow) 100%); border-radius:999px; transition:width 500ms cubic-bezier(0.4, 0, 0.2, 1); width:0; }
+      .becky-cart-ship__fill.is-full { background:var(--becky-pink); }
+      .becky-cart-ship__truck { position:absolute; top:50%; transform:translateY(-50%); font-size:14px; transition:left 500ms cubic-bezier(0.4, 0, 0.2, 1); }
+      .becky-cart-subtotal { display:flex; justify-content:space-between; align-items:baseline; margin:16px 0 4px; padding-top:16px; border-top:1px solid var(--becky-border); }
+      .becky-cart-subtotal strong { font-family:'Poppins',sans-serif; font-size:22px; font-weight:800; letter-spacing:-0.01em; }
+      .becky-cart-checkout { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:18px; background:var(--becky-ink); color:#fff !important; border:none; border-radius:999px; font-weight:800; font-size:16px; text-decoration:none; font-family:inherit; cursor:pointer; transition:all 200ms ease; margin:16px 0 0; }
+      .becky-cart-checkout:hover { background:var(--becky-pink); transform:translateY(-1px); }
+      .becky-cart-checkout::after { content:'→'; transition:transform 200ms ease; }
+      .becky-cart-checkout:hover::after { transform:translateX(4px); }
+      .becky-cart-pay { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:14px 0 0; }
+      .becky-cart-pay__item { background:#f7f7f8; border-radius:8px; padding:10px; display:flex; align-items:center; justify-content:center; height:38px; font-size:11px; font-weight:700; color:var(--becky-ink); letter-spacing:0.02em; }
+      .becky-cart-pay__item svg { height:18px; width:auto; }
+      .becky-cart-trust { display:flex; gap:10px; justify-content:center; margin:14px 0 0; font-size:10px; color:#999; flex-wrap:wrap; letter-spacing:0.04em; font-weight:600; text-transform:uppercase; }
     </style>
 
     <script>
@@ -326,9 +339,32 @@
                 var img = item.image ? '<img src="'+item.image+'" alt="'+item.title+'" loading="lazy">' : '🍑';
                 html += '<div class="becky-cart-item" data-key="'+item.key+'"><div class="becky-cart-item__img">'+img+'</div><div><p class="becky-cart-item__title">'+item.product_title+'</p><div class="becky-cart-item__price">'+money(item.final_price)+'</div><div class="becky-cart-item__qty"><button type="button" data-action="dec">−</button><span>'+item.quantity+'</span><button type="button" data-action="inc">+</button></div><button type="button" class="becky-cart-item__remove" data-action="remove">Remove</button></div></div>';
               });
-              var freeShipMet = cart.total_price >= 3500;
-              var shipNote = freeShipMet ? '✅ You qualify for free shipping' : '🚚 Add ' + money(3500 - cart.total_price) + ' for free shipping';
-              html += '<div class="becky-cart-foot"><p class="becky-cart-subtotal"><span>Subtotal</span><strong>'+money(cart.total_price)+'</strong></p><p class="becky-cart-shipnote">'+shipNote+'</p><a href="/checkout" class="becky-cart-checkout">Checkout →</a><p class="becky-cart-trust">30-day money-back · 1% to EMC · Vegan</p></div>';
+              var THRESHOLD = 3500;
+              var freeShipMet = cart.total_price >= THRESHOLD;
+              var pct = Math.min(100, Math.round((cart.total_price / THRESHOLD) * 100));
+              var remaining = THRESHOLD - cart.total_price;
+              var shipLabel;
+              if (freeShipMet) {
+                shipLabel = '<span class="succ">🎉 You unlocked free shipping!</span>';
+              } else {
+                shipLabel = '<span>Add <strong>' + money(remaining) + '</strong> for free shipping</span><span class="pct">' + pct + '%</span>';
+              }
+              var payIcons = '<div class="becky-cart-pay">' +
+                '<div class="becky-cart-pay__item" title="Shop Pay"><svg viewBox="0 0 60 24" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="24" rx="4" fill="#5a31f4"/><text x="30" y="16" text-anchor="middle" fill="#fff" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" letter-spacing="-0.5">Shop Pay</text></svg></div>' +
+                '<div class="becky-cart-pay__item" title="Apple Pay"><svg viewBox="0 0 60 24" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="24" rx="4" fill="#000"/><text x="30" y="16" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-weight="600" font-size="10">Pay</text><text x="20" y="16" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="14"></text></svg></div>' +
+                '<div class="becky-cart-pay__item" title="Google Pay"><svg viewBox="0 0 60 24" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="24" rx="4" fill="#fff" stroke="#dadce0"/><text x="22" y="16" text-anchor="middle" fill="#5f6368" font-family="Arial,sans-serif" font-weight="500" font-size="10">G Pay</text></svg></div>' +
+                '</div>';
+              var trustRow = '<div class="becky-cart-trust"><span>30-day money-back</span><span>1% to EMC</span><span>Vegan</span></div>';
+              html += '<div class="becky-cart-foot">' +
+                '<div class="becky-cart-ship">' +
+                  '<div class="becky-cart-ship__label">' + shipLabel + '</div>' +
+                  '<div class="becky-cart-ship__track"><div class="becky-cart-ship__fill' + (freeShipMet ? ' is-full' : '') + '" style="width:' + pct + '%"></div><span class="becky-cart-ship__truck" style="left:calc(' + pct + '% - 8px);">🚚</span></div>' +
+                '</div>' +
+                '<p class="becky-cart-subtotal"><span>Subtotal</span><strong>' + money(cart.total_price) + '</strong></p>' +
+                '<a href="/checkout" class="becky-cart-checkout">Checkout</a>' +
+                payIcons +
+                trustRow +
+                '</div>';
               cartBody.innerHTML = html;
 
               // Wire up qty + remove buttons
