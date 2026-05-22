@@ -1,14 +1,15 @@
 {% comment %}
-  APLÓS-INSPIRED HOMEPAGE
-  A fully custom homepage section with video background and elegant styling
+  BECKY HOMEPAGE
+  Fully custom homepage section. Video/image background hero, featured product,
+  story, benefits, testimonials, newsletter capture. Branded for Becky | The Booty Brand.
 {% endcomment %}
 
-{{ 'aplos-style.css' | asset_url | stylesheet_tag }}
+{{ 'becky-style.css' | asset_url | stylesheet_tag }}
 
-{%- comment -%} Import Google Fonts for Aplós aesthetic {%- endcomment -%}
+{%- comment -%} Brand typography: Work Sans (headings) + Poppins (body) {%- endcomment -%}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <div class="aplos-page">
   {%- comment -%} ========== HERO SECTION ========== {%- endcomment -%}
@@ -251,9 +252,9 @@
 
 {% schema %}
 {
-  "name": "Aplós Homepage",
+  "name": "Becky Homepage",
   "tag": "div",
-  "class": "aplos-homepage-wrapper",
+  "class": "becky-homepage-wrapper",
   "settings": [
     {
       "type": "header",
@@ -481,7 +482,7 @@
   ],
   "presets": [
     {
-      "name": "Aplós Homepage",
+      "name": "Becky Homepage",
       "blocks": [
         {
           "type": "benefit",

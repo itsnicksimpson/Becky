@@ -1,7 +1,7 @@
 {
   "sections": {
-    "aplos_homepage": {
-      "type": "aplos-homepage",
+    "becky_homepage": {
+      "type": "becky-homepage",
       "blocks": {
         "benefit_walnut": {
           "type": "benefit",
@@ -91,7 +91,7 @@
     }
   },
   "order": [
-    "aplos_homepage",
+    "becky_homepage",
     "featured_blog"
   ]
 }
