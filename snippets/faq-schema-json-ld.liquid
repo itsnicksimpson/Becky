@@ -1,0 +1,57 @@
+{%- comment -%}
+  Becky FAQPage JSON-LD emitter
+  --------------------------------------------------------------
+  Renders FAQPage structured data from a JSON metafield containing an
+  array of {question, answer} objects. AI engines (ChatGPT, Perplexity,
+  Gemini, Google AI Overviews) cite FAQPage schema heavily.
+
+  Usage from a section or template:
+    {% render 'faq-schema-json-ld', faq_entries: product.metafields.becky.faq_entries %}
+    {% render 'faq-schema-json-ld', faq_entries: article.metafields.becky.faq_entries %}
+    {% render 'faq-schema-json-ld', faq_entries: page.metafields.becky.faq_entries %}
+
+  Input shape (becky.faq_entries metafield, type: json):
+    [
+      {"question":"How do I use it?","answer":"Apply to damp skin in the shower..."},
+      ...
+    ]
+
+  Safety:
+    - Only emits if the metafield has 1+ entries
+    - Properly JSON-escapes question and answer text
+    - Skips entries with empty question or answer
+{%- endcomment -%}
+
+{%- liquid
+  assign emit_schema = false
+  if faq_entries != blank
+    assign emit_schema = true
+  endif
+-%}
+
+{%- if emit_schema -%}
+  {%- assign faq_array = faq_entries -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- assign filtered_count = 0 -%}
+      {%- for entry in faq_array -%}
+        {%- if entry.question != blank and entry.answer != blank -%}
+          {%- if filtered_count > 0 -%},{%- endif -%}
+          {
+            "@type": "Question",
+            "name": {{ entry.question | strip_html | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ entry.answer | strip_html | json }}
+            }
+          }
+          {%- assign filtered_count = filtered_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    ]
+  }
+  </script>
+{%- endif -%}

@@ -25,6 +25,16 @@
     {% endif %}
 
     {%- render 'meta-tags' -%}
+    {%- render 'schema-json-ld' -%}
+    {%- if request.page_type == 'product' and product.metafields.becky.faq_entries != blank -%}
+      {%- render 'faq-schema-json-ld', faq_entries: product.metafields.becky.faq_entries.value -%}
+    {%- endif -%}
+    {%- if request.page_type == 'article' and article.metafields.becky.faq_entries != blank -%}
+      {%- render 'faq-schema-json-ld', faq_entries: article.metafields.becky.faq_entries.value -%}
+    {%- endif -%}
+    {%- if request.page_type == 'page' and page.metafields.becky.faq_entries != blank -%}
+      {%- render 'faq-schema-json-ld', faq_entries: page.metafields.becky.faq_entries.value -%}
+    {%- endif -%}
     {%- render 'stylesheets' -%}
     {%- render 'fonts' -%}
     {%- render 'scripts' -%}
