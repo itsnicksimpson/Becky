@@ -19,7 +19,10 @@
 
   assign brand_name      = shop.name | default: 'Becky'
   assign brand_url       = request.origin
-  assign brand_logo_url  = settings.logo | image_url: width: 600
+  assign brand_logo_url = settings.logo | image_url: width: 600
+  if brand_logo_url == blank
+    assign brand_logo_url = 'becky-logo.png' | asset_url
+  endif
   assign brand_email     = shop.email
   assign brand_country   = shop.address.country
   assign sameAs_links    = ''
