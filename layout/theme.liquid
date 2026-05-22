@@ -179,9 +179,6 @@
         </nav>
 
         <div class="becky-header__actions">
-          <a href="/search" class="becky-header__icon" aria-label="Search">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          </a>
           <button type="button" class="becky-header__icon" id="beckyCartBtn" aria-label="Open cart">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
             <span class="becky-cart-count" id="beckyCartCount"{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
