@@ -224,6 +224,12 @@ node tools/amazon-seller.js get /fba/inbound/v0/shipments \
 Add `--marketplace UK` to any command to target another store, and
 `--sandbox` to hit Amazon's sandbox endpoint instead of production.
 
+## Amazon Ads is a separate API
+
+Advertising is not part of SP-API and none of the roles above reach it —
+different portal, different approval, different credentials. See
+[`ADS-API-PROFILE.md`](ADS-API-PROFILE.md).
+
 ## Tests
 
 ```bash
