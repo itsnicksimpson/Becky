@@ -69,26 +69,69 @@ the review narrow.
 
 ## Use Cases
 
-> A private internal operations tool for our own seller account, used by our
-> own staff. No functionality is offered to third parties.
->
-> - **Inventory and Order Tracking** — read our order flow and FBA inventory
->   levels to monitor daily sales and flag SKUs at risk of stocking out.
-> - **Amazon Fulfillment** — read FBA shipment and inventory detail to plan
->   replenishment.
-> - **Product Listing** — read our own listing attributes and listing issues,
->   and update our own listing content. Every write is validated through the
->   Listings Items API in VALIDATION_PREVIEW mode and requires explicit
->   operator confirmation before submission.
-> - **Pricing** — read our current prices and competing/buy-box prices, and
->   update prices on our own listings, under the same confirmation control.
-> - **Selling Partner Insights** — read marketplace participation and account
->   status.
-> - **Finance and Accounting** — read settlement and fee events to reconcile
->   Amazon payouts against our internal bookkeeping.
->
-> The application reads and writes only to our own catalog and never accesses
-> another selling partner's data.
+Paste-ready. Plain text, no markdown — the form field is a plain textarea.
+
+```text
+Becky is a direct-to-consumer beauty brand selling our own skincare and
+cosmetics products on Amazon. We are building a single private, internal
+application for our own seller account only. It will not be distributed to or
+authorized by any other selling partner, and will not be listed on the Amazon
+Appstore.
+
+The application is a command-line and assistant-driven operations tool used by
+our own staff. It consolidates work we currently perform by hand in Seller
+Central. Query results are surfaced to our team through an AI assistant
+interface (Anthropic's Claude), disclosed under outside parties. All Amazon
+Information retrieved is used solely to operate our own Amazon business.
+
+Features by requested role:
+
+Inventory and Order Tracking - Retrieve our own orders on a rolling window to
+monitor daily sales volume, order status and fulfillment channel mix, and
+retrieve order line items to see which of our SKUs are selling. Combined with
+FBA inventory, this drives a stockout early-warning view that flags SKUs whose
+fulfillable quantity is low relative to recent sales velocity.
+
+Amazon Fulfillment - Retrieve FBA inventory summaries for our own SKUs:
+fulfillable, inbound, reserved and unfulfillable quantities. Used to plan
+replenishment and to identify units stranded as unfulfillable.
+
+Product Listing - Retrieve our own listing attributes, offers, fulfillment
+availability and listing issues, so we can find and fix listings that are
+suppressed or incomplete. Update content on our own listings, such as titles,
+bullet points and product attributes. Search the Amazon catalog by keyword,
+brand or ASIN to research how comparable products in our categories are titled
+and categorized, which informs our own listing content. Every write is first
+submitted to the Listings Items API in VALIDATION_PREVIEW mode; the resulting
+request and validation outcome are shown to a human operator, who must
+explicitly confirm before any change is submitted for real.
+
+Pricing - Retrieve our current listed prices for our own SKUs, and competing
+and buy-box prices for ASINs in our categories, to review where our products
+sit against comparable listings. Update prices on our own listings under the
+same preview-and-confirm control described above. Retrieve fee estimates for a
+proposed price so we can confirm unit margin before making a change.
+
+Selling Partner Insights - Retrieve marketplace participation and account
+status for our own seller account. Also serves as the connection health check
+for the integration.
+
+Finance and Accounting - Retrieve financial event data, including shipment
+charges and fee events, for a given period. Used to reconcile Amazon
+settlement totals against our internal bookkeeping and to track our effective
+fee rate over time.
+
+We also use the Reports API to request and download standard bulk reports
+about our own catalog and inventory, such as merchant listings reports, for
+the same operational purposes.
+
+The application reads and writes only to our own catalog and our own account,
+and never accesses another selling partner's data. We are not requesting any
+Restricted role and retrieve no buyer personally identifiable information;
+order data is limited to order-level fields and ship-to region. Credentials
+are stored outside source control with filesystem permissions restricted to
+the operating user, all traffic is TLS, and access tokens are short-lived.
+```
 
 ## Security Controls
 
