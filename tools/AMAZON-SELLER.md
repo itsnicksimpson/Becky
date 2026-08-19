@@ -26,12 +26,22 @@ identically. No npm dependencies — Node's standard library only.
 
 ## 2. Register the application
 
-In Seller Central:
+Everything below happens in Seller Central, signed in as the account's
+**Primary User**. Developer Central lives at:
+
+<https://sellercentral.amazon.com/sellingpartner/developerconsole>
+
+That host is for US / CA / MX. Elsewhere the path is identical, only the host
+changes — `sellercentral-europe.amazon.com` (UK, DE, FR, IT, ES),
+`sellercentral.amazon.com.br`, `.co.jp`, `.in`, `.sg`, `.com.tr`, `.nl`.
+Amazon reshuffles these links periodically; the durable route is the menu:
+**Apps and Services → Develop Apps**.
 
 1. **Settings → Account Info → Merchant Token.** Copy the seller ID
    (looks like `A1B2C3D4E5F6G7`).
-2. **Apps and Services → Develop Apps.** Complete developer registration if
-   you haven't already.
+2. **Apps and Services → Develop Apps.** If you get a registration form
+   rather than a list of apps, that's the gate — complete it and wait for
+   approval before continuing.
 3. **Add new app client.** Name it something like `Becky Claude Integration`,
    API type **SP-API**, and select the roles below. Roles you don't request
    cannot be added later without re-authorizing.
@@ -53,7 +63,11 @@ buyer addresses come back redacted without them, which is fine here.
    **Client Secret**.
 5. On the app row, **Authorize app**. Copy the **refresh token** (starts with
    `Atzr|`). Each time you click Authorize you get a *new* refresh token and
-   the previous one stops working.
+   the previous one stops working — so grab it once and paste it straight
+   into `setup`.
+
+There is no single "API key": the refresh token plus the client ID/secret are
+what the tool exchanges for a one-hour access token on each run.
 
 ## 3. Store the credentials
 

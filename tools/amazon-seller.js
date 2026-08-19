@@ -236,6 +236,7 @@ async function setup() {
 ╠════════════════════════════════════════════════════════════════╣
 ║                                                                ║
 ║  In Seller Central (as the account's Primary User):            ║
+║  sellercentral.amazon.com/sellingpartner/developerconsole      ║
 ║                                                                ║
 ║  1. Settings → Account Info → Merchant Token                   ║
 ║     Copy your seller ID (looks like A1B2C3D4E5F6G7)            ║
