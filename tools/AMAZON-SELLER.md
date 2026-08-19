@@ -93,9 +93,17 @@ coming back redacted costs you nothing here.
 
 ### Gate 4 — Add new app client
 
-Once roles are approved, create the production app. Name it something like
-`Becky Claude Integration`. It can only be scoped to roles your profile was
-approved for.
+Once roles are approved, create the production app. The registration form
+asks for four things:
+
+- **App name** — internal only, never shown publicly.
+- **API Type** — SP API.
+- **App Type** — Production (Sandbox apps cannot reach real account data).
+- **Business entities supported** — **Sellers** only. Vendors is for 1P
+  wholesale through Vendor Central, a separate relationship; Certifier,
+  Freight and Shipping are for certification bodies and carriers.
+
+The app can only be scoped to roles your profile was approved for.
 
 Then collect the three values the tool needs:
 
