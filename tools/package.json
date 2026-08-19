@@ -1,15 +1,27 @@
 {
-  "name": "shopify-admin-cli",
-  "version": "1.0.0",
-  "description": "CLI tool to execute Shopify Admin API GraphQL queries",
+  "name": "becky-store-tools",
+  "version": "1.1.0",
+  "description": "CLI tools for running the Becky store: Shopify Admin API and Amazon Selling Partner API",
   "main": "shopify-admin.js",
   "bin": {
-    "shopify-admin": "./shopify-admin.js"
+    "shopify-admin": "./shopify-admin.js",
+    "amazon-seller": "./amazon-seller.js",
+    "amazon-seller-mcp": "./amazon-seller-mcp.js"
   },
   "scripts": {
-    "test": "node shopify-admin.js test"
+    "test": "node --test test/*.test.js",
+    "amazon:setup": "node amazon-seller.js setup",
+    "amazon:mcp": "node amazon-seller-mcp.js"
   },
-  "keywords": ["shopify", "admin", "graphql", "cli"],
+  "keywords": [
+    "shopify",
+    "amazon",
+    "sp-api",
+    "admin",
+    "graphql",
+    "mcp",
+    "cli"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs"

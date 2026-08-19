@@ -6,5 +6,7 @@ node_modules/
 .env.local
 .env.*.local
 .shopify-admin.json
+.amazon-seller.json
+.amazon-seller-token.json
 *.tmp
 *.swp
