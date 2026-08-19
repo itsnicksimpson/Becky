@@ -72,6 +72,11 @@ answers about your security practices.
   OAuth flow, no Amazon Appstore listing.
 - **Roles:** request the six below. You can apply for more later.
 
+Draft answers for every field on this form — including the free-text business
+activity, use cases and third-party disclosure — are in
+[`SPP-PROFILE.md`](SPP-PROFILE.md). The security-controls section refers to
+[`INCIDENT-RESPONSE-PLAN.md`](INCIDENT-RESPONSE-PLAN.md).
+
 | Role | Gives you |
 | --- | --- |
 | Inventory and Order Tracking | orders, FBA inventory |
