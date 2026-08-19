@@ -118,6 +118,8 @@ leaves.
   Provider Portal, and the password manager itself.
 - Passwords expire after 365 days and are rotated annually. The rotation is
   a recurring calendar task owned by the Incident Owner.
+- The SP-API LWA client secret is rotated at least every 180 days, as Amazon
+  requires, on the same recurring schedule.
 - Credentials are never sent over email or chat, written down, or stored in
   shared documents.
 

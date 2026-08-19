@@ -249,8 +249,15 @@ dry until they're confirmed.
   Restricted Data Token. Orders, totals and ship-to region all work without it.
 - **Report contents are CSV/TSV**, sometimes in Windows-1252 rather than
   UTF-8. If accented characters look wrong, pass `--encoding latin1`.
-- **Refresh tokens die** when the app is re-authorized or the client secret is
-  rotated. Re-run `setup` if calls start failing with an LWA error.
+- **You must rotate the LWA client secret every 180 days.** Amazon requires
+  it. Rotation is low-friction and causes no downtime: the client ID does not
+  change, existing refresh tokens keep working, sellers do not re-authorize,
+  and the old secret stays valid for seven days so there is no cutover race.
+  Rotate in SPP, then re-run `setup` (or update `AMAZON_SP_CLIENT_SECRET`)
+  with the new secret.
+- **Rotating the secret does not invalidate the refresh token** — refresh
+  tokens are tied to the client *identifier*, not the secret. Only clicking
+  **Authorize app** again invalidates the previous refresh token.
 - **Authorizations expire after 365 days** and need renewing. Calls failing
   with an LWA error roughly a year after setup is the likely cause — re-run
   Authorize app in SPP, then `setup` with the new refresh token.
