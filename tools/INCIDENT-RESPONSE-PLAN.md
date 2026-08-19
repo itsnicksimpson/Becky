@@ -92,15 +92,67 @@ Reviewed every six months by the Incident Owner, and after any incident.
 Update the roles table when people change. Record the date at the top of
 this document each time.
 
-## 7. Supporting controls
+## 7. Access and credential policy
 
-- Credentials are stored in `~/.amazon-seller.json` at mode `600` or in
-  environment variables. They are never committed — `.gitignore` covers the
-  credential and token-cache filenames.
-- All SP-API traffic is TLS. Access tokens are short-lived (one hour) and
-  cached locally only.
+This section is the written policy the Solution Provider Profile's security
+questions ask about. Answering "Yes" to those questions means this is adopted
+and followed, not merely on disk.
+
+### Who may access Amazon Information
+
+Access is granted by job duty. Only staff whose role requires Amazon
+Information hold Seller Central logins or SP-API credentials, and each person
+has their own Seller Central user with permissions scoped to their duties.
+Logins are never shared. Access is revoked the day someone changes role or
+leaves.
+
+| Person | Access | Granted |
+| --- | --- | --- |
+| *[name]* | *[Seller Central admin / SP-API credentials]* | *[date]* |
+
+### Passwords and authentication
+
+- Minimum 12 characters, including special characters. Generated and stored
+  in a password manager; never reused across services.
+- Multi-factor authentication enabled on Seller Central, the Solution
+  Provider Portal, and the password manager itself.
+- Passwords expire after 365 days and are rotated annually. The rotation is
+  a recurring calendar task owned by the Incident Owner.
+- Credentials are never sent over email or chat, written down, or stored in
+  shared documents.
+
+### Credential storage
+
+- SP-API credentials live in `~/.amazon-seller.json` at mode `600`, or in
+  environment variables. Never hard-coded, never committed — `.gitignore`
+  covers the credential and token-cache filenames.
+- Access tokens are short-lived (one hour) and cached locally only, in
+  `~/.amazon-seller-token.json` at mode `600`.
+- The LWA client secret and refresh token are treated as production secrets:
+  rotated on any suspicion of exposure, per section 3.
+
+### Data handling
+
+- All SP-API traffic is TLS. The integration uses HTTPS exclusively.
 - No Restricted (PII) roles are held, so no buyer personal information is
-  retrieved.
-- Access to credentials is limited to staff who need them.
-- Passwords: 12-character minimum including special characters, MFA enabled,
-  rotated annually.
+  retrieved. Order data is limited to order-level fields and ship-to region.
+- Amazon Information is not sold, published, or used for any purpose other
+  than operating our own Amazon business.
+
+### Network controls
+
+*Record what is actually in place. Answer the profile's network question
+against this list, and leave a line blank rather than claiming a control you
+do not have.*
+
+- Firewall: *[e.g. macOS firewall enabled on all workstations; router NAT
+  firewall]*
+- Anti-virus / anti-malware: *[e.g. macOS XProtect / Microsoft Defender]*
+- IDS/IPS: *[what provides it, or "not implemented"]*
+- Network segmentation: *[e.g. separate guest/IoT SSID, or "not
+  implemented"]*
+
+### Annual review
+
+Reviewed with section 6, every six months. Confirm the access table is
+current, rotations happened, and the network controls list is still accurate.
