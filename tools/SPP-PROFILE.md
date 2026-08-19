@@ -150,30 +150,53 @@ to — it only counts if you actually adopt and follow it.
 | 7 | Credentials stored securely, never hard-coded or in public repos | **Yes.** Credentials live in `~/.amazon-seller.json` at mode 600 or in environment variables, never in source. `.gitignore` covers the credential and token-cache filenames. |
 
 **List all outside parties with whom your organization shares Amazon
-Information.**
+Information. Describe how your organization shares this information.**
 
-> Anthropic PBC (anthropic.com) — our internal tool surfaces SP-API query
-> results through Anthropic's Claude assistant, which our staff use to review
-> and act on the data. Amazon Information retrieved by the application (order
-> summaries excluding buyer PII, inventory levels, our own listing and pricing
-> data, and settlement totals) is transmitted to Anthropic's API for
-> processing during those sessions. We hold no Restricted roles and therefore
-> retrieve no buyer personal information.
->
-> No Amazon Information is shared with any other outside party. None is sold,
-> published, or used for any purpose other than operating our own Amazon
-> business.
+```text
+Anthropic PBC (anthropic.com).
 
-Add anyone else who genuinely sees this data — accountant or bookkeeper, 3PL,
-any Shopify/Amazon sync app, any agency. Omissions here are the kind of thing
-that turns into a policy problem later.
+Our internal operations tool runs on our own systems and retrieves Amazon
+Information directly from the Selling Partner API. Our staff review and act on
+that information through Anthropic's Claude assistant, which serves as the
+operator interface to the tool. In the course of those sessions, the API
+responses the tool retrieves are transmitted to Anthropic's API for processing
+so that Claude can present and summarize them for our team.
+
+The Amazon Information involved is limited to: order-level data excluding
+buyer personally identifiable information (order ID, date, status,
+fulfillment channel, item totals, ship-to region), FBA inventory quantities,
+our own listing content and attributes, our own and publicly visible
+competitor pricing, fee estimates, and aggregate settlement and fee totals. We
+hold no Restricted roles and therefore retrieve no buyer personal information.
+
+The information is shared only for the purpose of operating our own Amazon
+business. It is not sold, published, licensed, or used for advertising,
+resale, or any purpose unrelated to managing our own seller account. No other
+outside party receives Amazon Information from us.
+```
+
+Before submitting, add anyone else who genuinely sees this data and how:
+
+- Accountant or bookkeeper — if you send them settlement or fee figures.
+- Third-party logistics or prep centre — if they see order or inventory data.
+- Any agency, contractor, or freelancer with Seller Central access.
+- Any connected app: Shopify/Amazon sync tools, repricers, analytics
+  dashboards, inventory planners.
+
+Each one needs the name and the mechanism (what data, how it reaches them).
+Omissions here are the kind of thing that becomes a Data Protection Policy
+problem later, and Amazon can ask for this list again at any time.
 
 **List all external (non-Amazon) sources where your organization retrieves
 Amazon Information.**
 
-> None. All Amazon Information is retrieved directly from Amazon through the
-> Selling Partner API and Seller Central. We do not obtain Amazon Information
-> from data aggregators, scrapers, or other third-party sources.
+```text
+None. All Amazon Information is retrieved directly from Amazon, through the
+Selling Partner API and Seller Central. We do not obtain Amazon Information
+from data aggregators, scrapers, browser extensions, or any other third-party
+source.
+```
 
-Only true if you don't use Helium 10, Jungle Scout, Keepa, or similar. List
-them if you do.
+Only submit that if it is true. List them here if you use Helium 10, Jungle
+Scout, Keepa, DataHawk, SellerAmp, or similar — they are external sources of
+Amazon Information and this question is asking about exactly that.
