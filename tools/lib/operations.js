@@ -33,6 +33,9 @@ async function marketplaces(config) {
       currency: entry.marketplace.defaultCurrencyCode,
       isParticipating: entry.participation.isParticipating,
       hasSuspendedListings: entry.participation.hasSuspendedListings,
+      // "Non-Amazon <CC>" entries are internal fulfillment channels (MCF),
+      // not storefronts you can list on.
+      storefront: !/^Non-Amazon/i.test(entry.marketplace.name || ''),
     })),
   };
 }

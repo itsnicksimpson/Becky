@@ -290,8 +290,16 @@ async function setup() {
   try {
     const config = api.getConfig();
     const result = await ops.marketplaces(config);
-    const active = result.marketplaces.filter((m) => m.isParticipating);
-    console.log(`✓ Connected. Selling in: ${active.map((m) => m.countryCode).join(', ') || 'none'}`);
+    const stores = result.marketplaces.filter((m) => m.isParticipating && m.storefront);
+    console.log(`✓ Connected. Selling in: ${stores.map((m) => m.name).join(', ') || 'none'}`);
+
+    const suspended = stores.filter((m) => m.hasSuspendedListings);
+    if (suspended.length) {
+      console.log(
+        `⚠ Suspended listings in: ${suspended.map((m) => m.name).join(', ')}` +
+          ' — those offers are not buyable.'
+      );
+    }
     console.log('\n🎉 Setup complete. Try these:\n');
     console.log('  node tools/amazon-seller.js orders --days 7');
     console.log('  node tools/amazon-seller.js inventory');

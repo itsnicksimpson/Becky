@@ -54,6 +54,32 @@ function stub(responses) {
 
 // ============================================================
 
+test('marketplaces: distinguishes storefronts from MCF channels', async (t) => {
+  const s = stub({
+    'get /sellers/v1/marketplaceParticipations': {
+      payload: [
+        {
+          marketplace: { id: 'ATVPDKIKX0DER', name: 'Amazon.com', countryCode: 'US', defaultCurrencyCode: 'USD' },
+          participation: { isParticipating: true, hasSuspendedListings: true },
+        },
+        {
+          marketplace: { id: 'A2ZV50J4W1RKNI', name: 'Non-Amazon US', countryCode: 'US', defaultCurrencyCode: 'USD' },
+          participation: { isParticipating: true, hasSuspendedListings: false },
+        },
+      ],
+    },
+  });
+  t.after(s.restore);
+
+  const result = await ops.marketplaces(CONFIG);
+
+  assert.strictEqual(result.marketplaces[0].storefront, true);
+  // Multi-channel fulfillment pseudo-marketplaces are not storefronts, and
+  // counting them duplicates country codes in any summary.
+  assert.strictEqual(result.marketplaces[1].storefront, false);
+  assert.strictEqual(result.marketplaces[0].hasSuspendedListings, true);
+});
+
 test('orders: maps fulfillment channel, totals and pagination', async (t) => {
   const s = stub({
     'get /orders/v0/orders': {
