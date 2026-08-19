@@ -21,13 +21,20 @@ identically. No npm dependencies — Node's standard library only.
 - A **Professional** selling plan (Individual plans cannot use SP-API).
 - To be the **Primary User** of the Seller Central account. Only the primary
   user can authorize an application.
-- Developer registration approved in Seller Central. This is a form about how
-  you'll use the data, and Amazon can take several days to approve it.
+- A **government-issued photo ID** (passport, national ID, or driver's
+  licence).
+- A **proof of address issued within the last 180 days** — a bank, credit
+  card, or e-commerce payment service statement (Payoneer, Hyperwallet,
+  World First, Alipay).
 
-## 2. Register the application
+Budget for the wait, not the work. The forms take under an hour; Amazon's
+reviews are the long pole. Identity verification is up to two business days,
+and role approval after that is typically quoted at one to two weeks.
 
-Everything below happens in Seller Central, signed in as the account's
-**Primary User**. Developer Central lives at:
+## 2. Get through the Solution Provider Portal
+
+Developer registration now lives in the **Solution Provider Portal** (SPP),
+which replaced the old Developer Central page:
 
 <https://sellercentral.amazon.com/sellingpartner/developerconsole>
 
@@ -37,14 +44,33 @@ changes — `sellercentral-europe.amazon.com` (UK, DE, FR, IT, ES),
 Amazon reshuffles these links periodically; the durable route is the menu:
 **Apps and Services → Develop Apps**.
 
-1. **Settings → Account Info → Merchant Token.** Copy the seller ID
-   (looks like `A1B2C3D4E5F6G7`).
-2. **Apps and Services → Develop Apps.** If you get a registration form
-   rather than a list of apps, that's the gate — complete it and wait for
-   approval before continuing.
-3. **Add new app client.** Name it something like `Becky Claude Integration`,
-   API type **SP-API**, and select the roles below. Roles you don't request
-   cannot be added later without re-authorizing.
+There are four gates, in order. Signing up only unlocks **sandbox** apps —
+production access needs all four.
+
+### Gate 1 — Sign up
+
+Creates the SPP account. At this point the portal will offer you
+`+ Add new app client`, but anything you build is sandbox-only.
+
+### Gate 2 — Verify your Identity
+
+Upload the ID and proof of address from above, then complete the
+verification form. Amazon reviews within about two business days and emails
+the result.
+
+You cannot edit the form after submitting, so check the details before you
+send it.
+
+### Gate 3 — Account Profile and Permissions (the developer profile)
+
+**This is where roles are chosen — not on the app client.** The form asks for
+organisation details, developer type, roles, a use-case description, and
+answers about your security practices.
+
+- **Developer type: Private.** Becky's app only ever touches Becky's own
+  account, which makes it a private seller application — self-authorized, no
+  OAuth flow, no Amazon Appstore listing.
+- **Roles:** request the six below. You can apply for more later.
 
 | Role | Gives you |
 | --- | --- |
@@ -56,12 +82,23 @@ Amazon reshuffles these links periodically; the durable route is the menu:
 | Finance and Accounting | settlement and fee data |
 
 You do **not** need Direct-to-Consumer Shipping or any PII role for anything
-this integration does. Skip them — they trigger extra Amazon review and
-buyer addresses come back redacted without them, which is fine here.
+this integration does. Skip them. Restricted (personal data) roles go through
+a three-stage business, security and technical review, and buyer addresses
+coming back redacted costs you nothing here.
 
-4. On the app row, **LWA credentials → View**. Copy the **Client ID** and
+### Gate 4 — Add new app client
+
+Once roles are approved, create the production app. Name it something like
+`Becky Claude Integration`. It can only be scoped to roles your profile was
+approved for.
+
+Then collect the three values the tool needs:
+
+1. **Settings → Account Info → Merchant Token.** Copy the seller ID
+   (looks like `A1B2C3D4E5F6G7`).
+2. On the app row, **LWA credentials → View**. Copy the **Client ID** and
    **Client Secret**.
-5. On the app row, **Authorize app**. Copy the **refresh token** (starts with
+3. On the app row, **Authorize app**. Copy the **refresh token** (starts with
    `Atzr|`). Each time you click Authorize you get a *new* refresh token and
    the previous one stops working — so grab it once and paste it straight
    into `setup`.
@@ -201,3 +238,6 @@ dry until they're confirmed.
   UTF-8. If accented characters look wrong, pass `--encoding latin1`.
 - **Refresh tokens die** when the app is re-authorized or the client secret is
   rotated. Re-run `setup` if calls start failing with an LWA error.
+- **Authorizations expire after 365 days** and need renewing. Calls failing
+  with an LWA error roughly a year after setup is the likely cause — re-run
+  Authorize app in SPP, then `setup` with the new refresh token.

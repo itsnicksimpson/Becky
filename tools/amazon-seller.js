@@ -232,28 +232,25 @@ async function setup() {
 
   console.log(`
 ╔════════════════════════════════════════════════════════════════╗
-║           Becky · Amazon Seller CLI — Quick Setup              ║
+║            Becky · Amazon Seller CLI — Quick Setup             ║
 ╠════════════════════════════════════════════════════════════════╣
 ║                                                                ║
-║  In Seller Central (as the account's Primary User):            ║
+║  Credentials come from the Solution Provider Portal:           ║
 ║  sellercentral.amazon.com/sellingpartner/developerconsole      ║
 ║                                                                ║
-║  1. Settings → Account Info → Merchant Token                   ║
-║     Copy your seller ID (looks like A1B2C3D4E5F6G7)            ║
+║  Production access needs all four gates cleared:               ║
+║    1. Sign up      2. Verify your Identity                     ║
+║    3. Roles        4. Add new app client                       ║
 ║                                                                ║
-║  2. Apps and Services → Develop Apps                           ║
-║     Register as a developer if you haven't — needs a           ║
-║     Professional selling plan. Approval can take days.         ║
+║  Signing up alone only unlocks sandbox apps. Roles are         ║
+║  chosen in the developer profile (gate 3), not per app.        ║
+║  Pick developer type Private — this is your own account.       ║
 ║                                                                ║
-║  3. Create a private app. Choose the roles you need:           ║
-║     Inventory & Order Tracking, Pricing, Product Listing,      ║
-║     Selling Partner Insights, Finance & Accounting.            ║
-║                                                                ║
-║  4. On the app row: LWA credentials → View                     ║
-║     Copy the Client ID and Client Secret                       ║
-║                                                                ║
-║  5. On the app row: Authorize app                              ║
-║     Copy the refresh token it shows (starts with Atzr|)        ║
+║  Then collect, as the account's Primary User:                  ║
+║    • Merchant Token — Settings → Account Info                  ║
+║    • Client ID + Secret — app row → LWA credentials            ║
+║    • Refresh token — app row → Authorize app                   ║
+║      (re-authorizing invalidates the previous one)             ║
 ║                                                                ║
 ║  Full walkthrough: tools/AMAZON-SELLER.md                      ║
 ║                                                                ║
