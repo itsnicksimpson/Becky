@@ -12,8 +12,22 @@
 
 const { getConfig, resolveAccessToken, executeQuery } = require('./shopify-admin');
 
+const https = require('https');
+
 const BLOG_PATH = '/blogs/booty-atlas/';
 const DRY_RUN = process.argv.includes('--dry-run');
+
+// Storefront status without following redirects (a merged article answers 301, a scheduled one 404).
+function pageStatus(url) {
+  return new Promise((resolve) => {
+    const req = https.get(`${url}?restore-check=${Date.now()}`, { headers: { 'User-Agent': 'Mozilla/5.0 (Becky link restore)' }, timeout: 20000 }, (res) => {
+      res.resume();
+      resolve(res.statusCode);
+    });
+    req.on('timeout', () => { req.destroy(); resolve('timeout'); });
+    req.on('error', () => resolve('error'));
+  });
+}
 
 // Replace <a href="/blogs/booty-atlas/HANDLE">text</a> with its text when HANDLE isn't live.
 function stripUnpublishedLinks(html, liveHandles) {
@@ -47,8 +61,20 @@ async function main() {
     cursor = data.articles.pageInfo.hasNextPage ? data.articles.pageInfo.endCursor : null;
   } while (cursor);
 
+  // An article counts as live once its publish time has passed and its page actually loads on the storefront
+  // (merged articles redirect, and scheduled ones 404 until they go up).
   const now = Date.now();
-  const live = new Set(articles.filter((a) => a.isPublished && a.publishedAt && Date.parse(a.publishedAt) <= now).map((a) => a.handle));
+  const due = articles.filter((a) => a.publishedAt && Date.parse(a.publishedAt) <= now).map((a) => a.handle);
+  const referenced = new Set();
+  for (const a of articles) {
+    if (!a.full || !a.full.value) continue;
+    for (const m of a.full.value.matchAll(/href="(?:https:\/\/hibecky\.com)?\/blogs\/booty-atlas\/([a-z0-9-]+)/g)) referenced.add(m[1]);
+  }
+  const live = new Set();
+  for (const handle of due) {
+    if (!referenced.has(handle)) { live.add(handle); continue; }
+    if ((await pageStatus(`https://hibecky.com${BLOG_PATH}${handle}`)) === 200) live.add(handle);
+  }
   const summary = { checked: 0, restored: [], errors: [] };
 
   for (const article of articles) {
