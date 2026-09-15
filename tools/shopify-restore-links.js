@@ -79,6 +79,8 @@ async function main() {
 
   for (const article of articles) {
     if (!article.full || !article.full.value) continue;
+    // A scheduled article keeps the links it was created with until it goes live itself.
+    if (!article.publishedAt || Date.parse(article.publishedAt) > now) continue;
     summary.checked += 1;
     const { body, pending } = stripUnpublishedLinks(article.full.value, live);
     if (body === article.body && pending > 0) continue;
