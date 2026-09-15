@@ -8,5 +8,7 @@ node_modules/
 .shopify-admin.json
 .amazon-seller.json
 .amazon-seller-token.json
+.amazon-ads.json
+.amazon-ads-token.json
 *.tmp
 *.swp

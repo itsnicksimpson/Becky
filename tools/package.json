@@ -1,17 +1,21 @@
 {
   "name": "becky-store-tools",
   "version": "1.1.0",
-  "description": "CLI tools for running the Becky store: Shopify Admin API and Amazon Selling Partner API",
+  "description": "CLI tools for running the Becky store: Shopify Admin API, Amazon Selling Partner API, and Amazon Ads",
   "main": "shopify-admin.js",
   "bin": {
     "shopify-admin": "./shopify-admin.js",
     "amazon-seller": "./amazon-seller.js",
-    "amazon-seller-mcp": "./amazon-seller-mcp.js"
+    "amazon-seller-mcp": "./amazon-seller-mcp.js",
+    "amazon-ads": "./amazon-ads.js",
+    "amazon-ads-mcp": "./amazon-ads-mcp.js"
   },
   "scripts": {
     "test": "node --test test/*.test.js",
     "amazon:setup": "node amazon-seller.js setup",
-    "amazon:mcp": "node amazon-seller-mcp.js"
+    "amazon:mcp": "node amazon-seller-mcp.js",
+    "ads:setup": "node amazon-ads.js setup",
+    "ads:test": "node amazon-ads.js test"
   },
   "keywords": [
     "shopify",
@@ -20,7 +24,8 @@
     "admin",
     "graphql",
     "mcp",
-    "cli"
+    "cli",
+    "amazon-ads"
   ],
   "author": "",
   "license": "ISC",

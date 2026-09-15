@@ -3,6 +3,10 @@
     "amazon-seller": {
       "command": "node",
       "args": ["tools/amazon-seller-mcp.js"]
+    },
+    "amazon-ads": {
+      "command": "node",
+      "args": ["tools/amazon-ads-mcp.js"]
     }
   }
 }
