@@ -12,36 +12,101 @@ const fs = require('fs');
 const path = require('path');
 
 const CONFIG_FILE = path.join(process.env.HOME, '.shopify-admin.json');
-const API_VERSION = '2024-10';
+const API_VERSION = process.env.SHOPIFY_API_VERSION || '2026-07';
 
 // ============================================================
 // CONFIGURATION - Set your store details here for easy setup
 // ============================================================
-const DEFAULT_STORE = '00i1tx-13.myshopify.com';
-// After creating your app, paste your access token here:
+const DEFAULT_STORE = 'hibecky.myshopify.com';
+// Legacy admin-created apps: a shpat_ token. Dev Dashboard apps: run `setup-app`
+// to save a Client ID + secret; 24-hour tokens are then fetched automatically.
 const DEFAULT_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN || '';
 // ============================================================
 
-function getConfig() {
-  let config = {
-    store: DEFAULT_STORE,
-    accessToken: DEFAULT_TOKEN,
-  };
+function readConfigFile() {
+  if (!fs.existsSync(CONFIG_FILE)) return {};
+  try {
+    return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+  } catch (e) {
+    return {};
+  }
+}
 
-  // Override with config file if exists
-  if (fs.existsSync(CONFIG_FILE)) {
-    try {
-      const fileConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
-      config.store = fileConfig.store || config.store;
-      config.accessToken = fileConfig.accessToken || config.accessToken;
-    } catch (e) {}
+function writeConfigFile(config) {
+  fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
+  fs.chmodSync(CONFIG_FILE, 0o600);
+}
+
+function getConfig() {
+  const fileConfig = readConfigFile();
+  return {
+    store: process.env.SHOPIFY_STORE || fileConfig.store || DEFAULT_STORE,
+    accessToken: process.env.SHOPIFY_ACCESS_TOKEN || fileConfig.accessToken || DEFAULT_TOKEN,
+    clientId: process.env.SHOPIFY_CLIENT_ID || fileConfig.clientId || '',
+    clientSecret: process.env.SHOPIFY_CLIENT_SECRET || fileConfig.clientSecret || '',
+    tokenExpiresAt: fileConfig.tokenExpiresAt || 0,
+  };
+}
+
+// Client credentials grant (Dev Dashboard apps installed on a store in the same org).
+function requestClientCredentialsToken(store, clientId, clientSecret) {
+  return new Promise((resolve, reject) => {
+    const form = new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: clientId,
+      client_secret: clientSecret,
+    }).toString();
+
+    const req = https.request({
+      hostname: store,
+      port: 443,
+      path: '/admin/oauth/access_token',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(form),
+      },
+    }, (res) => {
+      let body = '';
+      res.on('data', (chunk) => body += chunk);
+      res.on('end', () => {
+        let parsed;
+        try {
+          parsed = JSON.parse(body);
+        } catch (e) {
+          const title = (body.match(/<title>([^<]*)<\/title>/i) || [])[1];
+          return reject(new Error(`Token request failed (HTTP ${res.statusCode}): ${title || body.slice(0, 300)}`));
+        }
+        if (res.statusCode !== 200 || !parsed.access_token) {
+          return reject(new Error(`Token request failed (HTTP ${res.statusCode}): ${JSON.stringify(parsed)}`));
+        }
+        resolve(parsed);
+      });
+    });
+
+    req.on('error', reject);
+    req.write(form);
+    req.end();
+  });
+}
+
+// Returns a usable access token, refreshing the cached client-credentials token when it is
+// missing or within 10 minutes of expiring.
+async function resolveAccessToken(config) {
+  if (!config.clientId || !config.clientSecret) return config.accessToken;
+  if (config.accessToken && Date.now() < config.tokenExpiresAt - 10 * 60 * 1000) {
+    return config.accessToken;
   }
 
-  // Override with env vars
-  config.store = process.env.SHOPIFY_STORE || config.store;
-  config.accessToken = process.env.SHOPIFY_ACCESS_TOKEN || config.accessToken;
+  const token = await requestClientCredentialsToken(config.store, config.clientId, config.clientSecret);
+  config.accessToken = token.access_token;
+  config.tokenExpiresAt = Date.now() + (token.expires_in || 86399) * 1000;
+  config.scope = token.scope;
 
-  return config;
+  if (!process.env.SHOPIFY_CLIENT_ID) {
+    writeConfigFile({ ...readConfigFile(), accessToken: config.accessToken, tokenExpiresAt: config.tokenExpiresAt, scope: token.scope });
+  }
+  return config.accessToken;
 }
 
 async function executeQuery(store, accessToken, query, variables = {}) {
@@ -143,7 +208,7 @@ const COMMANDS = {
   },
 
   'products': {
-    description: 'List products',
+    description: 'List products with variant prices, SKUs and stock',
     query: `{
       products(first: 20) {
         edges {
@@ -153,8 +218,27 @@ const COMMANDS = {
             handle
             status
             onlineStoreUrl
+            variants(first: 20) {
+              nodes {
+                id
+                title
+                sku
+                price
+                compareAtPrice
+                inventoryQuantity
+              }
+            }
           }
         }
+      }
+    }`
+  },
+
+  'scopes': {
+    description: 'List the access scopes this app has been granted',
+    query: `{
+      currentAppInstallation {
+        accessScopes { handle }
       }
     }`
   },
@@ -248,9 +332,10 @@ async function runCommand(cmd, args, config) {
   }
 
   try {
-    const result = await executeQuery(config.store, config.accessToken, query, variables);
+    const accessToken = await resolveAccessToken(config);
+    const result = await executeQuery(config.store, accessToken, query, variables);
     console.log(JSON.stringify(result.data, null, 2));
-    
+
     if (result.data.errors) {
       process.exit(1);
     }
@@ -325,6 +410,67 @@ async function setup() {
   }
 }
 
+// Dev Dashboard app setup: saves the Client ID + secret locally (never printed) and tests them.
+async function setupApp() {
+  const readline = require('readline');
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: true });
+  let muted = false;
+  rl._writeToOutput = (text) => {
+    if (!muted) rl.output.write(text);
+  };
+  // readline redraws the line when asking, so the prompt must go through question() itself;
+  // muting starts after it is drawn so only the typed characters are hidden.
+  const question = (prompt, hidden = false) => new Promise((resolve) => {
+    rl.question(prompt, (answer) => {
+      muted = false;
+      if (hidden) rl.output.write('\n');
+      resolve(answer.trim());
+    });
+    muted = hidden;
+  });
+
+  console.log('\nShopify Dev Dashboard app setup (the secret is hidden as you paste it)\n');
+  const store = (await question(`Store domain [${DEFAULT_STORE}]: `)) || DEFAULT_STORE;
+  const clientId = await question('Client ID: ');
+  const clientSecret = await question('Client secret: ', true);
+  rl.close();
+
+  if (!clientId || !clientSecret) {
+    console.error('\n✗ Client ID and secret are both required.');
+    process.exit(1);
+  }
+
+  const config = { store, clientId, clientSecret, tokenExpiresAt: 0 };
+  console.log('\nRequesting an access token...');
+  try {
+    await resolveAccessToken(config);
+  } catch (e) {
+    console.error(`✗ ${e.message}`);
+    console.error('\nCheck that the app version is released and the app is installed on this store.');
+    process.exit(1);
+  }
+
+  writeConfigFile({
+    store,
+    clientId,
+    clientSecret,
+    accessToken: config.accessToken,
+    tokenExpiresAt: config.tokenExpiresAt,
+    scope: config.scope,
+  });
+
+  const result = await executeQuery(store, config.accessToken, '{ shop { name myshopifyDomain } }');
+  const shop = result.data.data && result.data.data.shop;
+  if (!shop) {
+    console.error('✗ Token worked but the shop query failed:', JSON.stringify(result.data, null, 2));
+    process.exit(1);
+  }
+
+  console.log(`✓ Connected to ${shop.name} (${shop.myshopifyDomain})`);
+  console.log(`✓ Saved to ${CONFIG_FILE} (readable only by you)`);
+  console.log(`\nGranted scopes:\n  ${(config.scope || '').split(',').join('\n  ')}\n`);
+}
+
 function printHelp() {
   console.log(`
 Shopify Admin CLI - Manage your store from the command line
@@ -334,7 +480,9 @@ USAGE:
   shopify-admin query '<graphql>'
 
 SETUP:
-  shopify-admin setup           # One-time setup (paste your token)
+  shopify-admin setup-app       # Dev Dashboard app (Client ID + secret)
+  shopify-admin setup           # Legacy admin-created app (paste shpat_ token)
+  shopify-admin scopes          # Show the scopes the app was granted
 
 QUICK COMMANDS:
   shopify-admin menus           # List all navigation menus
@@ -377,9 +525,14 @@ async function main() {
     return;
   }
 
-  // Check for token
-  if (!config.accessToken) {
-    console.error('No access token configured. Run: shopify-admin setup');
+  if (cmd === 'setup-app') {
+    await setupApp();
+    return;
+  }
+
+  // Check for credentials
+  if (!config.accessToken && !(config.clientId && config.clientSecret)) {
+    console.error('No Shopify credentials configured. Run: shopify-admin setup-app');
     process.exit(1);
   }
 
@@ -403,7 +556,8 @@ async function main() {
     }
 
     try {
-      const result = await executeQuery(config.store, config.accessToken, query, variables);
+      const accessToken = await resolveAccessToken(config);
+      const result = await executeQuery(config.store, accessToken, query, variables);
       console.log(JSON.stringify(result.data, null, 2));
     } catch (e) {
       console.error('Error:', e.message);
@@ -423,7 +577,11 @@ async function main() {
   process.exit(1);
 }
 
-main().catch((e) => {
-  console.error('Error:', e.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((e) => {
+    console.error('Error:', e.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { getConfig, resolveAccessToken, executeQuery };
